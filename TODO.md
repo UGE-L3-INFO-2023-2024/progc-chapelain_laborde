@@ -109,3 +109,35 @@ Suite a regarder dans le doc partie 4 (page 7)
 - gestionnaire d'upgrade
 
 <img src="./UI_example.png" width="750">
+
+## Modularisation
+
+- Map : Tower Mana Mob
+
+- Gemstone : Color
+
+- Mana
+
+- Tower : Gemstone Mana Projectile
+
+- Color
+
+- Mob : Color Element Animation
+
+- Projectile : Element Mob Animation
+
+- Element
+
+- Animation
+
+- Window
+
+- Graphic field
+
+- Graphic overlay
+
+- Parser getopt (constante)
+
+- Gestionnaire sys/queue
+
+- Game pour gérer le jeu entier ?
