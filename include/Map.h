@@ -21,8 +21,8 @@
 #define MAP_HEIGHT 22
 
 typedef struct {
-    Coord_i coord;
     bool is_path;
+    Coord_i coord;
     union {
         Tower* tower;
         Trap* trap;
@@ -30,11 +30,15 @@ typedef struct {
 } Cell;
 
 typedef struct {
-    Cell cells[MAP_HEIGHT][MAP_WIDTH];
-    List mobs;
+    Cell board[MAP_HEIGHT][MAP_WIDTH];
+    // List mobs; coms to avoid warning
     Tower* towers;
     Trap* traps;
     ManaPool mana;
 } Map;
+
+Map Map_init(void);
+void Map_init_board(Map* map);
+Cell Map_init_cell(Coord_i coord);
 
 #endif  // __MAP_H__

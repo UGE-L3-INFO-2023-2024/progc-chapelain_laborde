@@ -10,9 +10,14 @@
 #define __MANA_H__
 
 typedef struct {
+    unsigned int level;
     unsigned int mana_real;
     unsigned int mana_max;
-    unsigned int level;
 } ManaPool;
+
+#define MANA_START 150
+
+ManaPool Init_mana(void);
+int Mana_max(int level);
 
 #endif  // __MANA_H__
