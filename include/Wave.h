@@ -16,7 +16,7 @@
 typedef struct {
     unsigned int level;
     timeval last_wave_time;
-    List mobs;
+    // List mobs;
 } Wave;
 
 #endif  // __WAVE_H__

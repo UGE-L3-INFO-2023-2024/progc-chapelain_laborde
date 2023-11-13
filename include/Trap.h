@@ -10,7 +10,7 @@
 #define __TRAP_H__
 
 #include "Gemstone.h"
-#include "./tools/Utils.h"
+#include "Utils.h"
 
 typedef struct {
     Coord_i coord;

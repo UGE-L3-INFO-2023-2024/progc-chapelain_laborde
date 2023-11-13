@@ -13,12 +13,12 @@
 
 #include <sys/time.h>
 
-#include "./tools/Utils.h"
 #include "Gemstone.h"
+#include "Utils.h"
 
 typedef struct {
     Gem* gem;
-    timeval install_gem;
+    // timeval install_gem;
     Coord_i coord;
 } Tower;
 

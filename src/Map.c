@@ -8,18 +8,18 @@
 
 #include "../include/Map.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "../include/Mana.h"
+#include "../include/Utils.h"
 
 Map Map_init(void) {
-    Map map = {
+    return (Map){
         .mana = Init_mana(),
         .towers = NULL,
         .traps = NULL,
     };
-    Map_init_board(&map);
-    return map;
 }
 
 void Map_init_board(Map* map) {
@@ -36,4 +36,20 @@ Cell Map_init_cell(Coord_i coord) {
         .is_path = false,
         .tower = NULL,
     };
+}
+
+void Map_print(Map* map) {
+    printf("------------------------------\n");
+    for (int y = 0; y < MAP_HEIGHT; y++) {
+        printf("|");
+        for (int x = 0; x < MAP_WIDTH; x++) {
+            if (map->board[y][x].is_path) {
+                printf("#");
+            } else {
+                printf("*");
+            }
+        }
+        printf("|\n");
+    }
+    printf("------------------------------\n");
 }

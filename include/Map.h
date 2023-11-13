@@ -11,11 +11,11 @@
 
 #include <stdbool.h>
 
-#include "./tools/Utils.h"
 #include "Mana.h"
 #include "Mob.h"
 #include "Tower.h"
 #include "Trap.h"
+#include "Utils.h"
 
 #define MAP_WIDTH 28
 #define MAP_HEIGHT 22
@@ -40,5 +40,6 @@ typedef struct {
 Map Map_init(void);
 void Map_init_board(Map* map);
 Cell Map_init_cell(Coord_i coord);
+void Map_print(Map* map);
 
 #endif  // __MAP_H__
