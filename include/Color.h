@@ -9,8 +9,6 @@
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
-typedef struct {
-    int color; /*0-359*/
-} Color;
+typedef unsigned short Color;  // 0 - 359 HSV color
 
 #endif  // __COLOR_H__

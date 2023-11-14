@@ -1,35 +1,27 @@
-CC=gcc
-BIN_DIR=bin
-INC_DIR=include
-SRC_DIR=src
-OBJ = $(patsubst $(SRC_DIR)/%.c,$(BIN_DIR)/%.o,$(wildcard $(SRC_DIR)/*.c))
-CFLAGS=-Wall -std=c17 -pedantic -Wfatal-errors -g -g3
-LDFLAGS=-lm -lMLV
-EXEC=gemcraft
-# $(info $(OBJ))
+# Author : LABORDE Quentin, CHAPELAIN Nathan
+# Date : 14-11-2023
 
-# $@ : the current target
-# $^ : all current prerequisites
-# $< : the first current prerequisite
+CC = gcc
+CFLAGS = -std=c17 -pedantic -Wall -Wfatal-errors -g -g3
+LDLIBS = -lm -lMLV
+SRCS = $(wildcard src/*.c)
+OBJS = $(SRCS:src/%.c=obj/%.o)
+EXEC = gemcraft
 
-all : $(EXEC)
+all: $(EXEC)
 
-# Dépandances
-Utils.o : $(SRC_DIR)/Utils.c
-Mana.o : $(SRC_DIR)/Mana.c
-Path.o : $(SRC_DIR)/Path.c $(INC_DIR)/Utils.h
-Map.o : $(SRC_DIR)/Map.c $(INC_DIR)/Mana.h $(INC_DIR)/Path.h $(INC_DIR)/Utils.h
-Main.o : $(SRC_DIR)/Main.c $(INC_DIR)/Map.h
+$(EXEC): $(OBJS)
+	$(CC) -Iinclude $^ -o $@ $(LDLIBS)
 
+obj/%.o: src/%.c
+	@mkdir -p obj
+	$(CC) -Iinclude $(CFLAGS) -c $< -o $@
 
-$(EXEC): $(OBJ)
-	$(CC) -o $@ $^ $(LDFLAGS)
+run: $(EXEC)
+	./$(EXEC)
 
-$(BIN_DIR)/%.o : $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+clean:
+	rm -fr obj
 
-
-clean :
-	rm -f $(BIN_DIR)/*.o
+distclean: clean
 	rm -f $(EXEC)
-
