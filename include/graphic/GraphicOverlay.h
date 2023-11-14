@@ -13,7 +13,7 @@
  * @param max Max value of Mana
  * @param current Current value of Mana
  */
-void showManaBar(int x, int y, int w, int h, int max, int current);
+void show_mana_bar(int x, int y, int w, int h, int max, int current);
 
 /**
  * @brief Show inventory of gems
@@ -24,6 +24,6 @@ void showManaBar(int x, int y, int w, int h, int max, int current);
  * @param gems Array of gems
  * @param gemsCount Number of gems
  */
-void showInventory(int x, int y, int width, Gem* gems, int gemsCount);
+void show_inventory(int x, int y, int width, Gem* gems, int gemsCount);
 
 #endif  // __GRAPHIC_OVERLAY_H__

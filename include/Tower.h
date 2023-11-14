@@ -4,8 +4,6 @@
  * @brief
  * @date 30/10/2023
  *
- * @copyright Copyright (c) 2023
- *
  */
 
 #ifndef __TOWER_H__
