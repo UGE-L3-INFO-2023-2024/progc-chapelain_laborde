@@ -31,6 +31,8 @@ typedef struct {
 
 typedef struct {
     Cell board[MAP_HEIGHT][MAP_WIDTH];
+    Coord_i nest;
+    Coord_i castle;
     // List mobs; coms to avoid warning
     Tower* towers;
     Trap* traps;

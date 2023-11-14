@@ -14,22 +14,11 @@
 #include "../include/Map.h"
 #include "../include/Utils.h"
 
-int Path_manatan_dist(Coord_i a, Coord_i b) {
+static int Path_manatan_dist(Coord_i a, Coord_i b) {
     return ABS(a.x - b.x) + ABS(a.y - b.y);
 }
 
-int Path_manatan_to_border(Coord_i origin, Direction dir,
-                           int map_w, int map_h) {
-    Coord_i to_border[4] = {
-        (Coord_i){origin.x, 0},          // NORTH
-        (Coord_i){map_w - 1, origin.y},  // EAST
-        (Coord_i){origin.x, map_h - 1},  // SOUTH
-        (Coord_i){0, origin.y},          // WEST
-    };
-    return Path_manatan_dist(origin, to_border[dir]);
-}
-
-int Path_forward_3_4(int max) {
+static int Path_forward_3_4(int max) {
     int acc = 0;
     for (int i = 0; i < max; i++) {
         if (rand() % 4) {
@@ -39,7 +28,7 @@ int Path_forward_3_4(int max) {
     return acc < 3 ? 3 : acc;
 }
 
-void Path_apply_path(Map* map, Coord_i origin, Direction dir, int len) {
+static void Path_apply_path(Map* map, Coord_i origin, Direction dir, int len) {
     static int Dir_point[4][2] = {
         {0, -1},
         {1, 0},
@@ -57,7 +46,7 @@ void Path_apply_path(Map* map, Coord_i origin, Direction dir, int len) {
     }
 }
 
-bool Path_manatan_etentu_cell(Map* map, Coord_i origin, Direction ignore) {
+static bool Path_manatan_etentu_cell(Map* map, Coord_i origin, Direction ignore) {
     if (origin.x < 2 || origin.x > MAP_WIDTH - 3 ||
         origin.y < 2 || origin.y > MAP_HEIGHT - 3) {
         return false;
@@ -89,7 +78,7 @@ bool Path_manatan_etentu_cell(Map* map, Coord_i origin, Direction ignore) {
     return true;
 }
 
-int Path_max_dir(Map* map, Coord_i start, Direction dir) {
+static int Path_max_dir(Map* map, Coord_i start, Direction dir) {
     int acc = 0;
     static int Dir_point[4][2] = {
         {0, -1},
@@ -107,6 +96,29 @@ int Path_max_dir(Map* map, Coord_i start, Direction dir) {
     return acc;
 }
 
+static void Path_gen_step(Map* map, Coord_i coord, Direction dir, Direction* new_dir, int* new_len) {
+    Direction arr_dir[2] = {
+        Utils_modulo((dir + 1), 4),
+        Utils_modulo((dir - 1), 4),
+    };
+
+    int arr_pos[2] = {
+        Path_max_dir(map, coord, arr_dir[0]),
+        Path_max_dir(map, coord, arr_dir[1]),
+    };
+
+    int dir_index = Utils_weighted_select(arr_pos,
+                                          rand() % (Utils_sum_arr_i(arr_pos, 2) + 1),
+                                          2);
+    if (dir_index == -1) {
+        // Error in weighted_select
+        return;
+    }
+
+    *new_dir = arr_dir[dir_index];
+    *new_len = arr_pos[dir_index];
+}
+
 bool Path_gen(Map* map) {
     int total_len = 0, total_turn = 0;
     // 1
@@ -117,6 +129,7 @@ bool Path_gen(Map* map) {
         .x = (rand() % (MAP_WIDTH - 4)) + 2,
         .y = (rand() % (MAP_HEIGHT - 4)) + 2,
     };
+    map->castle = origin;
 
     // 3
     int nest_to_borders[4] = {
@@ -163,29 +176,7 @@ bool Path_gen(Map* map) {
 
         dir = new_dir;
         origin = Utils_coord_from_dir_len(origin, new_dir, foward_len);
+        map->castle = origin;
     }
     return true;
-}
-
-void Path_gen_step(Map* map, Coord_i coord, Direction dir, Direction* new_dir, int* new_len) {
-    Direction arr_dir[2] = {
-        Utils_modulo((dir + 1), 4),
-        Utils_modulo((dir - 1), 4),
-    };
-
-    int arr_pos[2] = {
-        Path_max_dir(map, coord, arr_dir[0]),
-        Path_max_dir(map, coord, arr_dir[1]),
-    };
-
-    int dir_index = Utils_weighted_select(arr_pos,
-                                          rand() % (Utils_sum_arr_i(arr_pos, 2) + 1),
-                                          2);
-    if (dir_index == -1) {
-        // Error in weighted_select
-        return;
-    }
-
-    *new_dir = arr_dir[dir_index];
-    *new_len = arr_pos[dir_index];
 }

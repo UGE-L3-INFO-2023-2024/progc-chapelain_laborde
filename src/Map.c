@@ -19,6 +19,8 @@ Map Map_init(void) {
         .mana = Init_mana(),
         .towers = NULL,
         .traps = NULL,
+        .nest = (Coord_i){-1, -1},
+        .castle = (Coord_i){-1, -1},
     };
 }
 
