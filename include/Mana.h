@@ -17,7 +17,19 @@ typedef struct {
 
 #define MANA_START 150
 
-ManaPool Init_mana(void);
+/**
+ * @brief Initialize a ManaPool.
+ *
+ * @return ManaPool mana.
+ */
+ManaPool Mana_init(void);
+
+/**
+ * @brief Calculate the max mana of a level.
+ *
+ * @param level Level of the ManaPool.
+ * @return int max mana.
+ */
 int Mana_max(int level);
 
 #endif  // __MANA_H__

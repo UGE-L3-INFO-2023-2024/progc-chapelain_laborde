@@ -27,6 +27,13 @@ typedef struct {
  * @param color HSV color to convert.
  * @return RGB_Color color.
  */
-RGB_Color HSV_to_RGB(HSV_Color color);
+RGB_Color Color_HSV_to_RGB(HSV_Color color);
+
+/**
+ * @brief Generate a random HSV color.
+ *
+ * @return HSV_Color color.
+ */
+HSV_Color Color_rand(void);
 
 #endif  // __COLOR_H__

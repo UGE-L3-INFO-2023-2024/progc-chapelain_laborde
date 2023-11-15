@@ -130,11 +130,11 @@ bool Path_gen(Map* map) {
         .x = (rand() % (MAP_WIDTH - 4)) + 2,
         .y = (rand() % (MAP_HEIGHT - 4)) + 2,
     };
-    map->castle = origin;
+    map->nest = origin;
 
     // 3
     int nest_to_borders[4] = {
-        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),  // NORTH
+        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),              // NORTH
         Path_manatan_dist(origin, (Coord_i){MAP_WIDTH - 1, origin.y}),  // EAST
         Path_manatan_dist(origin,
                           (Coord_i){origin.x, MAP_HEIGHT - 1}),  // SOUTH

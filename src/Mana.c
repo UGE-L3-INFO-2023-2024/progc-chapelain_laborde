@@ -10,7 +10,7 @@
 
 #include <math.h>
 
-ManaPool Init_mana(void) {
+ManaPool Mana_init(void) {
     return (ManaPool){
         .level = 0,
         .mana_real = MANA_START,

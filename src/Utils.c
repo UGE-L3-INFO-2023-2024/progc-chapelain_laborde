@@ -45,3 +45,11 @@ int Utils_weighted_select(int arr[], int val, int len) {
     }
     return -1;
 }
+
+Coord_f Utils_coord_i_to_f_center(Coord_i coord) {
+    return (Coord_f){.x = coord.x + .5, .y = coord.y + .5};
+}
+
+Coord_i Utils_coord_f_to_i(Coord_f coord) {
+    return (Coord_i){.x = (int)coord.x, .y = (int)coord.y};
+}

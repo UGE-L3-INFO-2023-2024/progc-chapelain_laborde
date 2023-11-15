@@ -17,6 +17,6 @@
  * @param window Window to draw on.
  * @param map Map to draw.
  */
-void test_graphic_field(Map map, Window* window);
+void Test_graphic_field(Map map, Window* window);
 
 #endif  // __TEST_H__

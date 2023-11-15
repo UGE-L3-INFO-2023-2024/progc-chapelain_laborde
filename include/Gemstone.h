@@ -38,14 +38,14 @@ typedef struct {
  * @param color Color of the gemstone
  * @return GemType Type of the gemstone
  */
-GemType color_to_gemtype(int color);
+GemType Gemstone_from_color(int color);
 
 /**
  * @brief Create a pure Gemstone object
  *
  * @return Gemstone Gemstone created
  */
-Gemstone gemstone_create();
+Gemstone Gemstone_init();
 
 /**
  * @brief Merge two gemstone
@@ -53,6 +53,6 @@ Gemstone gemstone_create();
  * @param gemstone Gemstone to merge and to be modified
  * @param other Gemstone to merge
  */
-void gemstone_merge(Gemstone *gemstone, Gemstone *other);
+void Gemstone_merge(Gemstone *gemstone, Gemstone *other);
 
 #endif  // __GEMSTONE_H__

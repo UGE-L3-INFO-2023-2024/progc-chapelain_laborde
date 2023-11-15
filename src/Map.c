@@ -6,7 +6,7 @@
  *
  */
 
-#include "../include/Map.h"
+#include "Map.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,7 +16,7 @@
 
 Map Map_init(void) {
     return (Map){
-        .mana = Init_mana(),
+        .mana = Mana_init(),
         .towers = NULL,
         .traps = NULL,
         .nest = (Coord_i){-1, -1},

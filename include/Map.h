@@ -39,9 +39,33 @@ typedef struct {
     ManaPool mana;
 } Map;
 
+/**
+ * @brief Initialize a Map.
+ *
+ * @return Map map.
+ */
 Map Map_init(void);
+
+/**
+ * @brief Initialize the board of a Map.
+ *
+ * @param map Map to initialize.
+ */
 void Map_init_board(Map* map);
+
+/**
+ * @brief Initialize a Cell.
+ *
+ * @param coord Coord of the Cell.
+ * @return Cell cell.
+ */
 Cell Map_init_cell(Coord_i coord);
+
+/**
+ * @brief Print a Map.
+ *
+ * @param map Map to print.
+ */
 void Map_print(Map* map);
 
 #endif  // __MAP_H__

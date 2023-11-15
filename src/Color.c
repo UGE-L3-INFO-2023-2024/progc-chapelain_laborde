@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 
-RGB_Color HSV_to_RGB(HSV_Color color) {
+RGB_Color Color_HSV_to_RGB(HSV_Color color) {
     RGB_Color rgb;
     int Hprime = color / 60;
     int X = 1 - abs(Hprime % 2 - 1);
@@ -30,4 +30,8 @@ RGB_Color HSV_to_RGB(HSV_Color color) {
         rgb = (RGB_Color){0, 0, 0};
     }
     return rgb;
+}
+
+HSV_Color Color_rand(void) {
+    return rand() % 360;
 }

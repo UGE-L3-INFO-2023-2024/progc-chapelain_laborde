@@ -8,7 +8,9 @@
 
 #include "GraphicField.h"
 
+#include "Color.h"
 #include "Graphic.h"
+#include "Map.h"
 
 /**
  * @brief Draw the given tower on the given window.
@@ -25,7 +27,7 @@ static void draw_tower(Tower tower, SubWindow window, MLV_Image* img) {
     } else {
         MLV_Color color = MLV_COLOR_BLACK;
         if (tower.gem) {
-            color = RGB_to_MLV_Color(HSV_to_RGB(tower.gem->color), 255);
+            color = RGB_to_MLV_Color(Color_HSV_to_RGB(tower.gem->color), 255);
         }
         MLV_draw_filled_circle(tower.coord.x * window.width / MAP_WIDTH,
                                tower.coord.y * window.height / MAP_HEIGHT,
@@ -57,6 +59,48 @@ static bool draw_path_cell(Cell cell, SubWindow window, MLV_Image* img) {
         return true;
     }
     return false;
+}
+
+/**
+ * @brief Draw a nest of the map.
+ *
+ * @param cell Nest to draw.
+ * @param window Window to draw on.
+ * @param img Image to draw instead of a red rectangle.
+ *
+ */
+static void draw_nest(Coord_i nest, SubWindow window, MLV_Image* img) {
+    MLV_Color color = MLV_COLOR_LIGHT_SALMON;
+    int nest_width = window.width / MAP_WIDTH;
+    int nest_height = window.height / MAP_HEIGHT;
+    if (img)
+        MLV_draw_image(img, nest.x * nest_width,
+                       nest.y * nest_height);
+    else
+        MLV_draw_filled_rectangle(nest.x * nest_width,
+                                  nest.y * nest_height, nest_width,
+                                  nest_height, color);
+}
+
+/**
+ * @brief Draw a castle of the map.
+ *
+ * @param cell Castle to draw.
+ * @param window Window to draw on.
+ * @param img Image to draw instead of a green rectangle.
+ *
+ */
+static void draw_castle(Coord_i castle, SubWindow window, MLV_Image* img) {
+    MLV_Color color = MLV_COLOR_LIGHT_GREEN;
+    int castle_width = window.width / MAP_WIDTH;
+    int castle_height = window.height / MAP_HEIGHT;
+    if (img)
+        MLV_draw_image(img, castle.x * castle_width,
+                       castle.y * castle_height);
+    else
+        MLV_draw_filled_rectangle(castle.x * castle_width,
+                                  castle.y * castle_height, castle_width,
+                                  castle_height, color);
 }
 
 /**
@@ -93,6 +137,8 @@ void draw_map(Map map, SubWindow map_window) {
             }
         }
     }
+    draw_castle(map.castle, map_window, NULL);
+    draw_nest(map.nest, map_window, NULL);
     draw_grid(map_window, MLV_COLOR_BLACK, 2);
     MLV_actualise_window();
 }

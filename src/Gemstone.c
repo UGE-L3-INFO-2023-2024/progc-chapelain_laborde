@@ -8,4 +8,6 @@
 
 #include "Gemstone.h"
 
-GemType color_to_gemtype(int color) {}
+GemType Gem_from_color(int color) {}
+Gemstone Gemstone_init() {}
+void Gemstone_merge(Gemstone *gemstone, Gemstone *other) {}
