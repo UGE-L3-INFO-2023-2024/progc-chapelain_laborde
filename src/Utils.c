@@ -2,11 +2,11 @@
  * @file Utils.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 11/11/2023
+ * @date 2023-11-15
  *
  */
 
-#include "../include/Utils.h"
+#include "Utils.h"
 
 #include <stdlib.h>
 

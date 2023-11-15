@@ -1,10 +1,18 @@
+/**
+ * @file GraphicField.h
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief
+ * @date 2023-11-15
+ *
+ */
+
 #ifndef __GRAPHICFIELD_H__
 #define __GRAPHICFIELD_H__
 
 #include <MLV/MLV_all.h>
 
+#include "Graphic.h"
 #include "Map.h"
-#include "Window.h"
 
 /**
  * @brief Draw the map on the given window.

@@ -2,7 +2,7 @@
  * @file Map.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 2023-11-15
  *
  */
 
@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/Mana.h"
-#include "../include/Utils.h"
+#include "Mana.h"
+#include "Utils.h"
 
 Map Map_init(void) {
     return (Map){

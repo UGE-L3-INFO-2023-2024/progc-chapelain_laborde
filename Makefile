@@ -1,21 +1,23 @@
 # Author : LABORDE Quentin, CHAPELAIN Nathan
-# Date : 14-11-2023
+# Date : 15-11-2023
 
 CC = gcc
 CFLAGS = -std=c17 -pedantic -Wall -Wfatal-errors -g -g3
 LDLIBS = -lm -lMLV
-SRCS = $(wildcard src/*.c)
+INCLUDES = -Iinclude -Iinclude/tools -Iinclude/graphic
+SRCS = $(wildcard src/*.c) $(wildcard src/graphic/*.c)
 OBJS = $(SRCS:src/%.c=obj/%.o)
 EXEC = gemcraft
 
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) -Iinclude $^ -o $@ $(LDLIBS)
+	$(CC) $(INCLUDES) $^ -o $@ $(LDLIBS)
 
 obj/%.o: src/%.c
 	@mkdir -p obj
-	$(CC) -Iinclude $(CFLAGS) -c $< -o $@
+	@mkdir -p obj/graphic
+	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
 
 run: $(EXEC)
 	./$(EXEC)

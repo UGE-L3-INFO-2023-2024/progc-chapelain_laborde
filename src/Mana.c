@@ -2,11 +2,11 @@
  * @file Map.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 2023-11-15
  *
  */
 
-#include "../include/Mana.h"
+#include "Mana.h"
 
 #include <math.h>
 

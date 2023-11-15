@@ -1,3 +1,11 @@
+/**
+ * @file GraphicField.c
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief
+ * @date 2023-11-15
+ *
+ */
+
 #include "GraphicField.h"
 
 #include "Graphic.h"
@@ -61,6 +69,8 @@ static bool draw_path_cell(Cell cell, SubWindow window, MLV_Image* img) {
 static void draw_grid(SubWindow window, MLV_Color color, int thickness) {
     int cell_width = window.width / MAP_WIDTH;
     int cell_height = window.height / MAP_HEIGHT;
+    draw_rectangle(0, 0, cell_width * MAP_WIDTH, cell_height * MAP_HEIGHT,
+                   thickness, color);
     for (int i = 1; i < MAP_WIDTH; i++) {
         MLV_draw_filled_rectangle(i * cell_width - thickness / 2, 0, thickness,
                                   cell_height * MAP_HEIGHT, MLV_COLOR_BLACK);
@@ -74,6 +84,7 @@ static void draw_grid(SubWindow window, MLV_Color color, int thickness) {
 
 /* Draw map in the window */
 void draw_map(Map map, SubWindow map_window) {
+    MLV_clear_window(MLV_COLOR_WHITE);
     for (int i = 0; i < MAP_HEIGHT; i++) {
         for (int j = 0; j < MAP_WIDTH; j++) {
             draw_path_cell(map.board[i][j], map_window, NULL);
@@ -83,4 +94,5 @@ void draw_map(Map map, SubWindow map_window) {
         }
     }
     draw_grid(map_window, MLV_COLOR_BLACK, 2);
+    MLV_actualise_window();
 }

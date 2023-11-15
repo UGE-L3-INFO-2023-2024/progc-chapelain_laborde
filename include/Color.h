@@ -2,27 +2,31 @@
  * @file Color.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 2023-11-15
  *
  */
 
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
-typedef unsigned short Color;  // 0 - 359 HSV color
+typedef unsigned short HSV_Color;  // 0 - 359 HSV color
 
+/**
+ * @brief Define a RGB color.
+ *
+ */
 typedef struct {
     unsigned char r;
     unsigned char g;
     unsigned char b;
-} RGB;
+} RGB_Color;
 
 /**
  * @brief Convert a HSV color to a RGB color.
  *
  * @param color HSV color to convert.
- * @return RGB color.
+ * @return RGB_Color color.
  */
-RGB HSV_to_RGB(Color color);
+RGB_Color HSV_to_RGB(HSV_Color color);
 
 #endif  // __COLOR_H__

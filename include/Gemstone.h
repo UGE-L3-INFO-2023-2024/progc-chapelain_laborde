@@ -2,7 +2,7 @@
  * @file Gemstone.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 2023-11-15
  *
  */
 
@@ -12,13 +12,21 @@
 #include "Color.h"
 #include "Element.h"
 
+/**
+ * @brief Type of gemstone
+ *
+ */
 typedef enum {
     PURE,
     MIXED,
 } GemType;
 
+/**
+ * @brief Define a gemstone.
+ *
+ */
 typedef struct {
-    Color color;
+    HSV_Color color;
     unsigned int level;
     Element *element;
     GemType type;

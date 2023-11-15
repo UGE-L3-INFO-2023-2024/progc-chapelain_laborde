@@ -2,17 +2,17 @@
  * @file Main.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 11/11/2023
+ * @date 2023-11-15
  *
  */
 
-#include "../include/Path.h"
+#include "Path.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "../include/Map.h"
-#include "../include/Utils.h"
+#include "Map.h"
+#include "Utils.h"
 
 static int Path_manatan_dist(Coord_i a, Coord_i b) {
     return ABS(a.x - b.x) + ABS(a.y - b.y);
@@ -46,9 +46,10 @@ static void Path_apply_path(Map* map, Coord_i origin, Direction dir, int len) {
     }
 }
 
-static bool Path_manatan_etentu_cell(Map* map, Coord_i origin, Direction ignore) {
-    if (origin.x < 2 || origin.x > MAP_WIDTH - 3 ||
-        origin.y < 2 || origin.y > MAP_HEIGHT - 3) {
+static bool Path_manatan_etentu_cell(Map* map, Coord_i origin,
+                                     Direction ignore) {
+    if (origin.x < 2 || origin.x > MAP_WIDTH - 3 || origin.y < 2 ||
+        origin.y > MAP_HEIGHT - 3) {
         return false;
     }
 
@@ -96,7 +97,8 @@ static int Path_max_dir(Map* map, Coord_i start, Direction dir) {
     return acc;
 }
 
-static void Path_gen_step(Map* map, Coord_i coord, Direction dir, Direction* new_dir, int* new_len) {
+static void Path_gen_step(Map* map, Coord_i coord, Direction dir,
+                          Direction* new_dir, int* new_len) {
     Direction arr_dir[2] = {
         Utils_modulo((dir + 1), 4),
         Utils_modulo((dir - 1), 4),
@@ -107,9 +109,8 @@ static void Path_gen_step(Map* map, Coord_i coord, Direction dir, Direction* new
         Path_max_dir(map, coord, arr_dir[1]),
     };
 
-    int dir_index = Utils_weighted_select(arr_pos,
-                                          rand() % (Utils_sum_arr_i(arr_pos, 2) + 1),
-                                          2);
+    int dir_index = Utils_weighted_select(
+        arr_pos, rand() % (Utils_sum_arr_i(arr_pos, 2) + 1), 2);
     if (dir_index == -1) {
         // Error in weighted_select
         return;
@@ -133,10 +134,11 @@ bool Path_gen(Map* map) {
 
     // 3
     int nest_to_borders[4] = {
-        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),               // NORTH
-        Path_manatan_dist(origin, (Coord_i){MAP_WIDTH - 1, origin.y}),   // EAST
-        Path_manatan_dist(origin, (Coord_i){origin.x, MAP_HEIGHT - 1}),  // SOUTH
-        Path_manatan_dist(origin, (Coord_i){0, origin.y}),               // WEST
+        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),  // NORTH
+        Path_manatan_dist(origin, (Coord_i){MAP_WIDTH - 1, origin.y}),  // EAST
+        Path_manatan_dist(origin,
+                          (Coord_i){origin.x, MAP_HEIGHT - 1}),  // SOUTH
+        Path_manatan_dist(origin, (Coord_i){0, origin.y}),       // WEST
     };
 
     int rand_nb = rand() % (Utils_sum_arr_i(nest_to_borders, 4) + 1);

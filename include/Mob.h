@@ -2,7 +2,7 @@
  * @file Mob.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 2023-11-15
  *
  */
 
@@ -16,7 +16,7 @@ typedef struct {
     unsigned int current_hp;
     unsigned int max_hp;
     unsigned int speed;
-    Color color;
+    HSV_Color color;
     Element apply_elem;
 } Mob;
 
