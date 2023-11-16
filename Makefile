@@ -1,12 +1,18 @@
 # Author : LABORDE Quentin, CHAPELAIN Nathan
-# Date : 15-11-2023
+# Date : 2023-11-16
 
 CC = gcc
-CFLAGS = -std=c17 -pedantic -Wall -Wfatal-errors -g -g3
+CFLAGS = -std=c17 -pedantic -Wall -Wfatal-errors -g -g3 -MMD
 LDLIBS = -lm -lMLV
-INCLUDES = -Iinclude -Iinclude/tools -Iinclude/graphic
-SRCS = $(wildcard src/*.c) $(wildcard src/graphic/*.c) $(wildcard src/tools/*.c)
-OBJS = $(SRCS:src/%.c=obj/%.o)
+
+SRC_DIR = src
+OBJ_DIR = obj
+INC_DIR = include
+
+SRCS = $(shell find $(SRC_DIR) -depth -name "*.c")
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+INCLUDES = $(foreach file,$(shell find $(INC_DIR) -type d),-I$(file))
+
 EXEC = gemcraft
 
 all: $(EXEC)
@@ -14,10 +20,8 @@ all: $(EXEC)
 $(EXEC): $(OBJS)
 	$(CC) $(INCLUDES) $^ -o $@ $(LDLIBS)
 
-obj/%.o: src/%.c
-	@mkdir -p obj
-	@mkdir -p obj/graphic
-	@mkdir -p obj/tools
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
 
 run: $(EXEC)
