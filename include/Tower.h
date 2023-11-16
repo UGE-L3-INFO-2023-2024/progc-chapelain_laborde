@@ -2,7 +2,7 @@
  * @file Tower.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 2023-11-16
  *
  */
 
@@ -16,8 +16,17 @@
 
 typedef struct {
     Gem* gem;
-    time_t install_gem;
+    // time install_gem;
     Coord_i coord;
 } Tower;
+
+/**
+ * @brief Create a tower object
+ *
+ * @param gem Gemstone to install in the tower
+ * @param coord Coord of the tower
+ * @return Tower Tower created
+ */
+Tower Tower_init(Gem* gem, Coord_i coord);
 
 #endif  // __TOWER_H__

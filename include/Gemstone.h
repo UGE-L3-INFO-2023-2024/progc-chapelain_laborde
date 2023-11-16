@@ -2,7 +2,7 @@
  * @file Gemstone.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 2023-11-15
+ * @date 2023-11-16
  *
  */
 
@@ -28,22 +28,29 @@ typedef enum {
 typedef struct {
     HSV_Color color;
     unsigned int level;
-    Element *element;
-    GemType type;
+    unsigned short multiplier;
 } Gem, Gemstone;
 
 /**
- * @brief Gemstone color to type
+ * @brief Convert a gemstone to an element
  *
- * @param color Color of the gemstone
- * @return GemType Type of the gemstone
+ * @param gemstone Gemstone to convert
+ * @return Element of the gemstone
  */
-GemType Gemstone_from_color(int color);
+Element Gemstone_get_element(Gemstone gemstone);
 
 /**
- * @brief Create a pure Gemstone object
+ * @brief Get the type of a gemstone
  *
- * @return Gemstone Gemstone created
+ * @param gemstone Gemstone to get the type
+ * @return GemType of the gemstone
+ */
+GemType Gemstone_get_type(Gemstone gemstone);
+
+/**
+ * @brief Create a pure Gemstone object with random color.
+ *
+ * @return Gemstone Pure gemstone created.
  */
 Gemstone Gemstone_init();
 
@@ -52,6 +59,8 @@ Gemstone Gemstone_init();
  *
  * @param gemstone Gemstone to merge and to be modified
  * @param other Gemstone to merge
+ *
+ * @return int 1 if merge is done, 0 otherwise
  */
 void Gemstone_merge(Gemstone *gemstone, Gemstone *other);
 
