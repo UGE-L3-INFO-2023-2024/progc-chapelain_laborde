@@ -16,17 +16,33 @@
 
 typedef struct {
     Gem* gem;
-    // time install_gem;
+    struct timespec available_at;
     Coord_i coord;
 } Tower;
 
 /**
  * @brief Create a tower object
  *
- * @param gem Gemstone to install in the tower
  * @param coord Coord of the tower
  * @return Tower Tower created
  */
-Tower Tower_init(Gem* gem, Coord_i coord);
+Tower Tower_init(Coord_i coord);
+
+/**
+ * @brief Add gem to a tower
+ *
+ * @param tower The tower will receive the gem
+ * @param gem The gem to add
+ * @return int 1 if success, 0 if tower, gem or both are NULL
+ */
+int Tower_add_gem(Tower* tower, Gem* gem);
+
+/**
+ * @brief Extract gem from a tower
+ *
+ * @param tower The tower will give the gem
+ * @return Gem* The gem extracted
+ */
+Gem* Tower_extract_gem(Tower* tower);
 
 #endif  // __TOWER_H__
