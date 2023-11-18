@@ -19,7 +19,7 @@ Mob Mob_init_basic(int wave, Coord_f start) {
     return (Mob){
         .max_hp = Mob_max(wave, false),
         .current_hp = Mob_max(wave, false),
-        .speed = 1 / FRAMERATE,
+        .speed = 1. / (double)FRAMERATE,
         .pos = start,
         .color = Color_rand(),
         .apply_elem = NONE,
@@ -30,7 +30,7 @@ Mob Mob_init_fast(int wave, Coord_f start) {
     return (Mob){
         .max_hp = Mob_max(wave, false),
         .current_hp = Mob_max(wave, false),
-        .speed = 2 / FRAMERATE,
+        .speed = 2. / (double)FRAMERATE,
         .pos = start,
         .color = Color_rand(),
         .apply_elem = NONE,
@@ -41,7 +41,7 @@ Mob Mob_init_boss(int wave, Coord_f start) {
     return (Mob){
         .max_hp = Mob_max(wave, true),
         .current_hp = Mob_max(wave, true),
-        .speed = 1 / FRAMERATE,
+        .speed = 1. / (double)FRAMERATE,
         .pos = start,
         .color = Color_rand(),
         .apply_elem = NONE,
@@ -66,6 +66,8 @@ void Mob_next_step(Mob *mob, Direction dir) {
             break;
         case WEST:
             mob->pos.x -= mob->speed;
+            break;
+        default:
             break;
     }
 }

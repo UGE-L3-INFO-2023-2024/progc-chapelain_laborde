@@ -33,7 +33,7 @@ typedef struct {
     Cell board[MAP_HEIGHT][MAP_WIDTH];
     Coord_i nest;
     Coord_i castle;
-    // List mobs; coms to avoid warning
+    Mob mobs;  // coms to avoid warning
     Tower* towers;
     Trap* traps;
     ManaPool mana;
@@ -67,5 +67,14 @@ Cell Map_init_cell(Coord_i coord);
  * @param map Map to print.
  */
 void Map_print(Map* map);
+
+/**
+ * @brief Check thre is a path in the neighbour of the given cell.
+ *
+ * @param map Map to check.
+ * @param pos Position of the cell.
+ * @param ignore Direction to ignore. (in case of a turn)
+ */
+Direction Map_got_next_path(Map* map, Coord_i pos, Direction ignore);
 
 #endif  // __MAP_H__

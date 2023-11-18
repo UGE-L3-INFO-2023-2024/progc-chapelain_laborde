@@ -55,3 +55,24 @@ void Map_print(Map* map) {
     }
     printf("------------------------------\n");
 }
+
+Direction Map_got_next_path(Map* map, Coord_i pos, Direction ignore) {
+    Direction dir = NO_DIR;
+    static int Dir_point[4][2] = {
+        {0, -1},
+        {1, 0},
+        {0, 1},
+        {-1, 0},
+    };
+    for (int i = 0; i < 4; i++) {
+        if (map->board[pos.y + Dir_point[i][1]][pos.x + Dir_point[i][0]].is_path &&
+            i != ignore) {
+            if (dir != NO_DIR) {
+                fprintf(stderr, "Error in Map_got_next_path: more than one path\n");
+                return NONE;
+            }
+            dir = i;
+        }
+    }
+    return dir;
+}

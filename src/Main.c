@@ -29,6 +29,7 @@ int main(int argc, char const *argv[]) {
     Map_print(&map);
     Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
     printf("finish\n");
+    map.mobs = Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
     // Test_graphic_field(map, &window);
     SubWindow map_window = SubWindow_init(&window, (Coord_f){0, 0}, 1120, 880);
     MLV_create_window("Test", "Test", window.width, window.height);
@@ -36,8 +37,12 @@ int main(int argc, char const *argv[]) {
     clock_gettime(CLOCK_REALTIME, &origin_time);
     int acc = 0;
     MLV_change_frame_rate(60);
+    Direction mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
     while (1) {
         draw_map(map, map_window);
+        mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), (mob_dir + 2) % 4);
+        printf("dir %d, ingnore %d\n", mob_dir, (mob_dir + 2) % 4);
+        Mob_next_step(&map.mobs, mob_dir);
         acc++;
         clock_gettime(CLOCK_REALTIME, &new_time);
 

@@ -59,4 +59,11 @@ Mob Mob_init_boss(int wave, Coord_f start);
  */
 int Mob_max(int wave, bool boss);
 
+/**
+ * @brief Move the mob in the given direction.
+ *
+ * @param mob Mob to move.
+ * @param dir Direction to move the mob.
+ */
+void Mob_next_step(Mob *mob, Direction dir);
 #endif  // __MOB_H__

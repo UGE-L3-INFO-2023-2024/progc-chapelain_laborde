@@ -23,6 +23,7 @@ typedef struct {
 } Coord_f;
 
 typedef enum {
+    NO_DIR = -1,
     NORTH = 0,
     EAST = 1,
     SOUTH = 2,

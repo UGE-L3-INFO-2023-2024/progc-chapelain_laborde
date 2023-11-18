@@ -104,6 +104,26 @@ static void draw_castle(Coord_i castle, SubWindow window, MLV_Image* img) {
 }
 
 /**
+ * @brief Draw a mob of the map.
+ *
+ * @param mob Mob to draw.
+ * @param window Window to draw on.
+ * @param img Image to draw instead of a colored circle.
+ */
+static void draw_mob(Mob mob, SubWindow window, MLV_Image* img) {
+    MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(mob.color), 255);
+    int mob_width = window.width / MAP_WIDTH;
+    int mob_height = window.height / MAP_HEIGHT;
+    if (img)
+        MLV_draw_image(img, mob.pos.x * mob_width,
+                       mob.pos.y * mob_height);
+    else
+        MLV_draw_filled_circle(mob.pos.x * mob_width,
+                               mob.pos.y * mob_height, mob_width / 2,
+                               color);
+}
+
+/**
  * @brief Draw the map grid according to the window size.
  *
  * @param window Window to get the size of.
@@ -140,5 +160,6 @@ void draw_map(Map map, SubWindow map_window) {
     draw_castle(map.castle, map_window, NULL);
     draw_nest(map.nest, map_window, NULL);
     draw_grid(map_window, MLV_COLOR_BLACK, 2);
+    draw_mob(map.mobs, map_window, NULL);
     MLV_actualise_window();
 }
