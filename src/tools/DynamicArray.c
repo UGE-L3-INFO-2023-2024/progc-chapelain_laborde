@@ -8,6 +8,8 @@
 
 #include "DynamicArray.h"
 
+#include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "Error.h"
@@ -26,14 +28,14 @@ Error Stack_init(DynamicArray* da, int size_alloc, Type_array type) {
 }
 
 Error Stack_realloc(DynamicArray* da) {
-    int* tmp = (int*)realloc(
-        da->arr, (da->max_len + da->size_alloc) * sizeof(int));
+    int* tmp =
+        (int*)realloc(da->arr, (da->max_len + da->size_alloc) * sizeof(int));
     if (!tmp) {
         free(da->arr);
         da->arr = NULL;
         return DYNA_ARR_ERR_ALLOC;
     }
-    da->arr = tmp;
+    da->arr = (DA_Union*)tmp;
     da->max_len += da->size_alloc;
     return CLEAR;
 }
@@ -67,7 +69,8 @@ Error Stack_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     return CLEAR;
 }
 
-Error Stack_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type) {
+Error Stack_remove(DynamicArray* da, DynamicArray_Union* val,
+                   Type_array type) {
     assert(da);
     assert(da->arr);
 
@@ -105,7 +108,8 @@ void Stack_print_all(DynamicArray* da) {
     for (int i = da->real_len - 1; i >= 0; --i) {
         switch (da->type) {
             case PATH:
-                printf("| path: %d,%d |\n", da->arr[i].path.x, da->arr[i].path.y);
+                printf("| path: %d,%d |\n", da->arr[i].path.x,
+                       da->arr[i].path.y);
                 break;
             case MOB:
                 printf("| hp mob: %d |\n", da->arr[i].mob.current_hp);

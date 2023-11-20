@@ -22,7 +22,7 @@
 /* Structures */
 /**************/
 
-#define NB_ERRORS 4
+#define NB_ERRORS 7
 
 typedef enum {
     CLEAR = 0,

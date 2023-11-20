@@ -13,6 +13,8 @@
 #include <Projectile.h>
 #include <Utils.h>
 
+#include "Error.h"
+
 typedef enum {
     PATH,
     MOB,

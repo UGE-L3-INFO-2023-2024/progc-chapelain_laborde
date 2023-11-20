@@ -24,6 +24,7 @@ Element Gemstone_get_element(Gemstone gemstone) {
     } else {
         element = NONE;
     }
+    return element;
 }
 
 /* Get the type of a gemstone */
@@ -36,7 +37,6 @@ GemType Gemstone_get_type(Gemstone gemstone) {
 /* Generate a pure gemstone */
 Gemstone Gemstone_init() {
     Gemstone gemstone;
-    Element elem;
     do {
         gemstone.color = rand() % 360;
     } while (Gemstone_get_element(gemstone) == NONE);
