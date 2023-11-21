@@ -44,4 +44,22 @@ void resize_image_with_cell_size(MLV_Image* img, SubWindow window);
 void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
                     unsigned int thickness, MLV_Color color);
 
+/**
+ * @brief Draw a bar with the given parameters.
+ *
+ * @param x X position of the bar.
+ * @param y Y position of the bar.
+ * @param width Width of the bar.
+ * @param height Height of the bar.
+ * @param thickness Thickness of the bar.
+ * @param color Color of the bar.
+ * @param filled_ratio Ratio of the bar to fill.
+ * @param filled_color Color of the filled part of the bar.
+ */
+void draw_bar(unsigned int x, unsigned int y, int width, int height,
+              unsigned int thickness, MLV_Color color, float filled_ratio,
+              MLV_Color filled_color);
+
+void refresh_window();
+
 #endif  // __GRAPHIC_H__

@@ -10,6 +10,10 @@
 
 #include "Map.h"
 
+void refresh_window() {
+    MLV_actualise_window();
+}
+
 /* Convert a RGB color to a MLV_Color */
 MLV_Color RGB_to_MLV_Color(RGB_Color rgb, int alpha) {
     return MLV_rgba(rgb.r, rgb.g, rgb.b, alpha);
@@ -29,4 +33,13 @@ void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
                               color);
     MLV_draw_filled_rectangle(x, y + height - thickness, width, thickness,
                               color);
+}
+
+void draw_bar(unsigned int x, unsigned int y, int width, int height,
+              unsigned int thickness, MLV_Color color, float filled_ratio,
+              MLV_Color filled_color) {
+    draw_rectangle(x, y, width, height, thickness, color);
+    MLV_draw_filled_rectangle(x + thickness, y + thickness,
+                              (width - 2 * thickness) * filled_ratio,
+                              height - 2 * thickness, filled_color);
 }

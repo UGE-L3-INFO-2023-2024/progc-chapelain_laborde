@@ -11,6 +11,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "Graphic.h"
+#include "GraphicField.h"
+#include "GraphicOverlay.h"
 #include "Map.h"
 #include "Mob.h"
 #include "Path.h"
@@ -37,10 +40,21 @@ int main(int argc, char const *argv[]) {
     clock_gettime(CLOCK_REALTIME, &origin_time);
     int acc = 0;
     MLV_change_frame_rate(60);
-    Direction mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
+    Direction mob_dir =
+        Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
     while (1) {
-        draw_map(map, map_window);
-        mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), (mob_dir + 2) % 4);
+        if (acc == 0) {
+            draw_map(map, map_window);
+            show_mana_bar(map.mana, 180, 810, 760, 20, 3);
+            MLV_draw_text(180 + 760 / 2, 810, "%d/%d", MLV_COLOR_BLACK,
+                          map.mana.mana_real, map.mana.mana_max);
+        }
+        clear_path_cells(map.board, map_window);
+        draw_path_cells(map.board, map_window, NULL);
+        draw_mob(map.mobs, map_window, NULL);
+        refresh_window();
+        mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos),
+                                    (mob_dir + 2) % 4);
         printf("dir %d, ingnore %d\n", mob_dir, (mob_dir + 2) % 4);
         Mob_next_step(&map.mobs, mob_dir);
         acc++;

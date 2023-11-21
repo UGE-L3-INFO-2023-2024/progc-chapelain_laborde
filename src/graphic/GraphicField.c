@@ -12,6 +12,8 @@
 #include "Graphic.h"
 #include "Map.h"
 
+#define CLEAR_COLOR MLV_COLOR_WHITE
+
 /**
  * @brief Draw the given tower on the given window.
  * If img is NULL, draw a circle with tower color instead.
@@ -49,16 +51,49 @@ static bool draw_path_cell(Cell cell, SubWindow window, MLV_Image* img) {
     int cell_width = window.width / MAP_WIDTH;
     int cell_height = window.height / MAP_HEIGHT;
     if (cell.is_path) {
-        if (img)
+        if (img) {
             MLV_draw_image(img, cell.coord.x * cell_width,
                            cell.coord.y * cell_height);
-        else
+        } else {
             MLV_draw_filled_rectangle(cell.coord.x * cell_width,
                                       cell.coord.y * cell_height, cell_width,
                                       cell_height, color);
+            MLV_draw_rectangle(cell.coord.x * cell_width,
+                               cell.coord.y * cell_height, cell_width,
+                               cell_height, MLV_COLOR_BLACK);
+        }
         return true;
     }
     return false;
+}
+
+void draw_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window,
+                     MLV_Image* img) {
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+        for (int j = 0; j < MAP_WIDTH; j++) {
+            draw_path_cell(cells[i][j], window, NULL);
+        }
+    }
+}
+
+static bool clear_path_cell(Cell cell, SubWindow window) {
+    int cell_width = window.width / MAP_WIDTH;
+    int cell_height = window.height / MAP_HEIGHT;
+    if (cell.is_path) {
+        MLV_draw_filled_rectangle(cell.coord.x * cell_width,
+                                  cell.coord.y * cell_height, cell_width,
+                                  cell_height, CLEAR_COLOR);
+        return true;
+    }
+    return false;
+}
+
+void clear_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window) {
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+        for (int j = 0; j < MAP_WIDTH; j++) {
+            clear_path_cell(cells[i][j], window);
+        }
+    }
 }
 
 /**
@@ -74,12 +109,10 @@ static void draw_nest(Coord_i nest, SubWindow window, MLV_Image* img) {
     int nest_width = window.width / MAP_WIDTH;
     int nest_height = window.height / MAP_HEIGHT;
     if (img)
-        MLV_draw_image(img, nest.x * nest_width,
-                       nest.y * nest_height);
+        MLV_draw_image(img, nest.x * nest_width, nest.y * nest_height);
     else
-        MLV_draw_filled_rectangle(nest.x * nest_width,
-                                  nest.y * nest_height, nest_width,
-                                  nest_height, color);
+        MLV_draw_filled_rectangle(nest.x * nest_width, nest.y * nest_height,
+                                  nest_width, nest_height, color);
 }
 
 /**
@@ -95,8 +128,7 @@ static void draw_castle(Coord_i castle, SubWindow window, MLV_Image* img) {
     int castle_width = window.width / MAP_WIDTH;
     int castle_height = window.height / MAP_HEIGHT;
     if (img)
-        MLV_draw_image(img, castle.x * castle_width,
-                       castle.y * castle_height);
+        MLV_draw_image(img, castle.x * castle_width, castle.y * castle_height);
     else
         MLV_draw_filled_rectangle(castle.x * castle_width,
                                   castle.y * castle_height, castle_width,
@@ -110,17 +142,15 @@ static void draw_castle(Coord_i castle, SubWindow window, MLV_Image* img) {
  * @param window Window to draw on.
  * @param img Image to draw instead of a colored circle.
  */
-static void draw_mob(Mob mob, SubWindow window, MLV_Image* img) {
+void draw_mob(Mob mob, SubWindow window, MLV_Image* img) {
     MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(mob.color), 255);
     int mob_width = window.width / MAP_WIDTH;
     int mob_height = window.height / MAP_HEIGHT;
     if (img)
-        MLV_draw_image(img, mob.pos.x * mob_width,
-                       mob.pos.y * mob_height);
+        MLV_draw_image(img, mob.pos.x * mob_width, mob.pos.y * mob_height);
     else
-        MLV_draw_filled_circle(mob.pos.x * mob_width,
-                               mob.pos.y * mob_height, mob_width / 2,
-                               color);
+        MLV_draw_filled_circle(mob.pos.x * mob_width, mob.pos.y * mob_height,
+                               mob_width / 2, color);
 }
 
 /**
@@ -148,7 +178,7 @@ static void draw_grid(SubWindow window, MLV_Color color, int thickness) {
 
 /* Draw map in the window */
 void draw_map(Map map, SubWindow map_window) {
-    MLV_clear_window(MLV_COLOR_WHITE);
+    MLV_clear_window(CLEAR_COLOR);
     for (int i = 0; i < MAP_HEIGHT; i++) {
         for (int j = 0; j < MAP_WIDTH; j++) {
             draw_path_cell(map.board[i][j], map_window, NULL);
@@ -160,6 +190,4 @@ void draw_map(Map map, SubWindow map_window) {
     draw_castle(map.castle, map_window, NULL);
     draw_nest(map.nest, map_window, NULL);
     draw_grid(map_window, MLV_COLOR_BLACK, 2);
-    draw_mob(map.mobs, map_window, NULL);
-    MLV_actualise_window();
 }
