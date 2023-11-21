@@ -9,6 +9,8 @@
 #ifndef __MANA_H__
 #define __MANA_H__
 
+#include <stdbool.h>
+
 typedef struct {
     unsigned int level;
     unsigned int mana_real;
@@ -31,5 +33,23 @@ ManaPool Mana_init(void);
  * @return int max mana.
  */
 int Mana_max(int level);
+
+/**
+ * @brief Check if a ManaPool can be upgraded.
+ *
+ * @param pool ManaPool to check.
+ * @return true if can be upgraded.
+ * @return false otherwise.
+ */
+bool Mana_pool_can_be_upgrade(ManaPool pool);
+
+/**
+ * @brief Upgrade a ManaPool.
+ *
+ * @param pool ManaPool to upgrade.
+ * @return true if success.
+ * @return false otherwise.
+ */
+bool Mana_pool_upgrade(ManaPool* pool);
 
 #endif  // __MANA_H__

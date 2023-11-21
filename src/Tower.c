@@ -34,6 +34,7 @@ int Tower_add_gem(Tower* tower, Gem* gem) {
     return 1;
 }
 
+/* Extract gem from a tower */
 Gem* Tower_extract_gem(Tower* tower) {
     if (!tower || !tower->gem) {
         return NULL;
