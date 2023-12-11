@@ -36,7 +36,6 @@ typedef struct {
     Mob mobs;  // coms to avoid warning
     Tower* towers;
     Trap* traps;
-    ManaPool mana;
 } Map;
 
 /**

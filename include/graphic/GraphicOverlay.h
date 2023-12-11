@@ -10,7 +10,9 @@
 #define __GRAPHIC_OVERLAY_H__
 
 #include "Gemstone.h"
+#include "Inventory.h"
 #include "Mana.h"
+#include "Window.h"
 
 /**
  * @brief Show the Mana bar
@@ -26,14 +28,12 @@ void show_mana_bar(ManaPool pool, int x, int y, int w, int h,
                    unsigned int thickness);
 
 /**
- * @brief Show inventory of gems
+ * @brief Show the inventory
  *
- * @param x Coordinate x of the North West corner of the inventory
- * @param y Coordinate y of the North West corner of the inventory
- * @param width Width of the inventory
- * @param gems Array of gems
- * @param gemsCount Number of gems
+ * @param window Window to show the inventory on
+ * @param gems Gems to show
+ * @param gemsCount Number of gems to show
  */
-void show_inventory(int x, int y, int width, Gem* gems, int gemsCount);
+void show_inventory(SubWindow window, Inventory inventory);
 
 #endif  // __GRAPHIC_OVERLAY_H__

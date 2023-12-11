@@ -8,28 +8,48 @@
 
 #include "Color.h"
 
+#include <math.h>
 #include <stdlib.h>
 
 RGB_Color Color_HSV_to_RGB(HSV_Color color) {
     RGB_Color rgb;
-    int Hprime = color / 60;
-    int X = 1 - abs(Hprime % 2 - 1);
-    if (0 <= Hprime && Hprime < 1) {
-        rgb = (RGB_Color){1, X, 0};
-    } else if (1 <= Hprime && Hprime < 2) {
-        rgb = (RGB_Color){X, 1, 0};
-    } else if (2 <= Hprime && Hprime < 3) {
-        rgb = (RGB_Color){0, 1, X};
-    } else if (3 <= Hprime && Hprime < 4) {
-        rgb = (RGB_Color){0, X, 1};
-    } else if (4 <= Hprime && Hprime < 5) {
-        rgb = (RGB_Color){X, 0, 1};
-    } else if (5 <= Hprime && Hprime < 6) {
-        rgb = (RGB_Color){1, 0, X};
+    double v = 1;
+    double s = 0.5;
+    double c = v * s;
+    int h = color / 60.0;
+    double x = c * (1 - abs(h % 2 - 1));
+    double m = v - c;
+    double r, g, b;
+    if (0 <= color && color <= 60) {
+        r = c;
+        g = x;
+        b = 0;
+    } else if (60 <= color && color <= 120) {
+        r = x;
+        g = c;
+        b = 0;
+    } else if (120 <= color && color <= 180) {
+        r = 0;
+        g = c;
+        b = x;
+    } else if (180 <= color && color <= 240) {
+        r = 0;
+        g = x;
+        b = c;
+    } else if (240 <= color && color <= 300) {
+        r = x;
+        g = 0;
+        b = c;
+    } else if (300 <= color && color <= 360) {
+        r = c;
+        g = 0;
+        b = x;
     } else {
-        rgb = (RGB_Color){0, 0, 0};
+        r = 0;
+        g = 0;
+        b = 0;
     }
-    return rgb;
+    return (RGB_Color){(r + m) * 255, (g + m) * 255, (b + m) * 255};
 }
 
 HSV_Color Color_rand(void) {

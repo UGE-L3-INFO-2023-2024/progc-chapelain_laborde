@@ -11,9 +11,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "Font.h"
 #include "Graphic.h"
 #include "GraphicField.h"
 #include "GraphicOverlay.h"
+#include "Inventory.h"
 #include "Map.h"
 #include "Mob.h"
 #include "Path.h"
@@ -23,6 +25,11 @@
 int main(int argc, char const *argv[]) {
     Window window = Window_init((Coord_f){0, 0}, 1400, 880);
     srand(time(NULL));
+    Inventory inventory;
+    inventory_init(&inventory);
+    inventory_add_gemstone(&inventory, Gemstone_init());
+    inventory_add_gemstone(&inventory, Gemstone_init());
+    inventory_add_gemstone(&inventory, Gemstone_init());
     Map map = Map_init();
     while (!Path_gen(&map)) {
         // Map_print(&map);
@@ -35,7 +42,11 @@ int main(int argc, char const *argv[]) {
     map.mobs = Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
     // Test_graphic_field(map, &window);
     SubWindow map_window = SubWindow_init(&window, (Coord_f){0, 0}, 1120, 880);
+    SubWindow inventory_window =
+        SubWindow_init(&window, (Coord_f){1120, 0}, 280, 880);
     MLV_create_window("Test", "Test", window.width, window.height);
+    inventory_window.font =
+        font_load("assets/fonts/unifont.ttf", inventory_window.width / 7);
     struct timespec origin_time, new_time;
     clock_gettime(CLOCK_REALTIME, &origin_time);
     int acc = 0;
@@ -45,9 +56,10 @@ int main(int argc, char const *argv[]) {
     while (1) {
         if (acc == 0) {
             draw_map(map, map_window);
-            show_mana_bar(map.mana, 180, 810, 760, 20, 3);
+            show_mana_bar(inventory.mana, 180, 810, 760, 20, 3);
             MLV_draw_text(180 + 760 / 2, 810, "%d/%d", MLV_COLOR_BLACK,
-                          map.mana.mana_real, map.mana.mana_max);
+                          inventory.mana.mana_real, inventory.mana.mana_max);
+            show_inventory(inventory_window, inventory);
         }
         clear_path_cells(map.board, map_window);
         draw_path_cells(map.board, map_window, NULL);

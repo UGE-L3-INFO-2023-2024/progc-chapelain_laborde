@@ -11,12 +11,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Mana.h"
 #include "Utils.h"
 
 Map Map_init(void) {
     return (Map){
-        .mana = Mana_init(),
         .towers = NULL,
         .traps = NULL,
         .nest = (Coord_i){-1, -1},
@@ -65,10 +63,12 @@ Direction Map_got_next_path(Map* map, Coord_i pos, Direction ignore) {
         {-1, 0},
     };
     for (int i = 0; i < 4; i++) {
-        if (map->board[pos.y + Dir_point[i][1]][pos.x + Dir_point[i][0]].is_path &&
+        if (map->board[pos.y + Dir_point[i][1]][pos.x + Dir_point[i][0]]
+                .is_path &&
             i != ignore) {
             if (dir != NO_DIR) {
-                fprintf(stderr, "Error in Map_got_next_path: more than one path\n");
+                fprintf(stderr,
+                        "Error in Map_got_next_path: more than one path\n");
                 return NONE;
             }
             dir = i;

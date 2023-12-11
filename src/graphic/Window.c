@@ -15,6 +15,7 @@ Window Window_init(Coord_f coord, unsigned int width, unsigned int height) {
     window.window = NULL;
     window.width = width;
     window.height = height;
+    window.font = NULL;
     window.coord = coord;
     return window;
 }
@@ -26,6 +27,7 @@ SubWindow SubWindow_init(Window* window, Coord_f coord, unsigned int width,
     sub_window.window = window;
     sub_window.width = width;
     sub_window.height = height;
+    sub_window.font = window->font;
     sub_window.coord = coord;
     return sub_window;
 }
