@@ -60,6 +60,22 @@ void draw_bar(unsigned int x, unsigned int y, int width, int height,
               unsigned int thickness, MLV_Color color, float filled_ratio,
               MLV_Color filled_color);
 
+/**
+ * @brief Draw a text centered on the given position.
+ * The text is centered on the given position with the given font and color.
+ * This function is variadic, so you can pass arguments to the text.
+ *
+ * This function use the stdarg.h library.
+ *
+ * @param x X position of the text (center).
+ * @param y Y position of the text (center).
+ * @param text Text to draw.
+ * @param font Font to use.
+ * @param color Color of the text.
+ */
+void draw_centered_text(unsigned int x, unsigned int y, const char* text,
+                        Font font, MLV_Color color, ...);
+
 void refresh_window();
 
 #endif  // __GRAPHIC_H__

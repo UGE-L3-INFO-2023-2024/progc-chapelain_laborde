@@ -13,8 +13,8 @@
 
 RGB_Color Color_HSV_to_RGB(HSV_Color color) {
     RGB_Color rgb;
-    double v = 1;
-    double s = 0.5;
+    double v = 1;    // Brightness
+    double s = 0.5;  // Saturation
     double c = v * s;
     int h = color / 60.0;
     double x = c * (1 - abs(h % 2 - 1));
