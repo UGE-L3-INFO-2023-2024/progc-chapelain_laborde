@@ -15,6 +15,7 @@
 #include "Font.h"
 #include "Graphic.h"
 #include "GraphicField.h"
+#include "GraphicInventory.h"
 #include "GraphicOverlay.h"
 #include "Inventory.h"
 #include "Map.h"
@@ -46,9 +47,8 @@ int main(int argc, char const *argv[]) {
     }
     Inventory inventory;
     inventory_init(&inventory);
-    inventory_add_gemstone(&inventory, Gemstone_init());
-    inventory_add_gemstone(&inventory, Gemstone_init());
-    inventory_add_gemstone(&inventory, Gemstone_init());
+    for (int i = 0; i < 35; i++)
+        inventory_add_gemstone(&inventory, Gemstone_init());
     Map map = Map_init();
     while (!Path_gen(&map, &da)) {
         da.real_len = 0;
@@ -81,7 +81,7 @@ int main(int argc, char const *argv[]) {
             show_mana_bar(inventory.mana, 180, 810, 760, 20, 3);
             MLV_draw_text(180 + 760 / 2, 810, "%d/%d", MLV_COLOR_BLACK,
                           inventory.mana.mana_real, inventory.mana.mana_max);
-            show_inventory(inventory_window, inventory);
+            draw_inventory(inventory_window, inventory);
         }
         clear_path_cells(map.board, map_window);
         draw_path_cells(map.board, map_window, NULL);
@@ -98,7 +98,7 @@ int main(int argc, char const *argv[]) {
         if (new_time.tv_sec != origin_time.tv_sec) {
             clock_gettime(CLOCK_REALTIME, &origin_time);
             clock_gettime(CLOCK_REALTIME, &new_time);
-            printf("acc %d\n", acc);
+            // printf("acc %d\n", acc);
             acc = 0;
         }
 

@@ -34,6 +34,6 @@ void show_mana_bar(ManaPool pool, int x, int y, int w, int h,
  * @param gems Gems to show
  * @param gemsCount Number of gems to show
  */
-void show_inventory(SubWindow window, Inventory inventory);
+void draw_inventory(SubWindow window, Inventory inventory);
 
 #endif  // __GRAPHIC_OVERLAY_H__

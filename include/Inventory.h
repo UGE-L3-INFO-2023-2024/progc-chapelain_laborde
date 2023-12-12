@@ -5,11 +5,16 @@
 #include "Gemstone.h"
 #include "Mana.h"
 
+/**
+ * @brief The inventory with the gemstones and the mana pool.
+ *
+ */
 typedef struct {
-    Gemstone* gemstones;
-    unsigned long gemstones_count;
-    unsigned long gemstones_capacity;
-    ManaPool mana;
+    Gemstone* gemstones;               // The gemstones in the inventory.
+    unsigned long gemstones_count;     // The number of gemstones
+    unsigned long gemstones_capacity;  // The capacity of the gemstones array.
+    Gemstone* fusion[2];               // The two gemstones to fuse.
+    ManaPool mana;                     // The mana pool.
 } Inventory;
 
 /**

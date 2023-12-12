@@ -14,6 +14,8 @@ Error inventory_init(Inventory* inventory) {
     inventory->gemstones_count = 0;
     inventory->gemstones_capacity = 3;
     inventory->mana = Mana_init();
+    inventory->fusion[0] = NULL;
+    inventory->fusion[1] = NULL;
     return CLEAR;
 }
 
