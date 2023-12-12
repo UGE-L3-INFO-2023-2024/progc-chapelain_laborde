@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "DynamicArray.h"
 #include "Font.h"
 #include "Graphic.h"
 #include "GraphicField.h"
@@ -20,23 +21,43 @@
 #include "Mob.h"
 #include "Path.h"
 #include "Test.h"
+#include "Wave.h"
 #include "Window.h"
+
+// int main(int argc, char const* argv[]) {
+//     DynamicArray da;
+//     DA_init(&da, 10, PATH);
+//     Coord_i coord1 = {.x = 1, .y = 2};
+//     Coord_i coord2 = {.x = 1, .y = 3};
+//     Coord_i coord3 = {.x = 1, .y = 4};
+//     DA_add(&da, (DynamicArray_Union){.path = coord1}, PATH);
+//     DA_add(&da, (DynamicArray_Union){.path = coord2}, PATH);
+//     DA_add(&da, (DynamicArray_Union){.path = coord3}, PATH);
+//     DA_print_all(&da);
+//     return 0;
+// }
 
 int main(int argc, char const *argv[]) {
     Window window = Window_init((Coord_f){0, 0}, 1400, 880);
     srand(time(NULL));
+    DynamicArray da;
+    if (DA_init(&da, 10, PATH)) {
+        exit(EXIT_FAILURE);
+    }
     Inventory inventory;
     inventory_init(&inventory);
     inventory_add_gemstone(&inventory, Gemstone_init());
     inventory_add_gemstone(&inventory, Gemstone_init());
     inventory_add_gemstone(&inventory, Gemstone_init());
     Map map = Map_init();
-    while (!Path_gen(&map)) {
-        // Map_print(&map);
+    while (!Path_gen(&map, &da)) {
+        da.real_len = 0;
         printf("retry\n");
     }
 
     Map_print(&map);
+    DA_print_all(&da);
+
     Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
     printf("finish\n");
     map.mobs = Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
@@ -51,11 +72,12 @@ int main(int argc, char const *argv[]) {
     clock_gettime(CLOCK_REALTIME, &origin_time);
     int acc = 0;
     MLV_change_frame_rate(60);
-    Direction mob_dir =
-        Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
+    Wave_next_step_unit(&map.mobs, &da);
+    // Direction mob_dir =
+    //     Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
     while (1) {
         if (acc == 0) {
-            draw_map(map, map_window);
+            draw_map(map, map_window, &da);
             show_mana_bar(inventory.mana, 180, 810, 760, 20, 3);
             MLV_draw_text(180 + 760 / 2, 810, "%d/%d", MLV_COLOR_BLACK,
                           inventory.mana.mana_real, inventory.mana.mana_max);
@@ -64,11 +86,12 @@ int main(int argc, char const *argv[]) {
         clear_path_cells(map.board, map_window);
         draw_path_cells(map.board, map_window, NULL);
         draw_mob(map.mobs, map_window, NULL);
+        draw_turn(&da, map_window);
         refresh_window();
-        mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos),
-                                    (mob_dir + 2) % 4);
-        printf("dir %d, ingnore %d\n", mob_dir, (mob_dir + 2) % 4);
-        Mob_next_step(&map.mobs, mob_dir);
+        // mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos),
+        //                             (mob_dir + 2) % 4);
+        // printf("dir %d, ingnore %d\n", mob_dir, (mob_dir + 2) % 4);
+        Wave_next_step_unit(&map.mobs, &da);
         acc++;
         clock_gettime(CLOCK_REALTIME, &new_time);
 

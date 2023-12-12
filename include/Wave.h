@@ -2,21 +2,30 @@
  * @file Wave.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 12-12-2023
  *
  */
 
-#ifndef __WAVE_H__
-#define __WAVE_H__
+#ifndef _WAVE_H_
+#define _WAVE_H_
 
-#include <sys/time.h>
-
+#include "DynamicArray.h"
 #include "Mob.h"
 
-typedef struct {
-    unsigned int level;
-    timeval last_wave_time;
-    // List mobs;
-} Wave;
+/**
+ * @brief Make the move move even in the corner.
+ *
+ * @param mob Mob to move
+ * @param da DynamicArray of the map.
+ */
+void Wave_next_step_unit(Mob *mob, DynamicArray *da);
 
-#endif  // __WAVE_H__
+/**
+ * @brief Tells the mob were to go next.
+ *
+ * @param mob Mob to move.
+ * @param da DynamicArray of the map.
+ */
+void Wave_next_going_unit(Mob *mob, DynamicArray *da);
+
+#endif  // _WAVE_H_

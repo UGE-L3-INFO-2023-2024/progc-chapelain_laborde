@@ -14,9 +14,9 @@
 
 #include <stdbool.h>
 
+#include "DynamicArray.h"
 #include "Map.h"
-#include "Utils.h"
 
-bool Path_gen(Map* map);
+bool Path_gen(Map* map, DynamicArray* da);
 
 #endif

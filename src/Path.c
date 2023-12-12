@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "DynamicArray.h"
 #include "Map.h"
 #include "Utils.h"
 
@@ -44,6 +45,21 @@ static void Path_apply_path(Map* map, Coord_i origin, Direction dir, int len) {
                   [origin.x + Dir_point[dir][0] * i]
                       .trap = NULL;
     }
+}
+
+static Error Path_add_turn(DynamicArray* da, Coord_i origin, Direction dir, int len) {
+    static int Dir_point[4][2] = {
+        {0, -1},
+        {1, 0},
+        {0, 1},
+        {-1, 0},
+    };
+
+    Coord_i coord = {
+        .x = origin.x + Dir_point[dir][0] * len,
+        .y = origin.y + Dir_point[dir][1] * len,
+    };
+    return DA_add(da, (DynamicArray_Union){.path = coord}, PATH);
 }
 
 static bool Path_manatan_etentu_cell(Map* map, Coord_i origin,
@@ -120,7 +136,7 @@ static void Path_gen_step(Map* map, Coord_i coord, Direction dir,
     *new_len = arr_pos[dir_index];
 }
 
-bool Path_gen(Map* map) {
+bool Path_gen(Map* map, DynamicArray* da) {
     int total_len = 0, total_turn = 0;
     // 1
     Map_init_board(map);
@@ -158,6 +174,11 @@ bool Path_gen(Map* map) {
 
     // 5
     Path_apply_path(map, origin, dir, foward_len);
+    Error err = Path_add_turn(da, origin, dir, foward_len);
+    if (err != CLEAR) {
+        Error_print(err, "Path_gen");
+        return false;
+    }
     total_len += foward_len;
 
     origin = Utils_coord_from_dir_len(origin, dir, foward_len);
@@ -173,6 +194,11 @@ bool Path_gen(Map* map) {
 
         foward_len = Path_forward_3_4(new_len);
         Path_apply_path(map, origin, new_dir, foward_len);
+        Error err = Path_add_turn(da, origin, new_dir, foward_len);
+        if (err != CLEAR) {
+            Error_print(err, "Path_gen");
+            return false;
+        }
         total_len += foward_len;
         total_turn++;
 

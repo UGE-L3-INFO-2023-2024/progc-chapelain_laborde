@@ -8,6 +8,8 @@
 
 #include "Utils.h"
 
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 int Utils_modulo(int a, int b) {
@@ -44,6 +46,27 @@ int Utils_weighted_select(int arr[], int val, int len) {
         }
     }
     return -1;
+}
+
+bool Utils_is_in_middle(Coord_f coord_mid, Coord_f coord_other, float margin) {
+    return ((coord_other.x > coord_mid.x - margin && coord_other.x < coord_mid.x + margin &&
+             coord_other.y > coord_mid.y - margin && coord_other.y < coord_mid.y + margin));
+}
+
+Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other, float margin) {
+    if (coord_other.x < coord_mid.x - margin) {
+        return EAST;
+    }
+    if (coord_other.x > coord_mid.x + margin) {
+        return WEST;
+    }
+    if (coord_other.y < coord_mid.y) {
+        return SOUTH;
+    }
+    if (coord_other.y > coord_mid.y) {
+        return NORTH;
+    }
+    return NO_DIR;
 }
 
 Coord_f Utils_coord_i_to_f_center(Coord_i coord) {

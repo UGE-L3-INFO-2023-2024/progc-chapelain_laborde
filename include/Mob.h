@@ -24,6 +24,7 @@ typedef struct {
     Coord_f pos;
     HSV_Color color;
     Element apply_elem;
+    Coord_f going;
 } Mob;
 
 /**
@@ -66,4 +67,5 @@ int Mob_max(int wave, bool boss);
  * @param dir Direction to move the mob.
  */
 void Mob_next_step(Mob *mob, Direction dir);
+
 #endif  // __MOB_H__

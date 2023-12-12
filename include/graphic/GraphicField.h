@@ -11,6 +11,7 @@
 
 #include <MLV/MLV_all.h>
 
+#include "DynamicArray.h"
 #include "Graphic.h"
 #include "Map.h"
 
@@ -20,7 +21,7 @@
  * @param map Map to draw.
  * @param map_window Window to draw on.
  */
-void draw_map(Map map, SubWindow map_window);
+void draw_map(Map map, SubWindow map_window, DynamicArray* turns);
 
 /**
  * @brief Draw the give mob on the given window.
@@ -36,4 +37,5 @@ void draw_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window,
 
 void clear_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window);
 
+void draw_turn(DynamicArray* da, SubWindow window);
 #endif  // __GRAPHICFIELD_H__

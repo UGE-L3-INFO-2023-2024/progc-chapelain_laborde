@@ -9,11 +9,12 @@
 #ifndef __DYNAMICARRAY_H__
 #define __DYNAMICARRAY_H__
 
-#include <Mob.h>
-#include <Projectile.h>
-#include <Utils.h>
-
 #include "Error.h"
+#include "Mob.h"
+#include "Projectile.h"
+#include "Utils.h"
+
+#define DA_MUL_SIZE_ALLOC 1.5
 
 typedef enum {
     PATH,
@@ -43,7 +44,7 @@ typedef struct {
  * @param type Type of the DynamicArray.
  * @return if there is a allocation error.
  */
-Error Stack_init(DynamicArray* da, int size_alloc, Type_array type);
+Error DA_init(DynamicArray* da, int size_alloc, Type_array type);
 
 /**
  * @brief Realloc a DynamicArray to inrease his size.
@@ -51,7 +52,7 @@ Error Stack_init(DynamicArray* da, int size_alloc, Type_array type);
  * @param da DynamicArray to realloc.
  * @return if there is a allocation error.
  */
-Error Stack_realloc(DynamicArray* da);
+Error DA_realloc(DynamicArray* da);
 
 /**
  * @brief Add a value to a DynamicArray.
@@ -61,7 +62,7 @@ Error Stack_realloc(DynamicArray* da);
  * @param type Type of the the value.
  * @return if there is a allocation error or a missmatch type.
  */
-Error Stack_add(DynamicArray* da, DynamicArray_Union val, Type_array type);
+Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type);
 
 /**
  * @brief Remove a value from a DynamicArray.
@@ -71,20 +72,20 @@ Error Stack_add(DynamicArray* da, DynamicArray_Union val, Type_array type);
  * @param type Type of the the value.
  * @return if there is a missmatch type or an empty DynamicArray.
  */
-Error Stack_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type);
+Error DA_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type);
 
 /**
  * @brief Free a DynamicArray.
  *
  * @param da DynamicArray to free.
  */
-void Stack_free(DynamicArray da);
+void DA_free(DynamicArray da);
 
 /**
  * @brief Print a DynamicArray.
  *
  * @param da DynamicArray to print.
  */
-void Stack_print_all(DynamicArray* da);
+void DA_print_all(DynamicArray* da);
 
 #endif  // _DYNAMICARRAY_H_

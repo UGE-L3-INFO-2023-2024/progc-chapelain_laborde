@@ -9,6 +9,7 @@
 #include "GraphicField.h"
 
 #include "Color.h"
+#include "DynamicArray.h"
 #include "Graphic.h"
 #include "Map.h"
 
@@ -135,6 +136,23 @@ static void draw_castle(Coord_i castle, SubWindow window, MLV_Image* img) {
                                   castle_height, color);
 }
 
+void draw_turn(DynamicArray* da, SubWindow window) {
+    if (da->type != PATH) {
+        fprintf(stderr, "Error in draw_turn: da is not a PATH\n");
+        return;
+    }
+
+    MLV_Color color = MLV_COLOR_LIGHT_SALMON;
+    int turn_width = window.width / MAP_WIDTH;
+    int turn_height = window.height / MAP_HEIGHT;
+    for (int i = 0; i < da->real_len; i++) {
+        Coord_i turn = da->arr[i].path;
+        MLV_draw_filled_rectangle(turn.x * turn_width,
+                                  turn.y * turn_height, turn_width,
+                                  turn_height, color);
+    }
+}
+
 /**
  * @brief Draw a mob of the map.
  *
@@ -177,7 +195,7 @@ static void draw_grid(SubWindow window, MLV_Color color, int thickness) {
 }
 
 /* Draw map in the window */
-void draw_map(Map map, SubWindow map_window) {
+void draw_map(Map map, SubWindow map_window, DynamicArray* da) {
     MLV_clear_window(CLEAR_COLOR);
     for (int i = 0; i < MAP_HEIGHT; i++) {
         for (int j = 0; j < MAP_WIDTH; j++) {
@@ -189,5 +207,6 @@ void draw_map(Map map, SubWindow map_window) {
     }
     draw_castle(map.castle, map_window, NULL);
     draw_nest(map.nest, map_window, NULL);
+    // draw_turn(da, map_window, NULL);
     draw_grid(map_window, MLV_COLOR_BLACK, 2);
 }

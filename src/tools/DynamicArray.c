@@ -15,7 +15,7 @@
 #include "Error.h"
 #include "Utils.h"
 
-Error Stack_init(DynamicArray* da, int size_alloc, Type_array type) {
+Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
     da->arr = (DA_Union*)malloc(size_alloc * sizeof(DynamicArray_Union));
     if (!(da->arr)) {
         return DYNA_ARR_ERR_ALLOC;
@@ -27,20 +27,20 @@ Error Stack_init(DynamicArray* da, int size_alloc, Type_array type) {
     return CLEAR;
 }
 
-Error Stack_realloc(DynamicArray* da) {
+Error DA_realloc(DynamicArray* da) {
     int* tmp =
-        (int*)realloc(da->arr, (da->max_len + da->size_alloc) * sizeof(int));
+        (int*)realloc(da->arr, (da->max_len * (int)DA_MUL_SIZE_ALLOC) * sizeof(int));
     if (!tmp) {
         free(da->arr);
         da->arr = NULL;
         return DYNA_ARR_ERR_ALLOC;
     }
     da->arr = (DA_Union*)tmp;
-    da->max_len += da->size_alloc;
+    da->max_len *= (int)DA_MUL_SIZE_ALLOC;
     return CLEAR;
 }
 
-Error Stack_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
+Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     assert(da);
     assert(da->arr);
     if (type != da->type) {
@@ -48,7 +48,7 @@ Error Stack_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     }
 
     if (da->real_len == da->max_len) {
-        Error err = Stack_realloc(da);
+        Error err = DA_realloc(da);
         if (err) {
             return err;
         }
@@ -69,8 +69,8 @@ Error Stack_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     return CLEAR;
 }
 
-Error Stack_remove(DynamicArray* da, DynamicArray_Union* val,
-                   Type_array type) {
+Error DA_remove(DynamicArray* da, DynamicArray_Union* val,
+                Type_array type) {
     assert(da);
     assert(da->arr);
 
@@ -99,11 +99,11 @@ Error Stack_remove(DynamicArray* da, DynamicArray_Union* val,
     return CLEAR;
 }
 
-void Stack_free(DynamicArray da) {
+void DA_free(DynamicArray da) {
     free(da.arr);
 }
 
-void Stack_print_all(DynamicArray* da) {
+void DA_print_all(DynamicArray* da) {
     printf("\n|-------------|\n");
     for (int i = da->real_len - 1; i >= 0; --i) {
         switch (da->type) {

@@ -23,6 +23,7 @@ Mob Mob_init_basic(int wave, Coord_f start) {
         .pos = start,
         .color = Color_rand(),
         .apply_elem = NONE,
+        .going = {.x = -1, .y = -1},  // temp value to initialize
     };
 }
 
@@ -34,6 +35,7 @@ Mob Mob_init_fast(int wave, Coord_f start) {
         .pos = start,
         .color = Color_rand(),
         .apply_elem = NONE,
+        .going = {.x = -1, .y = -1},  // temp value to initialize
     };
 }
 
@@ -45,6 +47,7 @@ Mob Mob_init_boss(int wave, Coord_f start) {
         .pos = start,
         .color = Color_rand(),
         .apply_elem = NONE,
+        .going = {.x = -1, .y = -1},  // temp value to initialize
     };
 }
 
