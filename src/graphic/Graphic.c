@@ -27,6 +27,15 @@ void resize_image_with_cell_size(MLV_Image* img, SubWindow window) {
                                       window.height / MAP_HEIGHT);
 }
 
+/* Draw a line with thickness */
+void draw_line(int x1, int y1, int x2, int y2, unsigned int thickness,
+               MLV_Color color) {
+    for (int i = 0; i < thickness; i++) {
+        MLV_draw_line(x1, y1 + i, x2, y2 + i, color);
+    }
+}
+
+/* Draw a rectangle with thickness */
 void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
                     unsigned int thickness, MLV_Color color) {
     MLV_draw_filled_rectangle(x, y, width, thickness, color);
@@ -37,6 +46,7 @@ void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
                               color);
 }
 
+/* Draw a bar with thickness and filled ratio */
 void draw_bar(unsigned int x, unsigned int y, int width, int height,
               unsigned int thickness, MLV_Color color, float filled_ratio,
               MLV_Color filled_color) {
@@ -60,4 +70,9 @@ void draw_centered_text(unsigned int x, unsigned int y, const char* text,
                                font, color, args_copy);
     va_end(args_copy);
     va_end(args);
+}
+
+void clear_window(Window window) {
+    MLV_draw_filled_rectangle(window.coord.x, window.coord.y, window.width,
+                              window.height, CLEAR_COLOR);
 }

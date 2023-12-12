@@ -75,6 +75,7 @@ int main(int argc, char const *argv[]) {
     Wave_next_step_unit(&map.mobs, &da);
     // Direction mob_dir =
     //     Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
+    int page = 0;
     while (1) {
         if (acc == 0) {
             draw_map(map, map_window, &da);
@@ -82,6 +83,11 @@ int main(int argc, char const *argv[]) {
             MLV_draw_text(180 + 760 / 2, 810, "%d/%d", MLV_COLOR_BLACK,
                           inventory.mana.mana_real, inventory.mana.mana_max);
             draw_inventory(inventory_window, inventory);
+            clear_gems_and_pagination_area(inventory_window);
+            if (page > 2) {
+                page = 0;
+            }
+            draw_gems_and_pagination(inventory_window, inventory, page++);
         }
         clear_path_cells(map.board, map_window);
         draw_path_cells(map.board, map_window, NULL);

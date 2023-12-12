@@ -42,9 +42,9 @@ Window Window_init(Coord_f coord, unsigned int width, unsigned int height);
  *
  * @param window Encapsulating window (The window that contains the
  * sub-window). This field cannot be NULL.
+ * @param coord Coordinates of the north-west corner of the sub-window.
  * @param width Width of the sub-window.
  * @param height Height of the sub-window.
- * @param coord Coordinates of the north-west corner of the sub-window.
  * @return SubWindow Initialized sub-window.
  */
 SubWindow SubWindow_init(Window* window, Coord_f coord, unsigned int width,

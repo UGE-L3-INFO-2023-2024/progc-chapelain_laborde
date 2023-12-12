@@ -13,8 +13,6 @@
 #include "Graphic.h"
 #include "Map.h"
 
-#define CLEAR_COLOR MLV_COLOR_WHITE
-
 /**
  * @brief Draw the given tower on the given window.
  * If img is NULL, draw a circle with tower color instead.
@@ -147,9 +145,8 @@ void draw_turn(DynamicArray* da, SubWindow window) {
     int turn_height = window.height / MAP_HEIGHT;
     for (int i = 0; i < da->real_len; i++) {
         Coord_i turn = da->arr[i].path;
-        MLV_draw_filled_rectangle(turn.x * turn_width,
-                                  turn.y * turn_height, turn_width,
-                                  turn_height, color);
+        MLV_draw_filled_rectangle(turn.x * turn_width, turn.y * turn_height,
+                                  turn_width, turn_height, color);
     }
 }
 

@@ -15,6 +15,8 @@
 #include "Utils.h"
 #include "Window.h"
 
+#define CLEAR_COLOR MLV_COLOR_WHITE
+
 /**
  * @brief Convert a RGB color to a MLV_Color.
  *
@@ -30,6 +32,19 @@ MLV_Color RGB_to_MLV_Color(RGB_Color rgb, int alpha);
  * @param window Window to get the cell size from.
  */
 void resize_image_with_cell_size(MLV_Image* img, SubWindow window);
+
+/**
+ * @brief Draw a line with the given parameters.
+ *
+ * @param x1 X position of the first point.
+ * @param y1 Y position of the first point.
+ * @param x2 X position of the second point.
+ * @param y2 Y position of the second point.
+ * @param thickness Thickness of the line.
+ * @param color Color of the line.
+ */
+void draw_line(int x1, int y1, int x2, int y2, unsigned int thickness,
+               MLV_Color color);
 
 /**
  * @brief Draw a rectangle with the given parameters.
@@ -75,6 +90,13 @@ void draw_bar(unsigned int x, unsigned int y, int width, int height,
  */
 void draw_centered_text(unsigned int x, unsigned int y, const char* text,
                         Font font, MLV_Color color, ...);
+
+/**
+ * @brief This function clear the given window with the CLEAR_COLOR.
+ *
+ * @param window Window to clear.
+ */
+void clear_window(Window window);
 
 void refresh_window();
 

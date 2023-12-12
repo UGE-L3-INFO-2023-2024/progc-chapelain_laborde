@@ -23,12 +23,29 @@ void draw_gem(Coord_i coord, int w, int h, RGB_Color color);
  *
  * @param window The subwindow to draw on.
  * @param inventory The inventory containing the gems to draw.
- * @param actual_pourcent The actual pourcent of the window.
  * @param page The page of the inventory gems to draw.
  * Page start at 0 not 1.
  */
-void draw_all_gems(SubWindow window, Inventory inventory,
-                   double* actual_pourcent, unsigned int page);
+void draw_all_gems(SubWindow window, Inventory inventory, unsigned int page);
+
+/**
+ * @brief Draw the inventory of gem + the pagination in the bottom.
+ *
+ * @param window The subwindow to draw on.
+ * @param inventory The inventory to draw.
+ * @param page The page of the inventory to draw starting to 0. (cf
+ * draw_all_gems)
+ */
+void draw_gems_and_pagination(SubWindow window, Inventory inventory,
+                              unsigned int page);
+
+/**
+ * @brief Clear the gems and pagination area of the inventory.
+ * This function is used to actualize the inventory.
+ *
+ * @param window The subwindow to clear.
+ */
+void clear_gems_and_pagination_area(SubWindow window);
 
 /**
  * @brief Draw the whole inventory on the screen.
