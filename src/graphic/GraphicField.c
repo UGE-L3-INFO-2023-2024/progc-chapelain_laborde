@@ -164,8 +164,14 @@ void draw_mob(Mob mob, SubWindow window, MLV_Image* img) {
     if (img)
         MLV_draw_image(img, mob.pos.x * mob_width, mob.pos.y * mob_height);
     else
-        MLV_draw_filled_circle(mob.pos.x * mob_width, mob.pos.y * mob_height,
-                               mob_width / 2, color);
+        MLV_draw_filled_circle(mob.pos.x * mob_width,
+                               mob.pos.y * mob_height,
+                               mob_width / 4, color);
+    draw_bar(mob.pos.x * mob_width - mob_width / 3,
+             mob.pos.y * mob_height + mob_height / 4,
+             mob_width / 1.5, mob_height / 6,
+             1, color, mob.current_hp / mob.max_hp,
+             MLV_COLOR_GREEN);
 }
 
 /**
