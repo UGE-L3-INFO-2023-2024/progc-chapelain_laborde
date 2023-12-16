@@ -28,15 +28,17 @@ Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
 }
 
 Error DA_realloc(DynamicArray* da) {
-    int* tmp =
-        (int*)realloc(da->arr, (da->max_len * (int)DA_MUL_SIZE_ALLOC) * sizeof(int));
+    int new_size = da->max_len * DA_MUL_SIZE_ALLOC;
+    printf("realloc before %d after %d\n", da->max_len, new_size);
+    printf("realloc size %ld\n", new_size * sizeof(DA_Union));
+    DA_Union* tmp = realloc(da->arr, new_size * sizeof(DA_Union));
     if (!tmp) {
         free(da->arr);
         da->arr = NULL;
         return DYNA_ARR_ERR_ALLOC;
     }
     da->arr = (DA_Union*)tmp;
-    da->max_len *= (int)DA_MUL_SIZE_ALLOC;
+    da->max_len = new_size;
     return CLEAR;
 }
 

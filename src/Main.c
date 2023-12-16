@@ -42,7 +42,7 @@ int main(int argc, char const *argv[]) {
     Window window = Window_init((Coord_f){0, 0}, 1400, 880);
     srand(time(NULL));
     DynamicArray da;
-    if (DA_init(&da, 10, PATH)) {
+    if (DA_init(&da, 5, PATH)) {
         exit(EXIT_FAILURE);
     }
     Inventory inventory;
@@ -58,9 +58,9 @@ int main(int argc, char const *argv[]) {
     Map_print(&map);
     DA_print_all(&da);
 
-    Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
-    printf("finish\n");
+    // Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
     map.mobs = Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
+    printf("finish\n");
     // Test_graphic_field(map, &window);
     SubWindow map_window = SubWindow_init(&window, (Coord_f){0, 0}, 1120, 880);
     SubWindow inventory_window =
