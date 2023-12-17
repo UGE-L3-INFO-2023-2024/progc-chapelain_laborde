@@ -17,6 +17,8 @@
  * @param end timespec
  * @return int
  */
-int ms_interval(struct timespec start, struct timespec end);
+long Time_ms_interval(struct timespec start, struct timespec end);
+
+struct timespec Time_add_ms(struct timespec time, long add_ms);
 
 #endif  // __TIME_MANAGER_H__
