@@ -9,6 +9,7 @@
 #include "TimeManager.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
 
 static long _ms_to_sec(long ms) {
@@ -19,9 +20,14 @@ static long _ms_to_nsec(long ms) {
     return (ms % 1000) * 1000000;
 }
 
+void Time_print_ms(struct timespec start) {
+    printf("%ld\n", start.tv_nsec / 1000);
+    // printf("%lld\n", start.tv_sec * 1000 + start.tv_nsec / 1000);
+}
+
 long Time_ms_interval(struct timespec start, struct timespec end) {
     return (end.tv_sec - start.tv_sec) * 1000 +
-           (end.tv_nsec - start.tv_nsec) / 1000;
+           (end.tv_nsec - start.tv_nsec) / 1000000;
 }
 
 bool Time_is_after(struct timespec time, struct timespec to_compare) {

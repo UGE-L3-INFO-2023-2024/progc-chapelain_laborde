@@ -11,7 +11,7 @@
 #include "Color.h"
 #include "DynamicArray.h"
 #include "Graphic.h"
-#include "Map.h"
+#include "Wave.h"
 
 /**
  * @brief Draw the given tower on the given window.
@@ -153,25 +153,28 @@ void draw_turn(DynamicArray* da, SubWindow window) {
 /**
  * @brief Draw a mob of the map.
  *
- * @param mob Mob to draw.
+ * @param wave Wave to draw.
  * @param window Window to draw on.
  * @param img Image to draw instead of a colored circle.
  */
-void draw_mob(Mob mob, SubWindow window, MLV_Image* img) {
-    MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(mob.color), 255);
-    int mob_width = window.width / MAP_WIDTH;
-    int mob_height = window.height / MAP_HEIGHT;
-    if (img)
-        MLV_draw_image(img, mob.pos.x * mob_width, mob.pos.y * mob_height);
-    else
-        MLV_draw_filled_circle(mob.pos.x * mob_width,
-                               mob.pos.y * mob_height,
-                               mob_width / 4, color);
-    draw_bar(mob.pos.x * mob_width - mob_width / 3,
-             mob.pos.y * mob_height + mob_height / 4,
-             mob_width / 1.5, mob_height / 6,
-             1, color, mob.current_hp / mob.max_hp,
-             MLV_COLOR_GREEN);
+void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img) {
+    for (int i = 0; i < wave->mob_list.real_len; i++) {
+        Mob mob = wave->mob_list.arr[i].mob;
+        MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(mob.color), 255);
+        int mob_width = window.width / MAP_WIDTH;
+        int mob_height = window.height / MAP_HEIGHT;
+        if (img)
+            MLV_draw_image(img, mob.pos.x * mob_width, mob.pos.y * mob_height);
+        else
+            MLV_draw_filled_circle(mob.pos.x * mob_width,
+                                   mob.pos.y * mob_height,
+                                   mob_width / 4, color);
+        draw_bar(mob.pos.x * mob_width - mob_width / 3,
+                 mob.pos.y * mob_height + mob_height / 4,
+                 mob_width / 1.5, mob_height / 6,
+                 1, color, mob.current_hp / mob.max_hp,
+                 MLV_COLOR_GREEN);
+    }
 }
 
 /**

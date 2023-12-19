@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]) {
     Window window = Window_init((Coord_f){0, 0}, 1400, 880);
     srand(time(NULL));
     DynamicArray da;
-    if (DA_init(&da, 5, PATH)) {
+    if (DA_init(&da, 10, PATH)) {
         exit(EXIT_FAILURE);
     }
     Inventory inventory;
@@ -62,8 +62,15 @@ int main(int argc, char const *argv[]) {
     Map_print(&map);
     DA_print_all(&da);
 
+    Error err = Wave_init(&(map.mobs));
+    if (err) {
+        Error_print(err, "Wave_Init");
+        DA_free(da);
+        return EXIT_FAILURE;
+    }
+    // Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
+    // fprintf(stderr, "next wave %ld\n", map.mobs.next_mob.tv_sec);
     // Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
-    map.mobs = Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
     printf("finish\n");
     // clock_gettime(CLOCK_MONOTONIC, &new_time);
     // printf("time %ld\n", Time_ms_interval(origin_time, new_time));
@@ -79,7 +86,7 @@ int main(int argc, char const *argv[]) {
         font_load("assets/fonts/unifont.ttf", inventory_window.width / 7);
     int acc = 0;
     MLV_change_frame_rate(60);
-    Wave_next_step_unit(&map.mobs, &da);
+    Wave_next_step(&map.mobs, &da);
     // Direction mob_dir =
     //     Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
     int page = 0;
@@ -98,13 +105,15 @@ int main(int argc, char const *argv[]) {
         }
         clear_path_cells(map.board, map_window);
         draw_path_cells(map.board, map_window, NULL);
-        draw_mob(map.mobs, map_window, NULL);
+        draw_mobs(&(map.mobs), map_window, NULL);
         draw_turn(&da, map_window);
         refresh_window();
         // mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos),
         //                             (mob_dir + 2) % 4);
         // printf("dir %d, ingnore %d\n", mob_dir, (mob_dir + 2) % 4);
-        Wave_next_step_unit(&map.mobs, &da);
+        Wave_next_step(&map.mobs, &da);
+        Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
+
         acc++;
 
         MLV_delay_according_to_frame_rate();
