@@ -106,7 +106,7 @@ int main(int argc, char const *argv[]) {
         clear_path_cells(map.board, map_window);
         draw_path_cells(map.board, map_window, NULL);
         draw_mobs(&(map.mobs), map_window, NULL);
-        draw_turn(&da, map_window);
+        // draw_turn(&da, map_window);
         refresh_window();
         // mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos),
         //                             (mob_dir + 2) % 4);

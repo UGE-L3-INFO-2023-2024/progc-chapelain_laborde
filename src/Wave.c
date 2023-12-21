@@ -115,15 +115,21 @@ void Wave_spawn_next(Wave *wave, Coord_f start) {
 
 static void _next_going_unit(Mob *mob, DynamicArray *da) {
     if (mob->going.x == -1 && mob->going.y == -1) {
-        mob->going = Utils_coord_i_to_f_center(da->arr[0].path);
+        mob->going = Utils_coord_i_to_f_center(da->arr[1].path);  // 1 beacause 0 is the start
         return;
     }
     Coord_i mob_going = Utils_coord_f_to_i(mob->going);
     for (int i = 0; i < da->max_len; i++) {
         if (mob_going.x == da->arr[i].path.x &&
-            mob_going.y == da->arr[i].path.y &&
-            i != da->max_len - 1) {
-            mob->going = Utils_coord_i_to_f_center(da->arr[i + 1].path);
+            mob_going.y == da->arr[i].path.y) {
+            if (i != da->real_len - 1) {
+                mob->going = Utils_coord_i_to_f_center(da->arr[i + 1].path);
+            } else {
+                // 1 beacause 0 is the start
+                mob->going = Utils_coord_i_to_f_center(da->arr[1].path);
+                // start
+                mob->pos = Utils_coord_i_to_f_center(da->arr[0].path);
+            }
             return;
         }
     }
