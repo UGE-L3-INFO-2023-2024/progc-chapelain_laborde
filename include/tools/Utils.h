@@ -40,5 +40,23 @@ Coord_f Utils_coord_i_to_f_center(Coord_i coord);
 Coord_i Utils_coord_f_to_i(Coord_f coord);
 bool Utils_is_in_middle(Coord_f coord_other, Coord_f coord_mid, float margin);
 Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other, float margin);
+double Utils_coord_f_distance(Coord_f from, Coord_f to);
+
+/**
+ * @brief Return a random number in the range 0.0 <= N < 1.0.
+ *
+ * @return double
+ */
+double Utils_random_0_1();
+
+/**
+ * @brief Return a floating point number N such that
+ *        a <= N <= b for a <= b and b <= N <= a for b < a.
+ *
+ * @param a double border
+ * @param b double border
+ * @return double between a and b
+ */
+double Utils_random_uniform(double a, double b);
 
 #endif  // __UTILS_H__

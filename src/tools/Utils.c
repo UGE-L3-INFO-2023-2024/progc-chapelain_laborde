@@ -8,6 +8,7 @@
 
 #include "Utils.h"
 
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -75,4 +76,17 @@ Coord_f Utils_coord_i_to_f_center(Coord_i coord) {
 
 Coord_i Utils_coord_f_to_i(Coord_f coord) {
     return (Coord_i){.x = (int)coord.x, .y = (int)coord.y};
+}
+
+double Utils_coord_f_distance(Coord_f from, Coord_f to) {
+    return sqrt((to.x - from.x) * (to.x - from.x) +
+                (to.y - from.y) * (to.y - from.y));
+}
+
+double Utils_random_0_1() {
+    return rand() / (double)RAND_MAX;
+}
+
+double Utils_random_uniform(double a, double b) {
+    return a + (b - a) * random_0_1();
 }
