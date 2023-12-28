@@ -88,5 +88,5 @@ double Utils_random_0_1() {
 }
 
 double Utils_random_uniform(double a, double b) {
-    return a + (b - a) * random_0_1();
+    return a + (b - a) * Utils_random_0_1();
 }
