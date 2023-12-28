@@ -8,6 +8,7 @@
 #ifndef __TIME_MANAGER_H__
 #define __TIME_MANAGER_H__
 
+#include <stdbool.h>
 #include <time.h>
 
 /**
@@ -17,6 +18,26 @@
  * @param end timespec
  * @return int
  */
-int ms_interval(struct timespec start, struct timespec end);
+long Time_ms_interval(struct timespec start, struct timespec end);
+
+/**
+ * @brief Add ms to a timespec
+ *
+ * @param time timespec original
+ * @param add_ms ms to add
+ * @return struct timespec
+ */
+struct timespec Time_add_ms(struct timespec time, long add_ms);
+
+/**
+ * @brief Check if a timespec is after another
+ *
+ * @param time timespec
+ * @param to_compare timespec
+ * @return time > to_compare
+ */
+bool Time_is_after(struct timespec time, struct timespec to_compare);
+
+void Time_print_ms(struct timespec start);
 
 #endif  // __TIME_MANAGER_H__

@@ -12,7 +12,6 @@
 #include <stdlib.h>
 
 RGB_Color Color_HSV_to_RGB(HSV_Color color) {
-    RGB_Color rgb;
     double v = 1;    // Brightness
     double s = 0.5;  // Saturation
     double c = v * s;

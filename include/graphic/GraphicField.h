@@ -14,6 +14,7 @@
 #include "DynamicArray.h"
 #include "Graphic.h"
 #include "Map.h"
+#include "Wave.h"
 
 /**
  * @brief Draw the map on the given window.
@@ -26,11 +27,11 @@ void draw_map(Map map, SubWindow map_window, DynamicArray* turns);
 /**
  * @brief Draw the give mob on the given window.
  *
- * @param mob Mob to draw.
+ * @param wave Wave to draw.
  * @param window Window to draw on.
  * @param img Image to draw instead of a circle.
  */
-void draw_mob(Mob mob, SubWindow window, MLV_Image* img);
+void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img);
 
 void draw_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window,
                      MLV_Image* img);

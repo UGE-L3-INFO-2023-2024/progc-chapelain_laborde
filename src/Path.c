@@ -147,6 +147,11 @@ bool Path_gen(Map* map, DynamicArray* da) {
         .y = (rand() % (MAP_HEIGHT - 4)) + 2,
     };
     map->nest = origin;
+    Error err = Path_add_turn(da, origin, NORTH, 0);  //  dir not important because len = 0
+    if (err != CLEAR) {
+        Error_print(err, "Path_gen");
+        return false;
+    }
 
     // 3
     int nest_to_borders[4] = {
@@ -174,7 +179,7 @@ bool Path_gen(Map* map, DynamicArray* da) {
 
     // 5
     Path_apply_path(map, origin, dir, foward_len);
-    Error err = Path_add_turn(da, origin, dir, foward_len);
+    err = Path_add_turn(da, origin, dir, foward_len);
     if (err != CLEAR) {
         Error_print(err, "Path_gen");
         return false;
@@ -194,7 +199,7 @@ bool Path_gen(Map* map, DynamicArray* da) {
 
         foward_len = Path_forward_3_4(new_len);
         Path_apply_path(map, origin, new_dir, foward_len);
-        Error err = Path_add_turn(da, origin, new_dir, foward_len);
+        err = Path_add_turn(da, origin, new_dir, foward_len);
         if (err != CLEAR) {
             Error_print(err, "Path_gen");
             return false;

@@ -57,18 +57,19 @@ int Mob_max(int wave, bool boss) {
 }
 
 void Mob_next_step(Mob *mob, Direction dir) {
+    double rand_speed = mob->speed * Utils_random_uniform(0.9, 1.1);
     switch (dir) {
         case NORTH:
-            mob->pos.y -= mob->speed;
+            mob->pos.y -= rand_speed;
             break;
         case EAST:
-            mob->pos.x += mob->speed;
+            mob->pos.x += rand_speed;
             break;
         case SOUTH:
-            mob->pos.y += mob->speed;
+            mob->pos.y += rand_speed;
             break;
         case WEST:
-            mob->pos.x -= mob->speed;
+            mob->pos.x -= rand_speed;
             break;
         default:
             break;

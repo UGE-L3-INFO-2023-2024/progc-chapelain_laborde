@@ -11,11 +11,10 @@
 
 #include <stdbool.h>
 
-#include "Mana.h"
-#include "Mob.h"
 #include "Tower.h"
 #include "Trap.h"
 #include "Utils.h"
+#include "Wave.h"
 
 #define MAP_WIDTH 28
 #define MAP_HEIGHT 22
@@ -33,7 +32,7 @@ typedef struct {
     Cell board[MAP_HEIGHT][MAP_WIDTH];
     Coord_i nest;
     Coord_i castle;
-    Mob mobs;  // coms to avoid warning
+    Wave mobs;
     Tower* towers;
     Trap* traps;
 } Map;
