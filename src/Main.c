@@ -12,19 +12,22 @@
 #include <time.h>
 
 #include "DynamicArray.h"
+#include "Event.h"
 #include "Font.h"
 #include "Graphic.h"
 #include "GraphicField.h"
 #include "GraphicInventory.h"
+#include "GraphicMainMenu.h"
 #include "GraphicOverlay.h"
 #include "Inventory.h"
+#include "InventoryEvent.h"
 #include "Map.h"
 #include "Mob.h"
 #include "Path.h"
 #include "Test.h"
+#include "TimeManager.h"
 #include "Wave.h"
 #include "Window.h"
-#include "tools/TimeManager.h"
 
 // int main(int argc, char const* argv[]) {
 //     DynamicArray da;
@@ -39,7 +42,7 @@
 //     return 0;
 // }
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char const* argv[]) {
     // struct timespec origin_time, new_time;
     // clock_gettime(CLOCK_MONOTONIC, &origin_time);
 
@@ -84,25 +87,30 @@ int main(int argc, char const *argv[]) {
     MLV_create_window("Test", "Test", window.width, window.height);
     inventory_window.font =
         font_load("assets/fonts/unifont.ttf", inventory_window.width / 7);
-    int acc = 0;
     MLV_change_frame_rate(60);
     Wave_next_step(&map.mobs, &da);
     // Direction mob_dir =
     //     Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
-    int page = 0;
+    ButtonTab buttons;
+    button_tab_init(&buttons);
+    create_inventory_buttons(inventory_window, &buttons);
+    Event event;
     while (1) {
-        if (acc == 0) {
-            draw_map(map, map_window, &da);
-            show_mana_bar(inventory.mana, 180, 810, 760, 20, 3);
-            MLV_draw_text(180 + 760 / 2, 810, "%d/%d", MLV_COLOR_BLACK,
-                          inventory.mana.mana_real, inventory.mana.mana_max);
-            draw_inventory(inventory_window, inventory);
-            clear_gems_and_pagination_area(inventory_window);
-            if (page > 2) {
-                page = 0;
-            }
-            draw_gems_and_pagination(inventory_window, inventory, page++);
+        event = get_event();
+        if (quit_event(event)) {
+            break;
         }
+        Button* tower_button = button_tab_get_button(buttons, "tower");
+        if (tower_button != NULL &&
+            click_on_button(inventory_window, event, *tower_button) &&
+            event.mouse.state == MLV_PRESSED) {
+            tower_button->pressed = !tower_button->pressed;
+        }
+        draw_map(map, map_window, &da);
+        show_mana_bar(inventory.mana, 180, 810, 760, 20, 3);
+        MLV_draw_text(180 + 760 / 2, 810, "%d/%d", MLV_COLOR_BLACK,
+                      inventory.mana.mana_real, inventory.mana.mana_max);
+        draw_main_menu(inventory_window, inventory, buttons);
         clear_path_cells(map.board, map_window);
         draw_path_cells(map.board, map_window, NULL);
         draw_mobs(&(map.mobs), map_window, NULL);
@@ -113,8 +121,6 @@ int main(int argc, char const *argv[]) {
         // printf("dir %d, ingnore %d\n", mob_dir, (mob_dir + 2) % 4);
         Wave_next_step(&map.mobs, &da);
         Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
-
-        acc++;
 
         MLV_delay_according_to_frame_rate();
     }

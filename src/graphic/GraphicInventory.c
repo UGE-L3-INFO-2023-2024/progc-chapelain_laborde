@@ -5,10 +5,11 @@
 #include "Color.h"
 #include "Gemstone.h"
 #include "Graphic.h"
+#include "GraphicField.h"
 #include "Inventory.h"
 #include "Window.h"
 
-#define GEMS_PER_PAGE 15
+#define GEMS_PER_PAGE 12
 
 void draw_gem(Coord_i coord, int w, int h, RGB_Color color) {
     MLV_Color mlv_color = RGB_to_MLV_Color(color, 255);
@@ -16,8 +17,18 @@ void draw_gem(Coord_i coord, int w, int h, RGB_Color color) {
     MLV_draw_rectangle(coord.x, coord.y, w, h, MLV_COLOR_BLACK);
 }
 
-void draw_all_gems(SubWindow window, Inventory inventory, unsigned int page) {
-    double actual_pourcent = 0.11;
+/**
+ * @brief Draw all the gems of the inventory on the screen.
+ *
+ * @param window The subwindow to draw on.
+ * @param inventory The inventory containing the gems to draw.
+ * @param page The page of the inventory gems to draw.
+ * @param actual_pourcent The actual pourcent of the window used in y axis.
+ * Page start at 0 not 1.
+ */
+static void draw_all_gems(SubWindow window, Inventory inventory,
+                          unsigned int page) {
+    double actual_pourcent = 0.25;
     Coord_i coord;
     int gemSize = window.width * 0.6 / 3;
     int gemSpace = window.width * 0.4 / 4;
@@ -38,9 +49,9 @@ void draw_all_gems(SubWindow window, Inventory inventory, unsigned int page) {
     }
 }
 
-void draw_pagination(Coord_i coord, int w, int h, Font font, unsigned int page,
-                     unsigned int max_page) {
-    double actual_pourcent = 0.630;
+static void draw_pagination(Coord_i coord, int w, int h, Font font,
+                            unsigned int page, unsigned int max_page) {
+    double actual_pourcent = 0.65;
     MLV_Color left_chevron = MLV_COLOR_BLACK;
     MLV_Color right_chevron = MLV_COLOR_BLACK;
     if (page == 1) {
@@ -66,8 +77,8 @@ void draw_gems_and_pagination(SubWindow window, Inventory inventory,
 }
 
 void clear_gems_and_pagination_area(SubWindow window) {
-    window.coord.y += window.height * 0.11;
-    window.height *= (0.635 - 0.075);
+    window.coord.y += window.height * 0.25;
+    window.height *= (0.65 - 0.21);
     clear_window(window);
 }
 
@@ -76,17 +87,30 @@ void draw_inventory(SubWindow window, Inventory inventory) {
     int x = window.coord.x, y = window.coord.y;
     int w = window.width, h = window.height;
     double actual_pourcent = 0.025;
+    draw_centered_text(x + w / 2, y + h * actual_pourcent, "Tower Defense",
+                       window.font, MLV_COLOR_BLACK);
+    actual_pourcent += 0.04;
+    draw_line(x, y + h * actual_pourcent, x + w, y + h * actual_pourcent, 2,
+              MLV_COLOR_BLACK);
+    draw_tower(window, NULL, x + w * 0.1, y + h * actual_pourcent - w * 0.2,
+               w * 0.2, h * 0.2);
+
+    actual_pourcent += 0.09;
+    draw_line(x, y + h * actual_pourcent, x + w, y + h * actual_pourcent, 2,
+              MLV_COLOR_BLACK);
+
+    actual_pourcent += 0.03;
     // 5% for the title
     draw_centered_text(x + w / 2, y + h * actual_pourcent, "Inventory",
                        window.font, MLV_COLOR_BLACK);
-    actual_pourcent += 0.05;
+    actual_pourcent += 0.04;
 
     draw_line(x, y + h * actual_pourcent, x + w, y + h * actual_pourcent, 2,
               MLV_COLOR_BLACK);
 
     // 10% for the space between gems
     draw_gems_and_pagination(window, inventory, page);
-    actual_pourcent = 0.67;
+    actual_pourcent = 0.7;
 
     draw_line(x, y + h * actual_pourcent, x + w, y + h * actual_pourcent, 2,
               MLV_COLOR_BLACK);

@@ -13,15 +13,19 @@
 #include "Graphic.h"
 #include "Wave.h"
 
-/**
- * @brief Draw the given tower on the given window.
- * If img is NULL, draw a circle with tower color instead.
- *
- * @param tower Tower to draw.
- * @param window Window to draw on.
- * @param img Image to draw instead of a circle.
- */
-static void draw_tower(Tower tower, SubWindow window, MLV_Image* img) {
+void draw_tower(SubWindow window, MLV_Image* img, int x, int y, int width,
+                int height) {
+    if (img) {
+        MLV_resize_image(img, width, height);
+        MLV_draw_image(img, x, y);
+    } else {
+        MLV_Color color = MLV_COLOR_BLACK;
+        MLV_draw_filled_circle(x + width / 2, y + height / 2, width / 2,
+                               color);
+    }
+}
+
+static void draw_tower_in_map(Tower tower, SubWindow window, MLV_Image* img) {
     if (img) {
         MLV_draw_image(img, tower.coord.x * window.width / MAP_WIDTH,
                        tower.coord.y * window.height / MAP_HEIGHT);
@@ -167,12 +171,11 @@ void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img) {
             MLV_draw_image(img, mob.pos.x * mob_width, mob.pos.y * mob_height);
         else
             MLV_draw_filled_circle(mob.pos.x * mob_width,
-                                   mob.pos.y * mob_height,
-                                   mob_width / 4, color);
+                                   mob.pos.y * mob_height, mob_width / 4,
+                                   color);
         draw_bar(mob.pos.x * mob_width - mob_width / 3,
-                 mob.pos.y * mob_height + mob_height / 4,
-                 mob_width / 1.5, mob_height / 6,
-                 1, color, mob.current_hp / mob.max_hp,
+                 mob.pos.y * mob_height + mob_height / 4, mob_width / 1.5,
+                 mob_height / 6, 1, color, mob.current_hp / mob.max_hp,
                  MLV_COLOR_GREEN);
     }
 }
@@ -207,7 +210,7 @@ void draw_map(Map map, SubWindow map_window, DynamicArray* da) {
         for (int j = 0; j < MAP_WIDTH; j++) {
             draw_path_cell(map.board[i][j], map_window, NULL);
             if (map.board[i][j].tower) {
-                draw_tower(*map.board[i][j].tower, map_window, NULL);
+                draw_tower_in_map(*map.board[i][j].tower, map_window, NULL);
             }
         }
     }

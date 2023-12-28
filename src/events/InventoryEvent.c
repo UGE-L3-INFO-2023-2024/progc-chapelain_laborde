@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 
+#include "Button.h"
 #include "Event.h"
 
 bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
@@ -50,4 +51,10 @@ bool click_right_arrow(SubWindow inventory_window, Event event) {
                inventory_window, event, ">",
                inventory_window.coord.x + inventory_window.width * 0.8,
                inventory_window.coord.y + inventory_window.height * 0.630);
+}
+
+bool click_on_button(SubWindow window, Event event, Button button) {
+    return event.type == MOUSE_BUTTON &&
+           is_in_rect_area(button.coord.x, button.coord.y, button.width,
+                           button.height, event.mouse.x, event.mouse.y);
 }

@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 
+#include "Button.h"
 #include "Event.h"
 #include "Inventory.h"
 #include "Window.h"
@@ -51,5 +52,7 @@ bool click_left_arrow(SubWindow inventory_window, Event event);
  * @return false otherwise
  */
 bool click_right_arrow(SubWindow inventory_window, Event event);
+
+bool click_on_button(SubWindow window, Event event, Button button);
 
 #endif  // __INVENTORY_EVENT_H__

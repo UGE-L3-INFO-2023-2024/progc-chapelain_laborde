@@ -19,16 +19,6 @@
 void draw_gem(Coord_i coord, int w, int h, RGB_Color color);
 
 /**
- * @brief Draw all the gems of the inventory on the screen.
- *
- * @param window The subwindow to draw on.
- * @param inventory The inventory containing the gems to draw.
- * @param page The page of the inventory gems to draw.
- * Page start at 0 not 1.
- */
-void draw_all_gems(SubWindow window, Inventory inventory, unsigned int page);
-
-/**
  * @brief Draw the inventory of gem + the pagination in the bottom.
  *
  * @param window The subwindow to draw on.
