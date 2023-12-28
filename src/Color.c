@@ -16,8 +16,8 @@ RGB_Color Color_HSV_to_RGB(HSV_Color color) {
     double v = 1;    // Brightness
     double s = 0.5;  // Saturation
     double c = v * s;
-    int h = color / 60.0;
-    double x = c * (1 - abs(h % 2 - 1));
+    double h = color / 60.0;
+    double x = c * (1 - fabs(fmod(h, 2) - 1));
     double m = v - c;
     double r, g, b;
     if (0 <= color && color <= 60) {
@@ -49,7 +49,7 @@ RGB_Color Color_HSV_to_RGB(HSV_Color color) {
         g = 0;
         b = 0;
     }
-    return (RGB_Color){(r + m) * 255, (g + m) * 255, (b + m) * 255};
+    return (RGB_Color){(r + m) * 255.0, (g + m) * 255.0, (b + m) * 255.0};
 }
 
 HSV_Color Color_rand(void) {
