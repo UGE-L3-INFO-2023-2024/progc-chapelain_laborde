@@ -26,17 +26,19 @@ void draw_tower(SubWindow window, MLV_Image* img, int x, int y, int width,
 }
 
 static void draw_tower_in_map(Tower tower, SubWindow window, MLV_Image* img) {
+    int cell_width = window.width / MAP_WIDTH;
+    int cell_height = window.height / MAP_HEIGHT;
     if (img) {
-        MLV_draw_image(img, tower.coord.x * window.width / MAP_WIDTH,
-                       tower.coord.y * window.height / MAP_HEIGHT);
+        MLV_draw_image(img, tower.coord.x * cell_width,
+                       tower.coord.y * cell_height);
     } else {
         MLV_Color color = MLV_COLOR_BLACK;
         if (tower.gem) {
             color = RGB_to_MLV_Color(Color_HSV_to_RGB(tower.gem->color), 255);
         }
-        MLV_draw_filled_circle(tower.coord.x * window.width / MAP_WIDTH,
-                               tower.coord.y * window.height / MAP_HEIGHT,
-                               window.width / MAP_WIDTH / 2, color);
+        MLV_draw_filled_circle(tower.coord.x * cell_width + cell_width / 2,
+                               tower.coord.y * cell_height + cell_height / 2,
+                               (cell_width / 2) * 0.9, color);
     }
 }
 

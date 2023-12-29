@@ -65,14 +65,16 @@ Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
         case PROJECTILE:
             da->arr[da->real_len++].project = val.project;
             break;
+        case TOWER:
+            da->arr[da->real_len++].tower = val.tower;
+            break;
         default:
             return DYNA_ARR_ERR_TYPE;
     }
     return CLEAR;
 }
 
-Error DA_remove(DynamicArray* da, DynamicArray_Union* val,
-                Type_array type) {
+Error DA_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type) {
     assert(da);
     assert(da->arr);
 
@@ -86,13 +88,16 @@ Error DA_remove(DynamicArray* da, DynamicArray_Union* val,
 
     switch (type) {
         case PATH:
-            (*val).path = da->arr[--(da->real_len)].path;
+            val->path = da->arr[--(da->real_len)].path;
             break;
         case MOB:
-            (*val).mob = da->arr[--(da->real_len)].mob;
+            val->mob = da->arr[--(da->real_len)].mob;
             break;
         case PROJECTILE:
-            (*val).project = da->arr[--(da->real_len)].project;
+            val->project = da->arr[--(da->real_len)].project;
+            break;
+        case TOWER:
+            val->tower = da->arr[--(da->real_len)].tower;
             break;
         default:
             return DYNA_ARR_ERR_TYPE;
@@ -118,6 +123,9 @@ void DA_print_all(DynamicArray* da) {
                 break;
             case PROJECTILE:
                 printf("| project: WIP |\n");
+                break;
+            case TOWER:
+                printf("| tower: WIP |\n");
                 break;
             default:
                 break;

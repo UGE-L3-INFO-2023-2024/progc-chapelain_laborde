@@ -5,12 +5,6 @@
 #include "Button.h"
 #include "Event.h"
 
-bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
-                     int cible_y) {
-    return cible_x >= x && cible_x <= x + width && cible_y >= y &&
-           cible_y <= y + height;
-}
-
 bool click_in_inventory(Event event, SubWindow inventory_window) {
     return event.type == MOUSE_BUTTON &&
            is_in_rect_area(inventory_window.coord.x, inventory_window.coord.y,

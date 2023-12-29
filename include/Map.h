@@ -11,6 +11,7 @@
 
 #include <stdbool.h>
 
+#include "DynamicArray.h"
 #include "Tower.h"
 #include "Trap.h"
 #include "Utils.h"
@@ -33,8 +34,8 @@ typedef struct {
     Coord_i nest;
     Coord_i castle;
     Wave mobs;
-    Tower* towers;
-    Trap* traps;
+    DynamicArray towers;
+    DynamicArray traps;
 } Map;
 
 /**
@@ -74,5 +75,9 @@ void Map_print(Map* map);
  * @param ignore Direction to ignore. (in case of a turn)
  */
 Direction Map_got_next_path(Map* map, Coord_i pos, Direction ignore);
+
+Error Map_init_towers(Map* map);
+
+Error Map_add_tower(Map* map, Tower tower);
 
 #endif  // __MAP_H__

@@ -74,3 +74,9 @@ bool quit_event(Event event) {
            (event.keyboard.key == MLV_KEYBOARD_q ||
             event.keyboard.key == MLV_KEYBOARD_ESCAPE);
 }
+
+bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
+                     int cible_y) {
+    return cible_x >= x && cible_x <= x + width && cible_y >= y &&
+           cible_y <= y + height;
+}

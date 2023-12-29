@@ -12,6 +12,7 @@
 #include "Error.h"
 #include "Mob.h"
 #include "Projectile.h"
+#include "Tower.h"
 #include "Utils.h"
 
 #define DA_MUL_SIZE_ALLOC 1.5
@@ -20,12 +21,14 @@ typedef enum {
     PATH,
     MOB,
     PROJECTILE,
+    TOWER,
 } Type_array;
 
 typedef union {
     Mob mob;
     Projectile project;
     Coord_i path;
+    Tower tower;
 } DynamicArray_Union, DA_Union;
 
 typedef struct {

@@ -11,12 +11,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "DynamicArray.h"
 #include "Utils.h"
 
 Map Map_init(void) {
     return (Map){
-        .towers = NULL,
-        .traps = NULL,
         .nest = (Coord_i){-1, -1},
         .castle = (Coord_i){-1, -1},
     };
@@ -36,6 +35,21 @@ Cell Map_init_cell(Coord_i coord) {
         .is_path = false,
         .tower = NULL,
     };
+}
+
+Error Map_init_towers(Map* map) {
+    Error err = DA_init(&map->towers, 10, TOWER);
+    return err;
+}
+
+Error Map_add_tower(Map* map, Tower tower) {
+    Error err = DA_add(&map->towers, (DA_Union){.tower = tower}, TOWER);
+    if (err) {
+        return err;
+    }
+    map->board[tower.coord.y][tower.coord.x].tower =
+        &map->towers.arr[map->towers.real_len - 1].tower;
+    return CLEAR;
 }
 
 void Map_print(Map* map) {

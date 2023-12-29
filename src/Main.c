@@ -13,6 +13,7 @@
 
 #include "DynamicArray.h"
 #include "Event.h"
+#include "FieldEvent.h"
 #include "Font.h"
 #include "Graphic.h"
 #include "GraphicField.h"
@@ -21,6 +22,7 @@
 #include "GraphicOverlay.h"
 #include "Inventory.h"
 #include "InventoryEvent.h"
+#include "Mana.h"
 #include "Map.h"
 #include "Mob.h"
 #include "Path.h"
@@ -65,10 +67,18 @@ int main(int argc, char const* argv[]) {
     Map_print(&map);
     DA_print_all(&da);
 
-    Error err = Wave_init(&(map.mobs));
+    Error err = Map_init_towers(&map);
+    if (err) {
+        Error_print(err, "Map_init_towers");
+        DA_free(da);
+        return EXIT_FAILURE;
+    }
+
+    err = Wave_init(&(map.mobs));
     if (err) {
         Error_print(err, "Wave_Init");
         DA_free(da);
+        DA_free(map.towers);
         return EXIT_FAILURE;
     }
     // Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
@@ -101,16 +111,32 @@ int main(int argc, char const* argv[]) {
             break;
         }
         Button* tower_button = button_tab_get_button(buttons, "tower");
-        if (tower_button != NULL &&
-            click_on_button(inventory_window, event, *tower_button) &&
-            event.mouse.state == MLV_PRESSED) {
-            tower_button->pressed = !tower_button->pressed;
+        if (tower_button != NULL) {
+            if (click_on_button(inventory_window, event, *tower_button) &&
+                event.mouse.state == MLV_PRESSED) {
+                tower_button->pressed = !tower_button->pressed;
+            }
+            if (tower_button->pressed && event.type == MOUSE_BUTTON &&
+                event.mouse.state == MLV_PRESSED) {
+                Coord_i coord = get_coord_on_map(
+                    map, map_window, (Coord_i){event.mouse.x, event.mouse.y});
+                if (coord.x >= 0 && coord.x < MAP_WIDTH && coord.y >= 0 &&
+                    coord.y < MAP_HEIGHT) {
+                    if (map.board[coord.y][coord.x].is_path == false &&
+                        map.board[coord.y][coord.x].tower == NULL) {
+                        Tower tower = Tower_init(coord);
+                        // if (Mana_buy(&inventory.mana,
+                        //              Mana_tower_cost(map.towers.real_len)))
+                        Map_add_tower(&map, tower);
+                    }
+                }
+            }
         }
         draw_map(map, map_window, &da);
         show_mana_bar(inventory.mana, 180, 810, 760, 20, 3);
         MLV_draw_text(180 + 760 / 2, 810, "%d/%d", MLV_COLOR_BLACK,
                       inventory.mana.mana_real, inventory.mana.mana_max);
-        draw_main_menu(inventory_window, inventory, buttons);
+        draw_main_menu(inventory_window, inventory, buttons, 1);
         clear_path_cells(map.board, map_window);
         draw_path_cells(map.board, map_window, NULL);
         draw_mobs(&(map.mobs), map_window, NULL);

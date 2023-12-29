@@ -61,4 +61,19 @@ Event get_keyboard_event(void);
  */
 bool quit_event(Event event);
 
+/**
+ * @brief Check if the coordinates are in the rectangle area.
+ *
+ * @param x X coordinate of the rectangle (top left corner)
+ * @param y Y coordinate of the rectangle (top left corner)
+ * @param width Width of the rectangle
+ * @param height Height of the rectangle
+ * @param cible_x X coordinate of the point to check
+ * @param cible_y Y coordinate of the point to check
+ * @return true if the point is in the rectangle,
+ * @return false otherwise
+ */
+bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
+                     int cible_y);
+
 #endif  // __EVENT_H__
