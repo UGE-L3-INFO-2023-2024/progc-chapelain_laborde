@@ -30,19 +30,6 @@
 #include "Wave.h"
 #include "Window.h"
 
-// int main(int argc, char const* argv[]) {
-//     DynamicArray da;
-//     DA_init(&da, 10, PATH);
-//     Coord_i coord1 = {.x = 1, .y = 2};
-//     Coord_i coord2 = {.x = 1, .y = 3};
-//     Coord_i coord3 = {.x = 1, .y = 4};
-//     DA_add(&da, (DynamicArray_Union){.path = coord1}, PATH);
-//     DA_add(&da, (DynamicArray_Union){.path = coord2}, PATH);
-//     DA_add(&da, (DynamicArray_Union){.path = coord3}, PATH);
-//     DA_print_all(&da);
-//     return 0;
-// }
-
 static void tower_button_action(ButtonTab buttons, SubWindow inventory_window,
                                 SubWindow map_window, Map* map, Event event) {
     Button* tower_button = button_tab_get_button(buttons, "tower");
@@ -93,15 +80,14 @@ static void gem_minus_button_action(ButtonTab buttons,
                                     SubWindow inventory_window,
                                     Inventory* inventory, Event event,
                                     int* gem_level) {
-    if (*gem_level <= 1) {
-        return;
-    }
     Button* minus_button = button_tab_get_button(buttons, "minus");
     if (minus_button != NULL) {
         if (click_on_button(inventory_window, event, *minus_button)) {
             if (event.mouse.state == MLV_PRESSED) {
-                minus_button->pressed = true;
-                (*gem_level)--;
+                if (*gem_level > 1) {
+                    minus_button->pressed = true;
+                    (*gem_level)--;
+                }
             }
         }
         auto_release_button(minus_button, event);
@@ -181,9 +167,6 @@ static void inventory_button_action(ButtonTab buttons,
 }
 
 int main(int argc, char const* argv[]) {
-    // struct timespec origin_time, new_time;
-    // clock_gettime(CLOCK_MONOTONIC, &origin_time);
-
     Window window = Window_init((Coord_f){0, 0}, 1400, 880);
     srand(time(NULL));
     DynamicArray da;
@@ -197,11 +180,7 @@ int main(int argc, char const* argv[]) {
     Map map = Map_init();
     while (!Path_gen(&map, &da)) {
         da.real_len = 0;
-        printf("retry\n");
     }
-
-    Map_print(&map);
-    DA_print_all(&da);
 
     Error err = Map_init_towers(&map);
     if (err) {
@@ -217,16 +196,7 @@ int main(int argc, char const* argv[]) {
         DA_free(map.towers);
         return EXIT_FAILURE;
     }
-    // Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
-    // fprintf(stderr, "next wave %ld\n", map.mobs.next_mob.tv_sec);
-    // Mob_init_basic(1, Utils_coord_i_to_f_center(map.nest));
-    printf("finish\n");
-    // clock_gettime(CLOCK_MONOTONIC, &new_time);
-    // printf("time %ld\n", Time_ms_interval(origin_time, new_time));
-    // printf("time s %ld\n", new_time.tv_sec - origin_time.tv_sec);
-    // printf("time ns %ld\n", new_time.tv_nsec - origin_time.tv_nsec);
-    // return 0;
-    // Test_graphic_field(map, &window);
+
     SubWindow map_window = SubWindow_init(&window, (Coord_f){0, 0}, 1120, 880);
     SubWindow inventory_window =
         SubWindow_init(&window, (Coord_f){1120, 0}, 280, 880);
@@ -235,8 +205,6 @@ int main(int argc, char const* argv[]) {
         font_load("assets/fonts/unifont.ttf", inventory_window.width / 7);
     MLV_change_frame_rate(60);
     Wave_next_step(&map.mobs, &da);
-    // Direction mob_dir =
-    //     Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos), NO_DIR);
 
     int inventory_gem_level = 1;
     int inventory_page = 0;
@@ -263,14 +231,8 @@ int main(int argc, char const* argv[]) {
         show_mana_bar(inventory.mana, 180, 810, 760, 40, 3);
         draw_inventory_menu(inventory_window, inventory, buttons,
                             inventory_gem_level, inventory_page);
-        clear_path_cells(map.board, map_window);
-        draw_path_cells(map.board, map_window, NULL);
         draw_mobs(&(map.mobs), map_window, NULL);
-        // draw_turn(&da, map_window);
         refresh_window();
-        // mob_dir = Map_got_next_path(&map, Utils_coord_f_to_i(map.mobs.pos),
-        //                             (mob_dir + 2) % 4);
-        // printf("dir %d, ingnore %d\n", mob_dir, (mob_dir + 2) % 4);
         Wave_next_step(&map.mobs, &da);
         Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
 
