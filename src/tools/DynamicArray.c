@@ -22,7 +22,6 @@ Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
     }
     da->max_len = size_alloc;
     da->real_len = 0;
-    da->size_alloc = size_alloc;
     da->type = type;
     return CLEAR;
 }
@@ -40,6 +39,15 @@ Error DA_realloc(DynamicArray* da) {
     da->arr = (DA_Union*)tmp;
     da->max_len = new_size;
     return CLEAR;
+}
+
+DynamicArray_Union* DA_get(DynamicArray* da, int index) {
+    assert(da);
+    assert(da->arr);
+    if (index < 0 || index >= da->real_len) {
+        return NULL;
+    }
+    return da->arr + index;
 }
 
 Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {

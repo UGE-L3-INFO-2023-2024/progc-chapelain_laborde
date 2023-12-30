@@ -36,7 +36,6 @@ typedef struct {
     int max_len;
     Type_array type;
     DA_Union* arr;
-    int size_alloc;
 } DynamicArray;
 
 /**
@@ -56,6 +55,15 @@ Error DA_init(DynamicArray* da, int size_alloc, Type_array type);
  * @return if there is a allocation error.
  */
 Error DA_realloc(DynamicArray* da);
+
+/**
+ * @brief Get a value from a DynamicArray.
+ *
+ * @param da DynamicArray to get the value.
+ * @param index Index of the value.
+ * @return DynamicArray_Union* Value.
+ */
+DynamicArray_Union* DA_get(DynamicArray* da, int index);
 
 /**
  * @brief Add a value to a DynamicArray.

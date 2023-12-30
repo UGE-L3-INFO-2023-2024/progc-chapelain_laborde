@@ -31,9 +31,8 @@ void Map_init_board(Map* map) {
 
 Cell Map_init_cell(Coord_i coord) {
     return (Cell){
-        .coord = coord,
         .is_path = false,
-        .tower = NULL,
+        .have_tower = false,
     };
 }
 
@@ -43,13 +42,18 @@ Error Map_init_towers(Map* map) {
 }
 
 Error Map_add_tower(Map* map, Tower tower) {
-    Error err = DA_add(&map->towers, (DA_Union){.tower = tower}, TOWER);
-    if (err) {
-        return err;
+    map->board[tower.coord.y][tower.coord.x].have_tower = true;
+    return DA_add(&map->towers, (DA_Union){.tower = tower}, TOWER);
+}
+
+Tower* Map_get_tower(Map* map, Coord_i coord) {
+    for (int i = 0; i < map->towers.real_len; i++) {
+        if (map->towers.arr[i].tower.coord.x == coord.x &&
+            map->towers.arr[i].tower.coord.y == coord.y) {
+            return &map->towers.arr[i].tower;
+        }
     }
-    map->board[tower.coord.y][tower.coord.x].tower =
-        &map->towers.arr[map->towers.real_len - 1].tower;
-    return CLEAR;
+    return NULL;
 }
 
 void Map_print(Map* map) {

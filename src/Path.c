@@ -41,13 +41,11 @@ static void Path_apply_path(Map* map, Coord_i origin, Direction dir, int len) {
         map->board[origin.y + Dir_point[dir][1] * i]
                   [origin.x + Dir_point[dir][0] * i]
                       .is_path = true;
-        map->board[origin.y + Dir_point[dir][1] * i]
-                  [origin.x + Dir_point[dir][0] * i]
-                      .trap = NULL;
     }
 }
 
-static Error Path_add_turn(DynamicArray* da, Coord_i origin, Direction dir, int len) {
+static Error Path_add_turn(DynamicArray* da, Coord_i origin, Direction dir,
+                           int len) {
     static int Dir_point[4][2] = {
         {0, -1},
         {1, 0},
@@ -147,7 +145,8 @@ bool Path_gen(Map* map, DynamicArray* da) {
         .y = (rand() % (MAP_HEIGHT - 4)) + 2,
     };
     map->nest = origin;
-    Error err = Path_add_turn(da, origin, NORTH, 0);  //  dir not important because len = 0
+    Error err = Path_add_turn(da, origin, NORTH,
+                              0);  //  dir not important because len = 0
     if (err != CLEAR) {
         Error_print(err, "Path_gen");
         return false;
@@ -155,7 +154,7 @@ bool Path_gen(Map* map, DynamicArray* da) {
 
     // 3
     int nest_to_borders[4] = {
-        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),              // NORTH
+        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),  // NORTH
         Path_manatan_dist(origin, (Coord_i){MAP_WIDTH - 1, origin.y}),  // EAST
         Path_manatan_dist(origin,
                           (Coord_i){origin.x, MAP_HEIGHT - 1}),  // SOUTH

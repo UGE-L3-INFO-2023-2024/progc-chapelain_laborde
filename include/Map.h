@@ -22,11 +22,7 @@
 
 typedef struct {
     bool is_path;
-    Coord_i coord;
-    union {
-        Tower* tower;
-        Trap* trap;
-    };
+    bool have_tower;
 } Cell;
 
 typedef struct {
@@ -79,5 +75,7 @@ Direction Map_got_next_path(Map* map, Coord_i pos, Direction ignore);
 Error Map_init_towers(Map* map);
 
 Error Map_add_tower(Map* map, Tower tower);
+
+Tower* Map_get_tower(Map* map, Coord_i coord);
 
 #endif  // __MAP_H__

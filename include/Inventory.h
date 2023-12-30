@@ -7,6 +7,7 @@
 
 /**
  * @brief The inventory with the gemstones and the mana pool.
+ * @todo gemstones must be a dynamic array (DA) ?
  *
  */
 typedef struct {

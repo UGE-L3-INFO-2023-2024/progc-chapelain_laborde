@@ -56,9 +56,10 @@ void draw_bar(unsigned int x, unsigned int y, int width, int height,
                               height - 2 * thickness, filled_color);
 }
 
-/* Draw a text centered on the given position */
-void draw_centered_text(unsigned int x, unsigned int y, const char* text,
-                        Font font, MLV_Color color, ...) {
+/* Draw a text centered on the given position with a given font */
+void draw_centered_text_with_font(unsigned int x, unsigned int y,
+                                  const char* text, Font font, MLV_Color color,
+                                  ...) {
     int text_width, text_height;
     va_list args;
     va_list args_copy;
@@ -68,6 +69,21 @@ void draw_centered_text(unsigned int x, unsigned int y, const char* text,
                                       args);
     MLV_draw_text_with_font_va(x - text_width / 2, y - text_height / 2, text,
                                font, color, args_copy);
+    va_end(args_copy);
+    va_end(args);
+}
+
+/* Draw a text centered on the given position */
+void draw_centered_text(unsigned int x, unsigned int y, const char* text,
+                        MLV_Color color, ...) {
+    int text_width, text_height;
+    va_list args;
+    va_list args_copy;
+    va_start(args, color);
+    va_copy(args_copy, args);  // Copy args to use it twice
+    MLV_get_size_of_text_va(text, &text_width, &text_height, args);
+    MLV_draw_text_va(x - text_width / 2, y - text_height / 2, text, color,
+                     args_copy);
     va_end(args_copy);
     va_end(args);
 }

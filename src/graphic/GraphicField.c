@@ -51,52 +51,42 @@ static void draw_tower_in_map(Tower tower, SubWindow window, MLV_Image* img) {
  *
  * @return bool true if the cell is a path, false otherwise.
  */
-static bool draw_path_cell(Cell cell, SubWindow window, MLV_Image* img) {
+static void draw_path(Coord_i coord, SubWindow window, MLV_Image* img) {
     MLV_Color color = MLV_COLOR_LIGHT_GREY;
     int cell_width = window.width / MAP_WIDTH;
     int cell_height = window.height / MAP_HEIGHT;
-    if (cell.is_path) {
-        if (img) {
-            MLV_draw_image(img, cell.coord.x * cell_width,
-                           cell.coord.y * cell_height);
-        } else {
-            MLV_draw_filled_rectangle(cell.coord.x * cell_width,
-                                      cell.coord.y * cell_height, cell_width,
-                                      cell_height, color);
-            MLV_draw_rectangle(cell.coord.x * cell_width,
-                               cell.coord.y * cell_height, cell_width,
-                               cell_height, MLV_COLOR_BLACK);
-        }
-        return true;
+    if (img) {
+        MLV_draw_image(img, coord.x * cell_width, coord.y * cell_height);
+    } else {
+        MLV_draw_filled_rectangle(coord.x * cell_width, coord.y * cell_height,
+                                  cell_width, cell_height, color);
+        MLV_draw_rectangle(coord.x * cell_width, coord.y * cell_height,
+                           cell_width, cell_height, MLV_COLOR_BLACK);
     }
-    return false;
 }
 
 void draw_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window,
                      MLV_Image* img) {
     for (int i = 0; i < MAP_HEIGHT; i++) {
         for (int j = 0; j < MAP_WIDTH; j++) {
-            draw_path_cell(cells[i][j], window, NULL);
+            if (cells[i][j].is_path)
+                draw_path((Coord_i){j, i}, window, NULL);
         }
     }
 }
 
-static bool clear_path_cell(Cell cell, SubWindow window) {
+static void clear_path_cell(Coord_i coord, SubWindow window) {
     int cell_width = window.width / MAP_WIDTH;
     int cell_height = window.height / MAP_HEIGHT;
-    if (cell.is_path) {
-        MLV_draw_filled_rectangle(cell.coord.x * cell_width,
-                                  cell.coord.y * cell_height, cell_width,
-                                  cell_height, CLEAR_COLOR);
-        return true;
-    }
-    return false;
+    MLV_draw_filled_rectangle(coord.x * cell_width, coord.y * cell_height,
+                              cell_width, cell_height, CLEAR_COLOR);
 }
 
 void clear_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window) {
     for (int i = 0; i < MAP_HEIGHT; i++) {
         for (int j = 0; j < MAP_WIDTH; j++) {
-            clear_path_cell(cells[i][j], window);
+            if (cells[i][j].is_path)
+                clear_path_cell((Coord_i){j, i}, window);
         }
     }
 }
@@ -210,9 +200,11 @@ void draw_map(Map map, SubWindow map_window, DynamicArray* da) {
     MLV_clear_window(CLEAR_COLOR);
     for (int i = 0; i < MAP_HEIGHT; i++) {
         for (int j = 0; j < MAP_WIDTH; j++) {
-            draw_path_cell(map.board[i][j], map_window, NULL);
-            if (map.board[i][j].tower) {
-                draw_tower_in_map(*map.board[i][j].tower, map_window, NULL);
+            if (map.board[i][j].is_path)
+                draw_path((Coord_i){j, i}, map_window, NULL);
+            if (map.board[i][j].have_tower) {
+                Tower tower = *Map_get_tower(&map, (Coord_i){j, i});
+                draw_tower_in_map(tower, map_window, NULL);
             }
         }
     }

@@ -7,6 +7,8 @@
 #include "Error.h"
 #include "Utils.h"
 
+#define DEFAULT_BUTTON_COLOR MLV_rgba(198, 198, 198, 255)
+
 /**
  * @brief A button is a rectangle with a text inside.
  *
@@ -49,39 +51,39 @@ Button* init_button(char* name, Coord_i coord, int width, int height,
                     MLV_Color color);
 
 /**
- * @brief Initialize the buttons of an inventory.
+ * @brief Initialize the buttons of an buttons.
  *
- * @param inventory The inventory to initialize the buttons of.
+ * @param buttons The buttons to initialize the buttons of.
  * @return Error CLEAR if no error occured, MALLOC_ERR otherwise.
  */
-Error button_tab_init(ButtonTab* inventory);
+Error button_tab_init(ButtonTab* buttons);
 
 /**
- * @brief Add a button to the inventory.
+ * @brief Add a button to the buttons.
  *
- * @param inventory The inventory to add the button to.
+ * @param buttons The buttons to add the button to.
  * @param button The button to add.
  *
  * @return Error CLEAR if no error occured, MALLOC_ERR otherwise.
  */
-Error button_tab_add(ButtonTab* inventory, Button* button);
+Error button_tab_add(ButtonTab* buttons, Button* button);
 
 /**
- * @brief Free the buttons of an inventory.
+ * @brief Free the buttons of an buttons.
  *
- * @param inventory The inventory to free the buttons of.
+ * @param buttons The buttons to free the buttons of.
  */
-void button_tab_free(ButtonTab inventory);
+void button_tab_free(ButtonTab buttons);
 
 /**
- * @brief Get a button from an inventory.
+ * @brief Get a button from an buttons.
  * If there is no button with the given name, NULL is returned.
  * If there are multiple buttons with the same name, the first one is returned.
  *
- * @param inventory The inventory to get the button from.
+ * @param buttons The buttons to get the button from.
  * @param name The name of the button to get.
  * @return Button* The button if it exists, NULL otherwise.
  */
-Button* button_tab_get_button(ButtonTab inventory, char* name);
+Button* button_tab_get_button(ButtonTab buttons, char* name);
 
 #endif  // __BUTTON_H__

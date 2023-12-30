@@ -99,41 +99,41 @@ void draw_button(Button button) {
     }
 }
 
-Error button_tab_init(ButtonTab* inventory) {
-    inventory->buttons = malloc(sizeof(Button*) * 3);
-    if (inventory->buttons == NULL) {
+Error button_tab_init(ButtonTab* buttons) {
+    buttons->buttons = malloc(sizeof(Button*) * 3);
+    if (buttons->buttons == NULL) {
         return MALLOC_ERR;
     }
-    inventory->count = 0;
-    inventory->capacity = 3;
+    buttons->count = 0;
+    buttons->capacity = 3;
     return CLEAR;
 }
 
-Error button_tab_add(ButtonTab* inventory, Button* button) {
-    if (inventory->count == inventory->capacity) {
-        inventory->capacity *= 2;
-        inventory->buttons =
-            realloc(inventory->buttons, sizeof(Button*) * inventory->capacity);
-        if (inventory->buttons == NULL) {
+Error button_tab_add(ButtonTab* buttons, Button* button) {
+    if (buttons->count == buttons->capacity) {
+        buttons->capacity *= 2;
+        buttons->buttons =
+            realloc(buttons->buttons, sizeof(Button*) * buttons->capacity);
+        if (buttons->buttons == NULL) {
             return MALLOC_ERR;
         }
     }
-    inventory->buttons[inventory->count++] = button;
+    buttons->buttons[buttons->count++] = button;
     return CLEAR;
 }
 
-void button_tab_free(ButtonTab inventory) {
-    for (unsigned int i = 0; i < inventory.capacity; i++) {
-        free(inventory.buttons[i]);
+void button_tab_free(ButtonTab buttons) {
+    for (unsigned int i = 0; i < buttons.capacity; i++) {
+        free(buttons.buttons[i]);
     }
-    free(inventory.buttons);
-    inventory.buttons = NULL;
+    free(buttons.buttons);
+    buttons.buttons = NULL;
 }
 
-Button* button_tab_get_button(ButtonTab inventory, char* name) {
-    for (unsigned int i = 0; i < inventory.count; i++) {
-        if (strcmp(inventory.buttons[i]->name, name) == 0) {
-            return inventory.buttons[i];
+Button* button_tab_get_button(ButtonTab buttons, char* name) {
+    for (unsigned int i = 0; i < buttons.count; i++) {
+        if (strcmp(buttons.buttons[i]->name, name) == 0) {
+            return buttons.buttons[i];
         }
     }
     return NULL;

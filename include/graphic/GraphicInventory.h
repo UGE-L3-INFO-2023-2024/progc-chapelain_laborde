@@ -1,48 +1,30 @@
-#ifndef __GRAPHIC_INVENTORY_H__
-#define __GRAPHIC_INVENTORY_H__
+#ifndef __GRAPHIC_MAIN_MENU_H__
+#define __GRAPHIC_MAIN_MENU_H__
 
-#include "Color.h"
+#include "Button.h"
 #include "Inventory.h"
-#include "Utils.h"
 #include "Window.h"
 
-/**
- * @brief Draw a gem on the screen at the given position.
- * This function use the given color to fill the gem.
- * The outline of the gem is always black.
- *
- * @param coord The position of the gem.
- * @param w The width of the gem.
- * @param h The height of the gem.
- * @param color The color of the gem in RGB.
- */
-void draw_gem(Coord_i coord, int w, int h, RGB_Color color);
+#define GEMS_PER_PAGE 12
 
 /**
- * @brief Draw the inventory of gem + the pagination in the bottom.
+ * @brief Create the buttons of the inventory.
+ *
+ * @param window The subwindow to draw on.
+ * @param buttons The array of buttons to initialize.
+ */
+void create_inventory_buttons(SubWindow window, ButtonTab* buttons);
+
+/**
+ * @brief Draw the main menu.
  *
  * @param window The subwindow to draw on.
  * @param inventory The inventory to draw.
- * @param page The page of the inventory to draw starting to 0. (cf
- * draw_all_gems)
+ * @param buttons The buttons of the inventory.
+ * @param gem_level The actual level of the gem
+ * @param page The actual page of the inventory.
  */
-void draw_gems_and_pagination(SubWindow window, Inventory inventory,
-                              unsigned int page);
+void draw_inventory_menu(SubWindow window, Inventory inventory,
+                         ButtonTab buttons, int gem_level, int page);
 
-/**
- * @brief Clear the gems and pagination area of the inventory.
- * This function is used to actualize the inventory.
- *
- * @param window The subwindow to clear.
- */
-void clear_gems_and_pagination_area(SubWindow window);
-
-/**
- * @brief Draw the whole inventory on the screen.
- *
- * @param window The subwindow to draw on.
- * @param inventory The inventory to draw.
- */
-void draw_inventory(SubWindow window, Inventory inventory);
-
-#endif  // __GRAPHIC_INVENTORY_H__
+#endif  // __GRAPHIC_MAIN_MENU_H__
