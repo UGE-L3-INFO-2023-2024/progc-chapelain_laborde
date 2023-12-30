@@ -9,6 +9,7 @@
 #include "Path.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "DynamicArray.h"
@@ -108,7 +109,8 @@ static int Path_max_dir(Map* map, Coord_i start, Direction dir) {
         start.x += Dir_point[dir][0];
         start.y += Dir_point[dir][1];
     }
-    return acc;
+    // -1 cause last one is an error cell.
+    return acc - 1;
 }
 
 static void Path_gen_step(Map* map, Coord_i coord, Direction dir,
@@ -154,7 +156,7 @@ bool Path_gen(Map* map, DynamicArray* da) {
 
     // 3
     int nest_to_borders[4] = {
-        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),  // NORTH
+        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),              // NORTH
         Path_manatan_dist(origin, (Coord_i){MAP_WIDTH - 1, origin.y}),  // EAST
         Path_manatan_dist(origin,
                           (Coord_i){origin.x, MAP_HEIGHT - 1}),  // SOUTH
@@ -188,9 +190,8 @@ bool Path_gen(Map* map, DynamicArray* da) {
     origin = Utils_coord_from_dir_len(origin, dir, foward_len);
 
     while (1) {
-        Direction new_dir;
-        int new_len;
-
+        Direction new_dir = NO_DIR;
+        int new_len = 0;
         Path_gen_step(map, origin, dir, &new_dir, &new_len);
         if (new_len <= 2) {
             return (total_turn >= 7 && total_len >= 75);
@@ -210,5 +211,6 @@ bool Path_gen(Map* map, DynamicArray* da) {
         origin = Utils_coord_from_dir_len(origin, new_dir, foward_len);
         map->castle = origin;
     }
+
     return true;
 }
