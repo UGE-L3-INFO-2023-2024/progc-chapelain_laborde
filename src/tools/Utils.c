@@ -90,3 +90,7 @@ double Utils_random_0_1() {
 double Utils_random_uniform(double a, double b) {
     return a + (b - a) * Utils_random_0_1();
 }
+
+double Utils_deg_to_rad(double deg) {
+    return deg * HOME_PI / 180;
+}

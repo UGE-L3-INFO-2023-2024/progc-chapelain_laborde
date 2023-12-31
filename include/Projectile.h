@@ -13,15 +13,18 @@
 #include "Mob.h"
 
 #define PROJ_SPEED 3
+#define PROJ_CONST_DMG 1
 
 typedef struct {
     HSV_Color color;
+    unsigned int level;
     double speed;
-    Mob* target;
     Coord_f pos;
+    Mob* target;
 } Projectile;
 
-Projectile Proj_init(Coord_f spawn, Mob* target);
+Projectile Proj_init(Coord_f spawn, const Gem* gem, Mob* target);
 bool Proj_next_step(Projectile* proj);
+double Proj_damage(Projectile* proj);
 
 #endif  // _PROJECTILE_H_

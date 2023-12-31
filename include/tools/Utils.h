@@ -14,6 +14,8 @@
 
 #define FRAMERATE 60
 
+#define HOME_PI 3.14159265
+
 typedef struct {
     int x;
     int y;
@@ -58,5 +60,13 @@ double Utils_random_0_1();
  * @return double between a and b
  */
 double Utils_random_uniform(double a, double b);
+
+/**
+ * @brief Return the degree equivalent of the radian angle.
+ *
+ * @param deg double degree
+ * @return double radian
+ */
+double Utils_deg_to_rad(double deg);
 
 #endif  // __UTILS_H__
