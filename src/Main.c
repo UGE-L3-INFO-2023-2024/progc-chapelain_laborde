@@ -224,9 +224,9 @@ int main(int argc, char const* argv[]) {
                            event);
         gem_buttons_action(buttons, inventory_window, &inventory, event,
                            &inventory_gem_level);
-        inventory_button_action(buttons, inventory_window, event,
-                                &inventory_page,
-                                inventory.gemstones_count / GEMS_PER_PAGE);
+        inventory_button_action(
+            buttons, inventory_window, event, &inventory_page,
+            (inventory.gemstones_count - 1) / GEMS_PER_PAGE);
         draw_map(map, map_window, &da);
         show_mana_bar(inventory.mana, 180, 810, 760, 40, 3);
         draw_inventory_menu(inventory_window, inventory, buttons,
