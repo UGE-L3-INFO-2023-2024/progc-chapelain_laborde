@@ -155,7 +155,7 @@ void draw_turn(DynamicArray* da, SubWindow window) {
  */
 void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
-        Mob mob = wave->mob_list.arr[i].mob;
+        Mob mob = *(wave->mob_list.arr[i].mob);
         MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(mob.color), 255);
         int mob_width = window.width / MAP_WIDTH;
         int mob_height = window.height / MAP_HEIGHT;

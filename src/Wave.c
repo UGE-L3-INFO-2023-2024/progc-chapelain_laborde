@@ -70,29 +70,33 @@ static void _add_time_last_mob(Wave *wave) {
     wave->next_mob = wave->next_wave;
 }
 
-static void _add_mob_type(Wave *wave, Coord_f start, Mob (*Mob_func)(int, Coord_f)) {
-    DA_add(&wave->mob_list,
-           (DynamicArray_Union){.mob = Mob_func(wave->nb_wave, start)}, MOB);
+static Error _add_mob_type(Wave *wave, Coord_f start, Mob (*Mob_func)(int, Coord_f)) {
+    Mob *mob = malloc(sizeof(Mob));
+    if (!mob) {
+        return MALLOC_ERR;
+    }
+    *mob = Mob_func(wave->nb_wave, start);
+
+    return DA_add(&wave->mob_list,
+                  (DynamicArray_Union){.mob = mob}, MOB);
 }
 
-static void _add_mob(Wave *wave, Coord_f start, Type_wave type) {
+static Error _add_mob(Wave *wave, Coord_f start, Type_wave type) {
     switch (type) {
         case BOSS:
-            _add_mob_type(wave, start, &Mob_init_boss);
-            return;
+            return _add_mob_type(wave, start, &Mob_init_boss);
         case FAST:
-            _add_mob_type(wave, start, &Mob_init_fast);
-            return;
+            return _add_mob_type(wave, start, &Mob_init_fast);
         case MASS:
-            _add_mob_type(wave, start, &Mob_init_basic);
-            return;
+            return _add_mob_type(wave, start, &Mob_init_basic);
         default:
-            _add_mob_type(wave, start, &Mob_init_basic);
-            return;
+            return _add_mob_type(wave, start, &Mob_init_basic);
     }
+    // useless
+    return CLEAR;
 }
 
-void Wave_spawn_next(Wave *wave, Coord_f start) {
+Error Wave_spawn_next(Wave *wave, Coord_f start) {
     struct timespec time;
     timespec_get(&time, TIME_UTC);
 
@@ -103,7 +107,10 @@ void Wave_spawn_next(Wave *wave, Coord_f start) {
     }
 
     if (Time_is_after(wave->next_mob, time) && wave->nb_mob_wave) {
-        _add_mob(wave, start, wave->type_mob);
+        Error err = _add_mob(wave, start, wave->type_mob);
+        if (err) {
+            return err;
+        }
         _add_time_mob(wave, time);
         wave->nb_mob_wave--;
         if (!wave->nb_mob_wave) {
@@ -111,6 +118,7 @@ void Wave_spawn_next(Wave *wave, Coord_f start) {
             wave->type_mob = UNKNOW;
         }
     }
+    return CLEAR;
 }
 
 static void _next_going_unit(Mob *mob, DynamicArray *da) {
@@ -147,6 +155,6 @@ static void _next_step_unit(Mob *mob, DynamicArray *da) {
 
 void Wave_next_step(Wave *wave, DynamicArray *turns) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
-        _next_step_unit(&(wave->mob_list.arr[i].mob), turns);
+        _next_step_unit((wave->mob_list.arr[i].mob), turns);
     }
 }

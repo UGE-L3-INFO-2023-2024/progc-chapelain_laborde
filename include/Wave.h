@@ -42,7 +42,7 @@ typedef struct {
  */
 Error Wave_init(Wave *wave);
 
-void Wave_spawn_next(Wave *wave, Coord_f start);
+Error Wave_spawn_next(Wave *wave, Coord_f start);
 
 void Wave_next_step(Wave *wave, DynamicArray *turns);
 

@@ -234,7 +234,11 @@ int main(int argc, char const* argv[]) {
         draw_mobs(&(map.mobs), map_window, NULL);
         refresh_window();
         Wave_next_step(&map.mobs, &da);
-        Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
+        err = Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
+        if (err) {
+            Error_print(err, "Wave_spawn_next");
+            return EXIT_FAILURE;
+        }
 
         MLV_delay_according_to_frame_rate();
     }

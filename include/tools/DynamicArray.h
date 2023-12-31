@@ -25,8 +25,8 @@ typedef enum {
 } Type_array;
 
 typedef union {
-    Mob mob;
-    Projectile project;
+    Mob* mob;
+    Projectile proj;
     Coord_i path;
     Tower tower;
 } DynamicArray_Union, DA_Union;
@@ -83,7 +83,7 @@ Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type);
  * @param type Type of the the value.
  * @return if there is a missmatch type or an empty DynamicArray.
  */
-Error DA_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type);
+Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val, Type_array type);
 
 /**
  * @brief Free a DynamicArray.

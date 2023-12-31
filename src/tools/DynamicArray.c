@@ -9,6 +9,7 @@
 #include "DynamicArray.h"
 
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -71,7 +72,7 @@ Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
             da->arr[da->real_len++].mob = val.mob;
             break;
         case PROJECTILE:
-            da->arr[da->real_len++].project = val.project;
+            da->arr[da->real_len++].proj = val.proj;
             break;
         case TOWER:
             da->arr[da->real_len++].tower = val.tower;
@@ -82,7 +83,7 @@ Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     return CLEAR;
 }
 
-Error DA_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type) {
+Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val, Type_array type) {
     assert(da);
     assert(da->arr);
 
@@ -102,7 +103,7 @@ Error DA_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type) {
             val->mob = da->arr[--(da->real_len)].mob;
             break;
         case PROJECTILE:
-            val->project = da->arr[--(da->real_len)].project;
+            val->proj = da->arr[--(da->real_len)].proj;
             break;
         case TOWER:
             val->tower = da->arr[--(da->real_len)].tower;
@@ -115,6 +116,11 @@ Error DA_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type) {
 }
 
 void DA_free(DynamicArray da) {
+    if (da.type == MOB) {
+        for (int i = 0; i < da.real_len; i++) {
+            free(da.arr[i].mob);
+        }
+    }
     free(da.arr);
 }
 
@@ -127,7 +133,7 @@ void DA_print_all(DynamicArray* da) {
                        da->arr[i].path.y);
                 break;
             case MOB:
-                printf("| hp mob: %d |\n", da->arr[i].mob.current_hp);
+                printf("| hp mob: %d |\n", da->arr[i].mob->current_hp);
                 break;
             case PROJECTILE:
                 printf("| project: WIP |\n");

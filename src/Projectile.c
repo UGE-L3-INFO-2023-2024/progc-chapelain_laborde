@@ -39,7 +39,7 @@ bool Proj_next_step(Projectile* proj) {
     return true;
 }
 
-double damage(Projectile* proj) {
+double Proj_damage(Projectile* proj) {
     return PROJ_CONST_DMG *
            pow(2, proj->level) *
            (1 - cos(Utils_deg_to_rad(proj->color - proj->target->color)) / 2);

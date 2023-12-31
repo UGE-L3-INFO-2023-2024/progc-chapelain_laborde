@@ -32,6 +32,7 @@ typedef struct {
     Wave mobs;
     DynamicArray towers;
     DynamicArray traps;
+    DynamicArray projs;
 } Map;
 
 /**
@@ -63,14 +64,14 @@ Cell Map_init_cell(Coord_i coord);
  */
 void Map_print(Map* map);
 
-/**
- * @brief Check thre is a path in the neighbour of the given cell.
- *
- * @param map Map to check.
- * @param pos Position of the cell.
- * @param ignore Direction to ignore. (in case of a turn)
- */
-Direction Map_got_next_path(Map* map, Coord_i pos, Direction ignore);
+// /**
+//  * @brief Check thre is a path in the neighbour of the given cell.
+//  *
+//  * @param map Map to check.
+//  * @param pos Position of the cell.
+//  * @param ignore Direction to ignore. (in case of a turn)
+//  */
+// Direction Map_got_next_path(Map* map, Coord_i pos, Direction ignore);
 
 Error Map_init_towers(Map* map);
 

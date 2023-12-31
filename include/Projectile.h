@@ -10,6 +10,7 @@
 #define __PROJECTILE_H__
 
 #include "Color.h"
+#include "Gemstone.h"
 #include "Mob.h"
 
 #define PROJ_SPEED 3
