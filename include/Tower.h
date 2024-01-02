@@ -14,6 +14,10 @@
 #include "Gemstone.h"
 #include "Utils.h"
 
+#define TOWER_SHOT_COOLDOWN_MS 500
+#define TOWER_GEM_COOLDOWN_MS 2000
+#define TOWER_RANGE 3
+
 typedef struct {
     Gem* gem;
     struct timespec available_at;

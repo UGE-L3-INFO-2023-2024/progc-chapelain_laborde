@@ -12,6 +12,12 @@
 #include <stdio.h>
 #include <time.h>
 
+struct timespec Time_get() {
+    struct timespec time;
+    timespec_get(&time, TIME_UTC);
+    return time;
+}
+
 static long _ms_to_sec(long ms) {
     return ms / 1000;
 }

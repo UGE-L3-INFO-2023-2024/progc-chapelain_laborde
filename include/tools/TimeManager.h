@@ -38,6 +38,18 @@ struct timespec Time_add_ms(struct timespec time, long add_ms);
  */
 bool Time_is_after(struct timespec time, struct timespec to_compare);
 
+/**
+ * @brief Print the time given (Debug function).
+ *
+ * @param start
+ */
 void Time_print_ms(struct timespec start);
+
+/**
+ * @brief Get actual time.
+ *
+ * @return struct timespec
+ */
+struct timespec Time_get();
 
 #endif  // __TIME_MANAGER_H__

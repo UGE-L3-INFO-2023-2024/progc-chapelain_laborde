@@ -8,12 +8,17 @@
 
 #include "Map.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "DynamicArray.h"
 #include "Projectile.h"
+#include "TimeManager.h"
 #include "Utils.h"
+
+// temp to remove when gem initialized
+#include "Gemstone.h"
 
 Map Map_init(void) {
     return (Map){
@@ -42,6 +47,11 @@ Error Map_init_towers(Map* map) {
     return err;
 }
 
+Error Map_init_projs(Map* map) {
+    Error err = DA_init(&map->projs, 40, PROJECTILE);
+    return err;
+}
+
 Error Map_add_tower(Map* map, Tower tower) {
     map->board[tower.coord.y][tower.coord.x].have_tower = true;
     return DA_add(&map->towers, (DA_Union){.tower = tower}, TOWER);
@@ -57,26 +67,47 @@ Tower* Map_get_tower(Map* map, Coord_i coord) {
     return NULL;
 }
 
-// void Map_towers_shoot(Map* map) {
-//     for (int i = 0; i < map->towers.real_len; i++) {
-//         _tower_shoot(&map->towers.arr[i].tower);
-//     }
-// }
+bool static _tower_shoot(Tower tower, DynamicArray* mobs, DynamicArray* projs) {
+    Mob* mob = NULL;
+    int index_target = -1, hp_target = 0;
+    for (int i = 0; i < mobs->real_len; i++) {
+        mob = mobs->arr[i].mob;
+        if (mob->current_hp >= hp_target &&
+            Utils_coord_f_distance(Utils_coord_i_to_f_center(tower.coord), mob->pos) < TOWER_RANGE) {
+            index_target = i;
+            hp_target = mob->current_hp;
+        }
+    }
+    if (index_target != -1) {
+        Gemstone gem = Gemstone_init();
+        Projectile proj = Proj_init(Utils_coord_i_to_f_center(tower.coord),
+                                    &gem, (mobs->arr[index_target].mob));
+        DA_add(projs, (DynamicArray_Union){.proj = proj}, PROJECTILE);
+    }
+    return index_target != -1;
+}
 
-// void static _tower_shoot(Tower tower, DynamicArray* mobs, DynamicArray* projs) {
-//     Mob mob = mobs->arr[0].mob;
-//     int index_target = 0, hp_target = mob.current_hp;
-//     for (int i = 1; i < mobs->real_len; i++) {
-//         mob = mobs->arr[i].mob;
-//         if (mob.current_hp > hp_target) {
-//             index_target = i;
-//             hp_target = mob.current_hp;
-//         }
-//     }
-//     Projectile proj = Proj_init(Utils_coord_i_to_f_center(tower.coord),
-//                                 tower.gem, &(mobs->arr[index_target].mob));
-//     DA_add(projs, (DynamicArray_Union){.proj = });
-// }
+void Map_towers_shoot(Map* map) {
+    for (int i = 0; i < map->towers.real_len; i++) {
+        Tower tower = map->towers.arr[i].tower;
+        //  add after check tower.gem
+        if (Time_is_after(tower.available_at, Time_get()) &&
+            _tower_shoot(map->towers.arr[i].tower, &map->mobs.mob_list, &map->projs)) {
+            fprintf(stderr, "tower %d shoot -> change cooldown\n", i);
+            map->towers.arr[i].tower.available_at = Time_add_ms(Time_get(), TOWER_SHOT_COOLDOWN_MS);
+        }
+    }
+}
+
+void Map_actualise_proj(Map* map) {
+    for (int i = 0; i < map->projs.real_len; i++) {
+        if (!Proj_next_step(&(map->projs.arr[i].proj))) {
+            DA_remove_index(&map->projs, i);
+            --i;  // to check new placed proj
+            // DA_remove_index move last to index
+        }
+    }
+}
 
 void Map_print(Map* map) {
     printf("------------------------------\n");

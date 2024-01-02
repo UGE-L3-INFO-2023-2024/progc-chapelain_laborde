@@ -173,6 +173,28 @@ void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img) {
 }
 
 /**
+ * @brief Draw a projectile of the map.
+ *
+ * @param wave Wave to draw.
+ * @param window Window to draw on.
+ * @param img Image to draw instead of a colored circle.
+ */
+void draw_projectile(DynamicArray* projs, SubWindow window, MLV_Image* img) {
+    for (int i = 0; i < projs->real_len; i++) {
+        Projectile proj = (projs->arr[i].proj);
+        MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(proj.color), 255);
+        int proj_width = window.width / MAP_WIDTH;
+        int proj_height = window.height / MAP_HEIGHT;
+        if (img)
+            MLV_draw_image(img, proj.pos.x * proj_width, proj.pos.y * proj_height);
+        else
+            MLV_draw_filled_circle(proj.pos.x * proj_width,
+                                   proj.pos.y * proj_height, proj_width / 6,
+                                   color);
+    }
+}
+
+/**
  * @brief Draw the map grid according to the window size.
  *
  * @param window Window to get the size of.
@@ -210,6 +232,7 @@ void draw_map(Map map, SubWindow map_window, DynamicArray* da) {
     }
     draw_castle(map.castle, map_window, NULL);
     draw_nest(map.nest, map_window, NULL);
+    draw_projectile(&map.projs, map_window, NULL);
     // draw_turn(da, map_window, NULL);
     draw_grid(map_window, MLV_COLOR_BLACK, 2);
 }

@@ -197,6 +197,15 @@ int main(int argc, char const* argv[]) {
         return EXIT_FAILURE;
     }
 
+    err = Map_init_projs(&map);
+    if (err) {
+        Error_print(err, "Wave_Init");
+        DA_free(da);
+        DA_free(map.towers);
+        DA_free(map.mobs.mob_list);
+        return EXIT_FAILURE;
+    }
+
     SubWindow map_window = SubWindow_init(&window, (Coord_f){0, 0}, 1120, 880);
     SubWindow inventory_window =
         SubWindow_init(&window, (Coord_f){1120, 0}, 280, 880);
@@ -234,6 +243,8 @@ int main(int argc, char const* argv[]) {
         draw_mobs(&(map.mobs), map_window, NULL);
         refresh_window();
         Wave_next_step(&map.mobs, &da);
+        Map_towers_shoot(&map);
+        Map_actualise_proj(&map);
         err = Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
         if (err) {
             Error_print(err, "Wave_spawn_next");

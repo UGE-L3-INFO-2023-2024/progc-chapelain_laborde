@@ -6,19 +6,18 @@
  *
  */
 
-#define _XOPEN_SOURCE 600
-
 #include "Tower.h"
 
-#include <time.h>
+#include <stdlib.h>
 
+#include "Gemstone.h"
 #include "TimeManager.h"
 
 /* Create a tower object */
 Tower Tower_init(Coord_i coord) {
     Tower tower;
     tower.gem = NULL;
-    tower.available_at = (struct timespec){0, 0};
+    tower.available_at = Time_get();
     tower.coord = coord;
     return tower;
 }
@@ -29,8 +28,7 @@ int Tower_add_gem(Tower* tower, Gem* gem) {
         return 0;
     }
     tower->gem = gem;
-    clock_gettime(CLOCK_REALTIME, &tower->available_at);
-    tower->available_at.tv_sec += 2;
+    tower->available_at = Time_add_ms(Time_get(), TOWER_GEM_COOLDOWN_MS);
     return 1;
 }
 

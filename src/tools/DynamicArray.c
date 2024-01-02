@@ -30,7 +30,7 @@ Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
 Error DA_realloc(DynamicArray* da) {
     int new_size = da->max_len * DA_MUL_SIZE_ALLOC;
     printf("realloc before %d after %d\n", da->max_len, new_size);
-    printf("realloc size %ld\n", new_size * sizeof(DA_Union));
+    printf("realloc size %ld type : %d\n", new_size * sizeof(DA_Union), da->type);
     DA_Union* tmp = realloc(da->arr, new_size * sizeof(DA_Union));
     if (!tmp) {
         free(da->arr);
@@ -112,6 +112,21 @@ Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val, Type_array type)
             return DYNA_ARR_ERR_TYPE;
     }
 
+    return CLEAR;
+}
+
+Error DA_remove_index(DynamicArray* da, int index) {
+    assert(da);
+    assert(da->arr);
+
+    if (!da->real_len) {
+        return DYNA_ARR_ERR_EMPTY;
+    }
+    if (index > da->real_len || index < 0) {
+        return DYNA_ARR_ERR_SIZE;
+    }
+
+    da->arr[index] = da->arr[--(da->real_len)];
     return CLEAR;
 }
 

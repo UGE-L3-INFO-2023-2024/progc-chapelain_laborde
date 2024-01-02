@@ -75,8 +75,14 @@ void Map_print(Map* map);
 
 Error Map_init_towers(Map* map);
 
+Error Map_init_projs(Map* map);
+
 Error Map_add_tower(Map* map, Tower tower);
 
 Tower* Map_get_tower(Map* map, Coord_i coord);
+
+void Map_towers_shoot(Map* map);
+
+void Map_actualise_proj(Map* map);
 
 #endif  // __MAP_H__

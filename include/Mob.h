@@ -15,7 +15,7 @@
 #include "Element.h"
 #include "Utils.h"
 
-#define MOB_CONST_HP 1
+#define MOB_CONST_HP 12
 
 typedef struct {
     unsigned int current_hp;

@@ -29,7 +29,9 @@ typedef enum {
     DYNA_ARR_ERR_ALLOC = 1,
     DYNA_ARR_ERR_TYPE = 2,
     DYNA_ARR_ERR_EMPTY = 3,
-    MALLOC_ERR = 4,
+    DYNA_ARR_ERR_SIZE = 4,
+    MALLOC_ERR = 5,
+
 } Error;
 
 /*************/
