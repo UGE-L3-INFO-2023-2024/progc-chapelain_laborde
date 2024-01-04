@@ -28,14 +28,14 @@ Projectile Proj_init(Coord_f spawn, const Gem* gem, Mob* target) {
 
 bool Proj_next_step(Projectile* proj) {
     double dist = Utils_coord_f_distance(proj->pos, proj->target->pos);
-    if (dist < proj->speed) {
+    if (dist <= proj->speed) {
         return false;
     }
     Coord_f vect = {
         .x = (proj->target->pos.x - proj->pos.x) / dist,
         .y = (proj->target->pos.y - proj->pos.y) / dist};
-    proj->pos.x += vect.x;
-    proj->pos.y += vect.y;
+    proj->pos.x += vect.x * proj->speed;
+    proj->pos.y += vect.y * proj->speed;
     return true;
 }
 

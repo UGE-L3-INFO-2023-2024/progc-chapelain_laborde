@@ -93,7 +93,6 @@ void Map_towers_shoot(Map* map) {
         //  add after check tower.gem
         if (Time_is_after(tower.available_at, Time_get()) &&
             _tower_shoot(map->towers.arr[i].tower, &map->mobs.mob_list, &map->projs)) {
-            fprintf(stderr, "tower %d shoot -> change cooldown\n", i);
             map->towers.arr[i].tower.available_at = Time_add_ms(Time_get(), TOWER_SHOT_COOLDOWN_MS);
         }
     }
