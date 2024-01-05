@@ -2,7 +2,7 @@
  * @file Mob.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 2023-11-15
+ * @date 15-11-2023
  *
  */
 
@@ -17,6 +17,10 @@
 
 #define MOB_CONST_HP 12
 
+/**************/
+/* Structures */
+/**************/
+
 typedef struct {
     unsigned int current_hp;
     unsigned int max_hp;
@@ -26,6 +30,10 @@ typedef struct {
     Element apply_elem;
     Coord_f going;
 } Mob;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Initialize a mob.

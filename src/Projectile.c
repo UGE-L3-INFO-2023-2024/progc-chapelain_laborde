@@ -2,7 +2,7 @@
  * @file Projectile.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 26/12/2023
+ * @date 26-12-2023
  *
  */
 
@@ -28,12 +28,15 @@ Projectile Proj_init(Coord_f spawn, const Gem* gem, Mob* target) {
 
 bool Proj_next_step(Projectile* proj) {
     double dist = Utils_coord_f_distance(proj->pos, proj->target->pos);
+    // to close to the target
     if (dist <= proj->speed) {
         return false;
     }
     Coord_f vect = {
         .x = (proj->target->pos.x - proj->pos.x) / dist,
         .y = (proj->target->pos.y - proj->pos.y) / dist};
+
+    // cross product with the speed (vect * speed / 1)
     proj->pos.x += vect.x * proj->speed;
     proj->pos.y += vect.y * proj->speed;
     return true;

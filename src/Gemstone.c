@@ -2,13 +2,14 @@
  * @file Gemstone.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 2023-11-16
+ * @date 16-11-2023
  *
  */
 
 #include "Gemstone.h"
 
 #include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
 /* Convert a gemstone to an element */
@@ -27,13 +28,6 @@ Element Gemstone_get_element(Gemstone gemstone) {
     return element;
 }
 
-/* Get the type of a gemstone */
-GemType Gemstone_get_type(Gemstone gemstone) {
-    if (Gemstone_get_element(gemstone) != NONE)
-        return PURE;
-    return MIXED;
-}
-
 /* Generate a pure gemstone */
 Gemstone Gemstone_init() {
     Gemstone gemstone;
@@ -42,21 +36,27 @@ Gemstone Gemstone_init() {
     } while (Gemstone_get_element(gemstone) == NONE);
     gemstone.level = 1;
     gemstone.multiplier = 1;
+    gemstone.type = PURE;
     return gemstone;
 }
 
 /* Merge two gemstone */
-void Gemstone_merge(Gemstone *gemstone, Gemstone *other) {
-    assert(gemstone->level != other->level);
-    gemstone->level += 1;
-    gemstone->color = (gemstone->color + other->color) / 2;
-    if (Gemstone_get_type(*gemstone) == MIXED) {
+bool Gemstone_merge(Gemstone *gem, Gemstone *other) {
+    if (gem->level != other->level) {
+        return false;
+    }
+    gem->level += 1;
+    gem->color = (gem->color + other->color) / 2;
+    // not same color = MIXED
+    if (Gemstone_get_element(*gem) !=
+        Gemstone_get_element(*other)) {
+        gem->type = MIXED;
         int nb = rand() % 10;
         if (nb == 9) {
-            gemstone->multiplier *= 4;
+            gem->multiplier *= 4;
         } else {
-            gemstone->multiplier *= 2;
+            gem->multiplier *= 2;
         }
     }
-    free(other);
+    return true;
 }

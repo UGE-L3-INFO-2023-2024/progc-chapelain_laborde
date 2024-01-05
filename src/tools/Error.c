@@ -12,9 +12,11 @@
 
 void Error_print(Error err, char* func) {
     char* error_msg[NB_ERRORS] = {
-        "Allocation error", "Stack is empty", "Not enough value",
-        "Division by 0",    "Modulo by 0",    "Negative factorial",
-        "Illegal token",
+        "Dynamic Array Allocation error",
+        "Dynamic Array Wrong Type",
+        "Dynamic Array Empty",
+        "Dynamic Array Wrong Size",
+        "Malloc error",
     };
 
     fprintf(stderr, "%s%s in function : %s %s\n", RED, error_msg[err - 1],

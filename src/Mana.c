@@ -2,7 +2,7 @@
  * @file Map.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 2023-11-15
+ * @date 15-11-2023
  *
  */
 
@@ -24,7 +24,8 @@ int Mana_max(int level) {
 }
 
 bool Mana_pool_can_be_upgrade(ManaPool pool) {
-    return 500 * pow(1.4, pool.level) <= pool.mana_real;
+    // 25% of max mana for an upgrade
+    return pool.mana_max / 4 <= pool.mana_real;
 }
 
 bool Mana_pool_upgrade(ManaPool* pool) {
@@ -32,7 +33,7 @@ bool Mana_pool_upgrade(ManaPool* pool) {
         return false;
     }
     pool->level++;
-    pool->mana_real -= 500 * pow(1.4, pool->level);
+    pool->mana_real -= pool->mana_max / 4;
     pool->mana_max = Mana_max(pool->level);
     return true;
 }

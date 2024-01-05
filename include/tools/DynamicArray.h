@@ -2,7 +2,7 @@
  * @file DynamicArray.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 19/11/2023
+ * @date 19-11-2023
  *
  */
 
@@ -16,6 +16,10 @@
 #include "Utils.h"
 
 #define DA_MUL_SIZE_ALLOC 1.5
+
+/**************/
+/* Structures */
+/**************/
 
 typedef enum {
     PATH,
@@ -37,6 +41,10 @@ typedef struct {
     Type_array type;
     DA_Union* arr;
 } DynamicArray;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Initialize a DynamicArray.
@@ -103,7 +111,7 @@ Error DA_remove_index(DynamicArray* da, int index);
 void DA_free(DynamicArray da);
 
 /**
- * @brief Print a DynamicArray.
+ * @brief Print a DynamicArray. (Debug Function)
  *
  * @param da DynamicArray to print.
  */

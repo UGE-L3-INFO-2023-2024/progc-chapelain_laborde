@@ -2,7 +2,7 @@
  * @file Utils.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 2023-11-16
+ * @date 16-11-2023
  *
  */
 
@@ -10,7 +10,6 @@
 
 #include <math.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 int Utils_modulo(int a, int b) {
@@ -23,6 +22,17 @@ int Utils_sum_arr_i(int arr[], int len) {
         acc += arr[i];
     }
     return acc;
+}
+
+int Utils_weighted_select(int arr[], int val, int len) {
+    int acc = 0;
+    for (int i = 0; i < len; i++) {
+        acc += arr[i];
+        if (acc >= val) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 Coord_i Utils_coord_from_dir_len(Coord_i origin, Direction dir, int len) {
@@ -38,23 +48,17 @@ Coord_i Utils_coord_from_dir_len(Coord_i origin, Direction dir, int len) {
     };
 }
 
-int Utils_weighted_select(int arr[], int val, int len) {
-    int acc = 0;
-    for (int i = 0; i < len; i++) {
-        acc += arr[i];
-        if (acc >= val) {
-            return i;
-        }
-    }
-    return -1;
+bool Utils_is_in_middle(Coord_f coord_mid, Coord_f coord_other,
+                        float margin) {
+    return ((coord_other.x > coord_mid.x - margin &&
+             coord_other.x < coord_mid.x + margin &&
+             coord_other.y > coord_mid.y - margin &&
+             coord_other.y < coord_mid.y + margin));
 }
 
-bool Utils_is_in_middle(Coord_f coord_mid, Coord_f coord_other, float margin) {
-    return ((coord_other.x > coord_mid.x - margin && coord_other.x < coord_mid.x + margin &&
-             coord_other.y > coord_mid.y - margin && coord_other.y < coord_mid.y + margin));
-}
-
-Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other, float margin) {
+Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other,
+                        float margin) {
+    // Direction (Priority: EAST, WEST, SOUTH, NORTH)
     if (coord_other.x < coord_mid.x - margin) {
         return EAST;
     }
@@ -67,6 +71,7 @@ Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other, float margin) {
     if (coord_other.y > coord_mid.y) {
         return NORTH;
     }
+    // to close to coord_mid with the margin
     return NO_DIR;
 }
 

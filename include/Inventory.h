@@ -1,9 +1,21 @@
+/**
+ * @file Inventory.h
+ * @author Laborde Quentin
+ * @brief
+ * @date 11-12-2024
+ *
+ */
+
 #ifndef __INVENTORY_H__
 #define __INVENTORY_H__
 
 #include "Error.h"
 #include "Gemstone.h"
 #include "Mana.h"
+
+/**************/
+/* Structures */
+/**************/
 
 /**
  * @brief The inventory with the gemstones and the mana pool.
@@ -17,6 +29,10 @@ typedef struct {
     Gemstone* fusion[2];               // The two gemstones to fuse.
     ManaPool mana;                     // The mana pool.
 } Inventory;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Initialize an inventory.

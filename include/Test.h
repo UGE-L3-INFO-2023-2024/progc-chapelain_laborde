@@ -2,7 +2,7 @@
  * @file Test.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 2023-11-15
+ * @date 15-11-2023
  *
  */
 
@@ -10,6 +10,10 @@
 #define __TEST_H__
 
 #include "GraphicField.h"
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Test the graphic field.

@@ -8,7 +8,6 @@
 
 #include "Wave.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -21,18 +20,21 @@
 Error Wave_init(Wave *wave) {
     wave->nb_wave = 0;
     wave->nb_mob_wave = 0;
-    timespec_get(&(wave->next_mob), TIME_UTC);
+    wave->next_mob = Time_get();
     wave->next_wave = wave->next_mob;
-    // timespec_get(&(wave->next_wave), TIME_UTC);
-    // wave->next_mob = (struct timespec){.tv_sec = -1, .tv_nsec = -1};
-    // wave->next_wave = (struct timespec){.tv_sec = -1, .tv_nsec = -1};
     Error err = DA_init(&wave->mob_list, 24, MOB);
     wave->type_mob = UNKNOW;
     return err;
 }
 
+/**
+ * @brief Randomly choose the type of the next wave.
+ *
+ * @param wave Wave to spawn.
+ */
 static void _random_type_wave(Wave *wave) {
     int rand_nb = rand() % 10;
+    // in case of boss in the 5 first waves
     while (rand_nb == 9 && wave->nb_wave < 5) {
         rand_nb = rand() % 10;
     }
@@ -51,6 +53,13 @@ static void _random_type_wave(Wave *wave) {
     }
 }
 
+/**
+ * @brief Add the time for the next mob.
+ *
+ * @param wave Wave to spawn.
+ * @param last_spawn Last time a mob was spawn.
+ *
+ */
 static void _add_time_mob(Wave *wave, struct timespec last_spawn) {
     switch (wave->type_mob) {
         case UNKNOW:
@@ -66,10 +75,25 @@ static void _add_time_mob(Wave *wave, struct timespec last_spawn) {
     }
 }
 
+/**
+ * @brief Add the time for the last mob.
+ *
+ * @param wave Wave to spawn.
+ *
+ */
 static void _add_time_last_mob(Wave *wave) {
     wave->next_mob = wave->next_wave;
 }
 
+/**
+ * @brief Add a type mob to the wave.
+ *  general function -> _add_mob
+ *
+ * @param wave Wave to spawn.
+ * @param start Start of the path.
+ * @param Mob_func Function to initialize the mob.
+ * @return Error (realloc DynamicArray mob or alloc mob)
+ */
 static Error _add_mob_type(Wave *wave, Coord_f start, Mob (*Mob_func)(int, Coord_f)) {
     Mob *mob = malloc(sizeof(Mob));
     if (!mob) {
@@ -81,6 +105,14 @@ static Error _add_mob_type(Wave *wave, Coord_f start, Mob (*Mob_func)(int, Coord
                   (DynamicArray_Union){.mob = mob}, MOB);
 }
 
+/**
+ * @brief Add a mob to the wave.
+ *
+ * @param wave Wave to spawn.
+ * @param start Start of the path.
+ * @param type Type of the mob.
+ * @return Error (realloc DynamicArray mob or alloc mob)
+ */
 static Error _add_mob(Wave *wave, Coord_f start, Type_wave type) {
     switch (type) {
         case BOSS:
@@ -121,13 +153,22 @@ Error Wave_spawn_next(Wave *wave, Coord_f start) {
     return CLEAR;
 }
 
+/**
+ * @brief Get the next going of the mob.
+ *
+ * @param mob Pointer to the mob.
+ * @param da DynamicArray of the path.
+ */
 static void _next_going_unit(Mob *mob, DynamicArray *da) {
+    // first time
     if (mob->going.x == -1 && mob->going.y == -1) {
         mob->going = Utils_coord_i_to_f_center(da->arr[1].path);  // 1 beacause 0 is the start
         return;
     }
+
     Coord_i mob_going = Utils_coord_f_to_i(mob->going);
     for (int i = 0; i < da->max_len; i++) {
+        // in the corner
         if (mob_going.x == da->arr[i].path.x &&
             mob_going.y == da->arr[i].path.y) {
             if (i != da->real_len - 1) {

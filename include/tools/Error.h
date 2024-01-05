@@ -2,7 +2,7 @@
  * @file Error.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 19/11/2023
+ * @date 19-11-2023
  *
  */
 
@@ -22,7 +22,7 @@
 /* Structures */
 /**************/
 
-#define NB_ERRORS 7
+#define NB_ERRORS 5
 
 typedef enum {
     CLEAR = 0,

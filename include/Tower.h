@@ -2,7 +2,7 @@
  * @file Tower.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 2023-11-16
+ * @date 16-11-2023
  *
  */
 
@@ -18,11 +18,19 @@
 #define TOWER_GEM_COOLDOWN_MS 2000
 #define TOWER_RANGE 3
 
+/**************/
+/* Structures */
+/**************/
+
 typedef struct {
     Gem* gem;
     struct timespec available_at;
     Coord_i coord;
 } Tower;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Create a tower object

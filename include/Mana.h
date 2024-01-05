@@ -2,7 +2,7 @@
  * @file Mana.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 30-10-2023
  *
  */
 
@@ -11,13 +11,21 @@
 
 #include <stdbool.h>
 
+#define MANA_START 150
+
+/**************/
+/* Structures */
+/**************/
+
 typedef struct {
     unsigned int level;
     unsigned int mana_real;
     unsigned int mana_max;
 } ManaPool;
 
-#define MANA_START 150
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Initialize a ManaPool.

@@ -17,6 +17,10 @@
 
 #define TIME_NEXT_WAVE 35000
 
+/**************/
+/* Structures */
+/**************/
+
 typedef enum {
     BASIC,
     MASS,
@@ -34,6 +38,10 @@ typedef struct {
     int nb_wave;
 } Wave;
 
+/*************/
+/* Functions */
+/*************/
+
 /**
  * @brief Initialize a Wave.
  *
@@ -42,8 +50,21 @@ typedef struct {
  */
 Error Wave_init(Wave *wave);
 
+/**
+ * @brief Spawn the next mob of the wave.
+ *
+ * @param wave Wave to spawn.
+ * @param start Start of the path.
+ * @return Error
+ */
 Error Wave_spawn_next(Wave *wave, Coord_f start);
 
+/**
+ * @brief Move the wave to the next step.
+ *
+ * @param wave Wave to move.
+ * @param turns Turns of the path.
+ */
 void Wave_next_step(Wave *wave, DynamicArray *turns);
 
 #endif  // _WAVE_H_

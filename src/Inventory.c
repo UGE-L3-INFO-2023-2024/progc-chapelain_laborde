@@ -1,3 +1,10 @@
+/**
+ * @file Inventory.c
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief
+ * @date 11-12-2024
+ *
+ */
 #include "Inventory.h"
 
 #include <stdlib.h>
