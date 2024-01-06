@@ -184,6 +184,12 @@ static void _next_going_unit(Mob *mob, DynamicArray *da) {
     }
 }
 
+/**
+ * @brief Move the mob to the next step.
+ *
+ * @param mob Pointer to the mob.
+ * @param da DynamicArray of the path.
+ */
 static void _next_step_unit(Mob *mob, DynamicArray *da) {
     if ((mob->going.x == -1 && mob->going.y == -1) ||
         Utils_is_in_middle(mob->going, mob->pos, 0.05)) {

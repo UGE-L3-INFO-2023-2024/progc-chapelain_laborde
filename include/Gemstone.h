@@ -35,7 +35,6 @@ typedef struct {
     GemType type;
     HSV_Color color;
     unsigned int level;
-    unsigned short multiplier;
 } Gem, Gemstone;
 
 /*************/

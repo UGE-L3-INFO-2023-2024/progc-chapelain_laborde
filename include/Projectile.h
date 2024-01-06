@@ -21,7 +21,7 @@
 /**************/
 
 typedef struct {
-    HSV_Color color;
+    Gemstone gem;
     unsigned int level;
     double speed;
     Coord_f pos;
@@ -57,5 +57,13 @@ bool Proj_next_step(Projectile* proj);
  * @return Damage of the projectile.
  */
 double Proj_damage(Projectile* proj);
+
+/**
+ * @brief Copy a projectile.
+ *
+ * @param projO Projectile to copy.
+ * @return Deep Copied projectile.
+ */
+Gemstone Gemstone_copy(Gem* gemO);
 
 #endif  // _PROJECTILE_H_

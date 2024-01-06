@@ -35,7 +35,6 @@ Gemstone Gemstone_init() {
         gemstone.color = rand() % 360;
     } while (Gemstone_get_element(gemstone) == NONE);
     gemstone.level = 1;
-    gemstone.multiplier = 1;
     gemstone.type = PURE;
     return gemstone;
 }
@@ -51,12 +50,14 @@ bool Gemstone_merge(Gemstone *gem, Gemstone *other) {
     if (Gemstone_get_element(*gem) !=
         Gemstone_get_element(*other)) {
         gem->type = MIXED;
-        int nb = rand() % 10;
-        if (nb == 9) {
-            gem->multiplier *= 4;
-        } else {
-            gem->multiplier *= 2;
-        }
     }
     return true;
+}
+
+Gemstone Gemstone_copy(Gem *gemO) {
+    return (Gemstone){
+        .type = gemO->type,
+        .color = gemO->color,
+        .level = gemO->level,
+    };
 }

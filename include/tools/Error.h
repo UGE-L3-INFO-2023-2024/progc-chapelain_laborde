@@ -31,7 +31,6 @@ typedef enum {
     DYNA_ARR_ERR_EMPTY = 3,
     DYNA_ARR_ERR_SIZE = 4,
     MALLOC_ERR = 5,
-
 } Error;
 
 /*************/
