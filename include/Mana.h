@@ -66,7 +66,7 @@ bool Mana_pool_upgrade(ManaPool* pool);
  *
  * @param pool ManaPool to check.
  * @param price Price of the item.
- * @return true if can't buy,
+ * @return true if can buy,
  * @return false otherwise.
  */
 bool Mana_buy(ManaPool* pool, int price);

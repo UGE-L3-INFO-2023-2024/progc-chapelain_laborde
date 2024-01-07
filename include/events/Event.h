@@ -1,3 +1,11 @@
+/**
+ * @file Event.h
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Get event from the window.
+ * @date 07-01-2024
+ *
+ */
+
 #ifndef __EVENT_H__
 #define __EVENT_H__
 

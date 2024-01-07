@@ -1,8 +1,8 @@
 /**
  * @file Graphic.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief This file contains all the functions to draw on the screen.
+ * @date 07-01-2024
  *
  */
 
@@ -119,6 +119,11 @@ void draw_centered_text(unsigned int x, unsigned int y, const char* text,
  */
 void clear_window(Window window);
 
+/**
+ * @brief This function refresh the window of a change.
+ * For more information, see the MLV_actualise_window function.
+ *
+ */
 void refresh_window();
 
 #endif  // __GRAPHIC_H__

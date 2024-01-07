@@ -1,3 +1,11 @@
+/**
+ * @file Font.h
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Font management.
+ * @date 07-01-2024
+ *
+ */
+
 #ifndef __FONT_H__
 #define __FONT_H__
 
