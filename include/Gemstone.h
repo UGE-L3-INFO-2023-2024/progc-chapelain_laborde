@@ -47,7 +47,7 @@ typedef struct {
  * @param gemstone Gemstone to convert
  * @return Element of the gemstone
  */
-Element Gemstone_get_element(Gemstone gemstone);
+Element_Type Gemstone_get_element(Gemstone gemstone);
 
 /**
  * @brief Create a pure Gemstone object with random color.
@@ -66,5 +66,13 @@ Gemstone Gemstone_init(int level);
  * @return true if the merge is possible
  */
 bool Gemstone_merge(Gemstone *gemstone, Gemstone *other);
+
+/**
+ * @brief Copy a gem.
+ *
+ * @param projO gem to copy.
+ * @return Deep Copied gem.
+ */
+Gemstone Gemstone_copy(Gem *gemO);
 
 #endif  // __GEMSTONE_H__

@@ -16,7 +16,7 @@
 #include "Mob.h"
 #include "Utils.h"
 
-Projectile Proj_init(Coord_f spawn, const Gem* gem, Mob* target) {
+Projectile Proj_init(Coord_f spawn, Gem* gem, Mob* target) {
     return (Projectile){
         .gem = Gemstone_copy(gem),
         .speed = PROJ_SPEED / (double)FRAMERATE,
@@ -42,7 +42,7 @@ bool Proj_next_step(Projectile* proj) {
     return true;
 }
 
-double Proj_damage(Projectile* proj) {
+double Proj_damage_raw(Projectile* proj) {
     return PROJ_CONST_DMG *
            pow(2, proj->level) *
            (1 - cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) / 2);
