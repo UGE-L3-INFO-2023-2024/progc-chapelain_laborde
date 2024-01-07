@@ -60,3 +60,17 @@ Gemstone Gemstone_copy(Gem *gemO) {
         .level = gemO->level,
     };
 }
+
+Gemstone *Gemstone_copy_ptr(Gem *gemO) {
+    Gemstone *gem = malloc(sizeof(Gemstone));
+    if (gem == NULL) {
+        return NULL;
+    }
+    *gem = Gemstone_copy(gemO);
+    return gem;
+}
+
+bool Gemstone_equal(Gemstone gemstone, Gemstone other) {
+    return gemstone.type == other.type && gemstone.color == other.color &&
+           gemstone.level == other.level;
+}

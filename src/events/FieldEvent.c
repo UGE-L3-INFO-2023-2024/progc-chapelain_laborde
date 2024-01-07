@@ -18,7 +18,7 @@ static Tower* hovered_tower(SubWindow window, Event event, Map map) {
         get_coord_on_map(map, window, (Coord_i){event.mouse.x, event.mouse.y});
     for (int i = 0; i < map.towers.real_len; i++) {
         if (Coord_i_equal(map.towers.arr[i].tower.coord, coord)) {
-            return &(map.towers.arr[i].tower);
+            return (Tower*)DA_get(&map.towers, i);
         }
     }
     return NULL;

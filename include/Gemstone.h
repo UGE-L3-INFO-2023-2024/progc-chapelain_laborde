@@ -75,4 +75,24 @@ bool Gemstone_merge(Gemstone *gemstone, Gemstone *other);
  */
 Gemstone Gemstone_copy(Gem *gemO);
 
+/**
+ * @brief Copy a gem and malloc a new one.
+ * If malloc fail, return NULL.
+ *
+ * @param gemO gem to copy.
+ * @return Gemstone* Deep Copied gem (new malloc gem).
+ */
+Gemstone *Gemstone_copy_ptr(Gem *gemO);
+
+/**
+ * @brief Compare two gemstone and return true if they are equals.
+ * Two gemstone are equals if they have the same color, same type
+ * and the same level.
+ *
+ * @param gemstone 1st gemstone to compare.
+ * @param other second one.
+ * @return true if the two gemstone are equals.
+ */
+bool Gemstone_equal(Gemstone gemstone, Gemstone other);
+
 #endif  // __GEMSTONE_H__

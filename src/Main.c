@@ -86,12 +86,26 @@ int main(int argc, char const* argv[]) {
     ButtonTab buttons;
     button_tab_init(&buttons);
     create_inventory_buttons(inventory_window, &buttons);
-    Event event = {0};
+    Event event = {NO_EVENT};
+    Tower* clicked_tower = NULL;
+    Gem* clicked_gem = NULL;
     while (!quit_event(event)) {
         event = get_event();
         doing_button_actions(buttons, inventory_window, map_window, &map,
                              &inventory, event, &inventory_gem_level,
                              &inventory_page);
+        if (clicked_gem == NULL)
+            clicked_gem = click_on_gemstone(inventory_window, event, inventory,
+                                            inventory_page);
+        clicked_tower = click_on_tower(map_window, event, map);
+        if (clicked_tower != NULL && clicked_gem != NULL) {
+            if (clicked_tower->gem != NULL) {
+                inventory_add_gemstone(&inventory, *clicked_tower->gem);
+            }
+            clicked_tower->gem = Gemstone_copy_ptr(clicked_gem);
+            inventory_remove_gemstone(&inventory, *clicked_gem);
+            clicked_gem = NULL;
+        }
         draw_map(map, map_window, &da);
         show_mana_bar(inventory.mana, 180, 810, 760, 40, 3);
         draw_inventory_menu(inventory_window, inventory, buttons,

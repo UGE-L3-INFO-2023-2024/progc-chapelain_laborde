@@ -63,4 +63,13 @@ Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone);
  */
 void inventory_free(Inventory* inventory);
 
+/**
+ * @brief Remove a gemstone from the inventory.
+ *
+ * @param inventory Inventory to remove the gemstone from.
+ * @param gemstone Gemstone to remove.
+ * @return Error CLEAR if no error occured, GEMSTONE_NOT_FOUND otherwise.
+ */
+Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone);
+
 #endif  // __INVENTORY_H__

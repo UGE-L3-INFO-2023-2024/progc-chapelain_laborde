@@ -40,6 +40,19 @@ Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone) {
     return CLEAR;
 }
 
+Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone) {
+    for (int i = 0; i < inventory->gemstones_count; i++) {
+        if (Gemstone_equal(inventory->gemstones[i], gemstone)) {
+            for (int j = i; j < inventory->gemstones_count - 1; j++) {
+                inventory->gemstones[j] = inventory->gemstones[j + 1];
+            }
+            inventory->gemstones_count--;
+            return CLEAR;
+        }
+    }
+    return GEMSTONE_NOT_FOUND;
+}
+
 void inventory_free(Inventory* inventory) {
     free(inventory->gemstones);
     inventory->gemstones = NULL;
