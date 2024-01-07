@@ -121,23 +121,6 @@ static void draw_castle(Coord_i castle, SubWindow window, MLV_Image* img) {
                                   castle_height, color);
 }
 
-// TODO 0 : comment this function
-void draw_turn(DynamicArray* da, SubWindow window) {
-    if (da->type != PATH) {
-        fprintf(stderr, "Error in draw_turn: da is not a PATH\n");
-        return;
-    }
-
-    MLV_Color color = MLV_COLOR_LIGHT_SALMON;
-    int turn_width = window.width / MAP_WIDTH;
-    int turn_height = window.height / MAP_HEIGHT;
-    for (int i = 0; i < da->real_len; i++) {
-        Coord_i turn = da->arr[i].path;
-        MLV_draw_filled_rectangle(turn.x * turn_width, turn.y * turn_height,
-                                  turn_width, turn_height, color);
-    }
-}
-
 /**
  * @brief Draw a mob of the map.
  *

@@ -33,6 +33,4 @@ void draw_map(Map map, SubWindow map_window, DynamicArray* turns);
  */
 void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img);
 
-// TODO 0 : Add documentation
-void draw_turn(DynamicArray* da, SubWindow window);
 #endif  // __GRAPHICFIELD_H__
