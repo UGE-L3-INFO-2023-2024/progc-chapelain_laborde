@@ -1,3 +1,11 @@
+/**
+ * @file InventoryEvent.h
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Event functions for the inventory.
+ * @date 07-01-2024
+ *
+ */
+
 #ifndef __INVENTORY_EVENT_H__
 #define __INVENTORY_EVENT_H__
 
@@ -38,6 +46,28 @@ bool click_left_arrow(SubWindow inventory_window, Event event);
  */
 bool click_right_arrow(SubWindow inventory_window, Event event);
 
+/**
+ * @brief Check if the event is a click on the given button.
+ *
+ * @param window The subwindow where the button is displayed.
+ * @param event The event to check.
+ * @param button The button to check.
+ * @return true if the event is a click on the button
+ * @return false otherwise.
+ */
 bool click_on_button(SubWindow window, Event event, Button button);
+
+/**
+ * @brief This function return the gemstone on which the user clicked on.
+ * If the user didn't click on a gemstone, it returns NULL.
+ *
+ * @param window The subwindow where the gems are displayed.
+ * @param event The event to check.
+ * @param inventory The inventory to retrieve the gemstones from.
+ * @param page The current page of the inventory
+ * @return Gemstone* The gemstone clicked on.
+ */
+Gemstone* click_on_gemstone(SubWindow window, Event event, Inventory inventory,
+                            unsigned int page);
 
 #endif  // __INVENTORY_EVENT_H__

@@ -13,7 +13,7 @@
 #include "Map.h"
 
 void refresh_window() {
-    MLV_actualise_window();
+    MLV_update_window();
 }
 
 /* Convert a RGB color to a MLV_Color */
