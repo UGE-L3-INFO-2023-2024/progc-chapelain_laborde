@@ -182,7 +182,7 @@ void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img) {
 void draw_projectile(DynamicArray* projs, SubWindow window, MLV_Image* img) {
     for (int i = 0; i < projs->real_len; i++) {
         Projectile proj = (projs->arr[i].proj);
-        MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(proj.color), 255);
+        MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(proj.gem.color), 255);
         int proj_width = window.width / MAP_WIDTH;
         int proj_height = window.height / MAP_HEIGHT;
         if (img)

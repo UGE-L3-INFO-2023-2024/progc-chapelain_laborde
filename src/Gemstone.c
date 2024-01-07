@@ -13,8 +13,8 @@
 #include <stdlib.h>
 
 /* Convert a gemstone to an element */
-Element Gemstone_get_element(Gemstone gemstone) {
-    Element element;
+Element_Type Gemstone_get_element(Gemstone gemstone) {
+    Element_Type element;
     int color = gemstone.color;
     if ((color >= 0 && color <= 30) || (color >= 330 && color < 360)) {
         element = PYRO;

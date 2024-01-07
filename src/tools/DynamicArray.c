@@ -172,7 +172,7 @@ void DA_print_all(DynamicArray* da) {
             case PROJECTILE:
                 printf("| project: coord %f,%f color:%d|\n",
                        da->arr[i].proj.pos.x, da->arr[i].proj.pos.y,
-                       da->arr[i].proj.color);
+                       da->arr[i].proj.gem.color);
                 break;
             case TOWER:
                 printf("| tower: WIP |\n");

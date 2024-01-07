@@ -40,7 +40,7 @@ typedef struct {
  * @param target Target of the projectile.
  * @return Projectile Projectile.
  */
-Projectile Proj_init(Coord_f spawn, const Gem* gem, Mob* target);
+Projectile Proj_init(Coord_f spawn, Gem* gem, Mob* target);
 
 /**
  * @brief Move the projectile to the next step.
@@ -56,14 +56,6 @@ bool Proj_next_step(Projectile* proj);
  * @param proj Projectile to calculate the damage.
  * @return Damage of the projectile.
  */
-double Proj_damage(Projectile* proj);
-
-/**
- * @brief Copy a projectile.
- *
- * @param projO Projectile to copy.
- * @return Deep Copied projectile.
- */
-Gemstone Gemstone_copy(Gem* gemO);
+double Proj_damage_raw(Projectile* proj);
 
 #endif  // _PROJECTILE_H_

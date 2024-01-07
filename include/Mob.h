@@ -27,7 +27,7 @@ typedef struct {
     double speed;
     Coord_f pos;
     HSV_Color color;
-    Element apply_elem;
+    Element elem;
     Coord_f going;
 } Mob;
 
