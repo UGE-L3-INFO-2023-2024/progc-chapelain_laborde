@@ -11,34 +11,51 @@
 #include "Color.h"
 #include "DynamicArray.h"
 #include "Graphic.h"
+#include "GraphicInventory.h"
 #include "Wave.h"
 
-void draw_tower(SubWindow window, MLV_Image* img, int x, int y, int width,
-                int height) {
+/**
+ * @brief Draw a tower in the map.
+ * The img parameter is used to draw an image instead of the tower.
+ * If img is NULL, draw a black tower with a colored gem in the middle.
+ * The gem color is the tower gem color.
+ *
+ * @param tower Tower to draw.
+ * @param window Window to draw on.
+ * @param img Image to draw instead of the drawed tower.
+ */
+static void draw_tower(Tower tower, SubWindow window, MLV_Image* img) {
+    int cell_width = window.width / MAP_WIDTH;
+    int cell_height = window.height / MAP_HEIGHT;
+    int x = tower.coord.x * cell_width;
+    int y = tower.coord.y * cell_height;
     if (img) {
-        MLV_resize_image(img, width, height);
         MLV_draw_image(img, x, y);
     } else {
         MLV_Color color = MLV_COLOR_BLACK;
-        MLV_draw_filled_circle(x + width / 2, y + height / 2, width / 2,
-                               color);
-    }
-}
-
-static void draw_tower_in_map(Tower tower, SubWindow window, MLV_Image* img) {
-    int cell_width = window.width / MAP_WIDTH;
-    int cell_height = window.height / MAP_HEIGHT;
-    if (img) {
-        MLV_draw_image(img, tower.coord.x * cell_width,
-                       tower.coord.y * cell_height);
-    } else {
-        MLV_Color color = MLV_COLOR_BLACK;
         if (tower.gem) {
-            color = RGB_to_MLV_Color(Color_HSV_to_RGB(tower.gem->color), 255);
+            draw_gem((Coord_i){x + cell_width * .15, y + cell_height * .15},
+                     cell_width * 0.7, cell_height * 0.7,
+                     Color_HSV_to_RGB(tower.gem->color));
         }
-        MLV_draw_filled_circle(tower.coord.x * cell_width + cell_width / 2,
-                               tower.coord.y * cell_height + cell_height / 2,
-                               (cell_width / 2) * 0.9, color);
+        MLV_draw_filled_rectangle(x, y, cell_width * 0.25, cell_height * 0.15,
+                                  color);
+        MLV_draw_filled_rectangle(x, y, cell_width * 0.15, cell_height * 0.25,
+                                  color);
+        MLV_draw_filled_rectangle(x + cell_width * 0.75, y, cell_width * 0.25,
+                                  cell_height * 0.15, color);
+        MLV_draw_filled_rectangle(x + cell_width * 0.85, y, cell_width * 0.15,
+                                  cell_height * 0.25, color);
+        MLV_draw_filled_rectangle(x, y + cell_height * 0.85, cell_width * 0.25,
+                                  cell_height * 0.15, color);
+        MLV_draw_filled_rectangle(x, y + cell_height * 0.75, cell_width * 0.15,
+                                  cell_height * 0.25, color);
+        MLV_draw_filled_rectangle(x + cell_width * 0.75,
+                                  y + cell_height * 0.85, cell_width * 0.25,
+                                  cell_height * 0.15, color);
+        MLV_draw_filled_rectangle(x + cell_width * 0.85,
+                                  y + cell_height * 0.75, cell_width * 0.15,
+                                  cell_height * 0.25, color);
     }
 }
 
@@ -62,32 +79,6 @@ static void draw_path(Coord_i coord, SubWindow window, MLV_Image* img) {
                                   cell_width, cell_height, color);
         MLV_draw_rectangle(coord.x * cell_width, coord.y * cell_height,
                            cell_width, cell_height, MLV_COLOR_BLACK);
-    }
-}
-
-void draw_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window,
-                     MLV_Image* img) {
-    for (int i = 0; i < MAP_HEIGHT; i++) {
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            if (cells[i][j].is_path)
-                draw_path((Coord_i){j, i}, window, NULL);
-        }
-    }
-}
-
-static void clear_path_cell(Coord_i coord, SubWindow window) {
-    int cell_width = window.width / MAP_WIDTH;
-    int cell_height = window.height / MAP_HEIGHT;
-    MLV_draw_filled_rectangle(coord.x * cell_width, coord.y * cell_height,
-                              cell_width, cell_height, CLEAR_COLOR);
-}
-
-void clear_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window) {
-    for (int i = 0; i < MAP_HEIGHT; i++) {
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            if (cells[i][j].is_path)
-                clear_path_cell((Coord_i){j, i}, window);
-        }
     }
 }
 
@@ -130,6 +121,7 @@ static void draw_castle(Coord_i castle, SubWindow window, MLV_Image* img) {
                                   castle_height, color);
 }
 
+// TODO 0 : comment this function
 void draw_turn(DynamicArray* da, SubWindow window) {
     if (da->type != PATH) {
         fprintf(stderr, "Error in draw_turn: da is not a PATH\n");
@@ -182,11 +174,13 @@ void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img) {
 void draw_projectile(DynamicArray* projs, SubWindow window, MLV_Image* img) {
     for (int i = 0; i < projs->real_len; i++) {
         Projectile proj = (projs->arr[i].proj);
-        MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(proj.color), 255);
+        MLV_Color color =
+            RGB_to_MLV_Color(Color_HSV_to_RGB(proj.gem.color), 255);
         int proj_width = window.width / MAP_WIDTH;
         int proj_height = window.height / MAP_HEIGHT;
         if (img)
-            MLV_draw_image(img, proj.pos.x * proj_width, proj.pos.y * proj_height);
+            MLV_draw_image(img, proj.pos.x * proj_width,
+                           proj.pos.y * proj_height);
         else
             MLV_draw_filled_circle(proj.pos.x * proj_width,
                                    proj.pos.y * proj_height, proj_width / 6,
@@ -226,7 +220,7 @@ void draw_map(Map map, SubWindow map_window, DynamicArray* da) {
                 draw_path((Coord_i){j, i}, map_window, NULL);
             if (map.board[i][j].have_tower) {
                 Tower tower = *Map_get_tower(&map, (Coord_i){j, i});
-                draw_tower_in_map(tower, map_window, NULL);
+                draw_tower(tower, map_window, NULL);
             }
         }
     }

@@ -5,11 +5,40 @@
 #include "Button.h"
 #include "Color.h"
 #include "Graphic.h"
-#include "GraphicField.h"
+#include "GraphicButton.h"
 #include "Inventory.h"
 #include "Mana.h"
 
-static void draw_gem(Coord_i coord, int w, int h, RGB_Color color) {
+/**
+ * @brief Draw the given tower on the given window.
+ * If img is NULL, draw a circle with tower color instead.
+ *
+ * @param window Window to draw on.
+ * @param img Image to draw instead of a circle.
+ * @param x X position of the tower.
+ * @param y Y position of the tower.
+ * @param width Width of the tower.
+ * @param height Height of the tower.
+ */
+static void draw_tower(SubWindow window, MLV_Image* img, int x, int y,
+                       int width, int height) {
+    if (img) {
+        MLV_resize_image(img, width, height);
+        MLV_draw_image(img, x, y);
+    } else {
+        MLV_Color color = MLV_COLOR_BLACK;
+        for (int i = 0; i < 3; i++) {
+            MLV_draw_filled_rectangle(x + i * width * 0.4, y, width * 0.2,
+                                      height * 0.3, color);
+        }
+        MLV_draw_filled_rectangle(x + 0.15 * width, y + height * 0.15,
+                                  width * 0.7, height * 0.8, color);
+        MLV_draw_filled_rectangle(x, y + height * 0.75, width, height * 0.25,
+                                  color);
+    }
+}
+
+void draw_gem(Coord_i coord, int w, int h, RGB_Color color) {
     MLV_Color mlv_color = RGB_to_MLV_Color(color, 255);
     MLV_draw_filled_rectangle(coord.x, coord.y, w, h, mlv_color);
     MLV_draw_rectangle(coord.x, coord.y, w, h, MLV_COLOR_BLACK);
@@ -119,7 +148,6 @@ static void draw_pagination_buttons(SubWindow window, ButtonTab buttons) {
  * @param window The subwindow to draw on.
  * @param inventory The inventory containing the gems to draw.
  * @param page The page of the inventory gems to draw.
- * @param height_in_window The actual pourcent of the window used in y axis.
  * Page start at 0 not 1.
  */
 static void draw_all_gems(SubWindow window, Inventory inventory,

@@ -1,11 +1,17 @@
+/**
+ * @file GraphicInventory.h
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Functions to draw inventory menu.
+ * @date 07-01-2024
+ *
+ */
+
 #ifndef __GRAPHIC_MAIN_MENU_H__
 #define __GRAPHIC_MAIN_MENU_H__
 
 #include "Button.h"
 #include "Inventory.h"
 #include "Window.h"
-
-#define GEMS_PER_PAGE 12
 
 /**
  * @brief Create the buttons of the inventory.
@@ -26,5 +32,15 @@ void create_inventory_buttons(SubWindow window, ButtonTab* buttons);
  */
 void draw_inventory_menu(SubWindow window, Inventory inventory,
                          ButtonTab buttons, int gem_level, int page);
+
+/**
+ * @brief Draw a gem on the screen.
+ *
+ * @param coord The coord of the gem.
+ * @param w The width of the gem.
+ * @param h The height of the gem.
+ * @param color The color of the gem.
+ */
+void draw_gem(Coord_i coord, int w, int h, RGB_Color color);
 
 #endif  // __GRAPHIC_MAIN_MENU_H__
