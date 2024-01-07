@@ -29,12 +29,12 @@ Element Gemstone_get_element(Gemstone gemstone) {
 }
 
 /* Generate a pure gemstone */
-Gemstone Gemstone_init() {
+Gemstone Gemstone_init(int level) {
     Gemstone gemstone;
     do {
         gemstone.color = rand() % 360;
     } while (Gemstone_get_element(gemstone) == NONE);
-    gemstone.level = 1;
+    gemstone.level = level;
     gemstone.type = PURE;
     return gemstone;
 }
@@ -47,8 +47,7 @@ bool Gemstone_merge(Gemstone *gem, Gemstone *other) {
     gem->level += 1;
     gem->color = (gem->color + other->color) / 2;
     // not same color = MIXED
-    if (Gemstone_get_element(*gem) !=
-        Gemstone_get_element(*other)) {
+    if (Gemstone_get_element(*gem) != Gemstone_get_element(*other)) {
         gem->type = MIXED;
     }
     return true;

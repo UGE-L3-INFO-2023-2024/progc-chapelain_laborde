@@ -87,8 +87,7 @@ Coord_i Utils_coord_from_dir_len(Coord_i origin, Direction dir, int len);
  * @param margin margin of error (using double)
  * @return if coord_other is equal coord_mid with a margin
  */
-bool Utils_is_in_middle(Coord_f coord_other, Coord_f coord_mid,
-                        float margin);
+bool Utils_is_in_middle(Coord_f coord_other, Coord_f coord_mid, float margin);
 
 /**
  * @brief Return the direction of coord_other from coord_mid with a margin.
@@ -101,8 +100,7 @@ bool Utils_is_in_middle(Coord_f coord_other, Coord_f coord_mid,
  * @return Direction (Priority: EAST, WEST, SOUTH, NORTH)
  * if nothing is found return NO_DIR (to close to coord_mid)
  */
-Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other,
-                        float margin);
+Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other, float margin);
 
 /**
  * @brief Convert a Coord_i to a Coord_f in the center of the tile.
@@ -153,5 +151,15 @@ double Utils_random_uniform(double a, double b);
  * @return double radian
  */
 double Utils_deg_to_rad(double deg);
+
+/**
+ * @brief Return if the two Coord_i are equals.
+ * (x and y are equal)
+ *
+ * @param a Coord_i
+ * @param b Coord_i
+ * @return true if coordinates are equals
+ */
+bool Coord_i_equal(Coord_i a, Coord_i b);
 
 #endif  // __UTILS_H__

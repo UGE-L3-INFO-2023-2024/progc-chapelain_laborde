@@ -7,8 +7,6 @@
 #include "Error.h"
 #include "Utils.h"
 
-#define DEFAULT_BUTTON_COLOR MLV_rgba(198, 198, 198, 255)
-
 /**
  * @brief A button is a rectangle with a text inside.
  *
@@ -27,14 +25,6 @@ typedef struct {
     unsigned int count;
     unsigned int capacity;
 } ButtonTab;
-
-/**
- * @brief Draw a Button on the screen.
- * To know how to define a button, see the Button structure.
- *
- * @param button The button to draw.
- */
-void draw_button(Button button);
 
 /**
  * @brief Initialize a button.

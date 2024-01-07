@@ -48,16 +48,14 @@ Coord_i Utils_coord_from_dir_len(Coord_i origin, Direction dir, int len) {
     };
 }
 
-bool Utils_is_in_middle(Coord_f coord_mid, Coord_f coord_other,
-                        float margin) {
+bool Utils_is_in_middle(Coord_f coord_mid, Coord_f coord_other, float margin) {
     return ((coord_other.x > coord_mid.x - margin &&
              coord_other.x < coord_mid.x + margin &&
              coord_other.y > coord_mid.y - margin &&
              coord_other.y < coord_mid.y + margin));
 }
 
-Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other,
-                        float margin) {
+Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other, float margin) {
     // Direction (Priority: EAST, WEST, SOUTH, NORTH)
     if (coord_other.x < coord_mid.x - margin) {
         return EAST;
@@ -98,4 +96,8 @@ double Utils_random_uniform(double a, double b) {
 
 double Utils_deg_to_rad(double deg) {
     return deg * HOME_PI / 180;
+}
+
+bool Coord_i_equal(Coord_i a, Coord_i b) {
+    return a.x == b.x && a.y == b.y;
 }

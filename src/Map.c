@@ -82,7 +82,8 @@ Tower* Map_get_tower(Map* map, Coord_i coord) {
  * @param projs Projs to add the new proj.
  * @return if the tower shoot or not.
  */
-bool static _tower_shoot(Tower tower, DynamicArray* mobs, DynamicArray* projs) {
+bool static _tower_shoot(Tower tower, DynamicArray* mobs,
+                         DynamicArray* projs) {
     Mob* mob = NULL;
     int index_target = -1, hp_target = 0;
 
@@ -90,9 +91,8 @@ bool static _tower_shoot(Tower tower, DynamicArray* mobs, DynamicArray* projs) {
     for (int i = 0; i < mobs->real_len; i++) {
         mob = mobs->arr[i].mob;
         if (mob->current_hp > hp_target &&
-            Utils_coord_f_distance(
-                Utils_coord_i_to_f_center(tower.coord),
-                mob->pos) < TOWER_RANGE) {
+            Utils_coord_f_distance(Utils_coord_i_to_f_center(tower.coord),
+                                   mob->pos) < TOWER_RANGE) {
             index_target = i;
             hp_target = mob->current_hp;
         }
@@ -100,7 +100,7 @@ bool static _tower_shoot(Tower tower, DynamicArray* mobs, DynamicArray* projs) {
     // if a target is found, shoot
     if (index_target != -1) {
         // to remove when gem initialized in tower
-        Gemstone gem = Gemstone_init();
+        Gemstone gem = Gemstone_init(1);
         Projectile proj = Proj_init(Utils_coord_i_to_f_center(tower.coord),
                                     &gem, (mobs->arr[index_target].mob));
         DA_add(projs, (DynamicArray_Union){.proj = proj}, PROJECTILE);
@@ -115,8 +115,8 @@ void Map_towers_shoot(Map* map) {
         //  add after check tower.gem
         // is available and at range and got a gem
         if (Time_is_after(tower.available_at, Time_get()) &&
-            _tower_shoot(map->towers.arr[i].tower,
-                         &map->mobs.mob_list, &map->projs)) {
+            _tower_shoot(map->towers.arr[i].tower, &map->mobs.mob_list,
+                         &map->projs)) {
             // change available_at time
             map->towers.arr[i].tower.available_at =
                 Time_add_ms(Time_get(), TOWER_SHOT_COOLDOWN_MS);

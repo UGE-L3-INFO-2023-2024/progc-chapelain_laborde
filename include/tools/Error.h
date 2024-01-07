@@ -22,7 +22,7 @@
 /* Structures */
 /**************/
 
-#define NB_ERRORS 5
+#define NB_ERRORS 6
 
 typedef enum {
     CLEAR = 0,
@@ -31,6 +31,7 @@ typedef enum {
     DYNA_ARR_ERR_EMPTY = 3,
     DYNA_ARR_ERR_SIZE = 4,
     MALLOC_ERR = 5,
+    GEMSTONE_NOT_FOUND = 6,
 } Error;
 
 /*************/

@@ -54,12 +54,12 @@ int Mana_tower_cost(int nb_towers) {
     if (nb_towers < 0) {
         return -1;
     }
-    nb_towers = nb_towers < 4 ? 4 : nb_towers + 1;
-    return 100 * pow(2, nb_towers - 4);
+    nb_towers++;
+    return nb_towers < 4 ? 0 : 100 * pow(2, nb_towers - 4);
 }
 
 int Mana_gem_cost(int gem_level) {
-    if (gem_level <= 0) {
+    if (gem_level < 0) {
         return -1;
     }
     return 100 * pow(2, gem_level);

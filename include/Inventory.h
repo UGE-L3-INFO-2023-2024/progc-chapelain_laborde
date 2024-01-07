@@ -13,6 +13,8 @@
 #include "Gemstone.h"
 #include "Mana.h"
 
+#define GEMS_PER_PAGE 12
+
 /**************/
 /* Structures */
 /**************/

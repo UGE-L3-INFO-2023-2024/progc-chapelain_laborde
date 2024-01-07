@@ -52,9 +52,10 @@ Element Gemstone_get_element(Gemstone gemstone);
 /**
  * @brief Create a pure Gemstone object with random color.
  *
+ * @param level Level of the gemstone.
  * @return Pure gemstone created.
  */
-Gemstone Gemstone_init();
+Gemstone Gemstone_init(int level);
 
 /**
  * @brief Merge two gemstone
