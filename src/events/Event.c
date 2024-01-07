@@ -48,6 +48,7 @@ Event get_event() {
     MLV_Event mlv_event =
         MLV_get_event(&keyboard_button, NULL, NULL, NULL, NULL, &mouse_x,
                       &mouse_y, &mouse_button, &state);
+    MLV_flush_event_queue();
     if (mlv_event == MLV_KEY) {
         event.type = KEYBOARD;
         event.keyboard.key = keyboard_button;
