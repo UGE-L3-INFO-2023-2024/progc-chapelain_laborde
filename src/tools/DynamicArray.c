@@ -175,7 +175,9 @@ void DA_print_all(DynamicArray* da) {
                        da->arr[i].proj.gem.color);
                 break;
             case TOWER:
-                printf("| tower: WIP |\n");
+                printf("| tower: coord %d,%d hasgem: %d|\n",
+                       da->arr[i].tower.coord.x, da->arr[i].tower.coord.y,
+                       da->arr[i].tower.has_gem);
                 break;
             default:
                 break;
