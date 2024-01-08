@@ -99,10 +99,15 @@ int main(int argc, char const* argv[]) {
                                             inventory_page);
         clicked_tower = click_on_tower(map_window, event, map);
         if (clicked_tower != NULL && clicked_gem != NULL) {
-            if (clicked_tower->gem != NULL) {
-                inventory_add_gemstone(&inventory, *clicked_tower->gem);
+            if (clicked_tower->has_gem) {
+                Gem tower_gem;
+                Tower_extract_gem(clicked_tower, &tower_gem);
+                inventory_add_gemstone(&inventory, tower_gem);
             }
-            clicked_tower->gem = Gemstone_copy_ptr(clicked_gem);
+            // clicked_tower->gem = Gemstone_copy_ptr(clicked_gem);
+            if (clicked_gem)
+                fprintf(stderr, "clicked_gem: %d\n", clicked_gem->color);
+            Tower_add_gem(clicked_tower, clicked_gem);
             inventory_remove_gemstone(&inventory, *clicked_gem);
             clicked_gem = NULL;
         }

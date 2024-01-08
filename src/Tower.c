@@ -8,6 +8,7 @@
 
 #include "Tower.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 #include "Gemstone.h"
@@ -16,28 +17,31 @@
 /* Create a tower object */
 Tower Tower_init(Coord_i coord) {
     Tower tower;
-    tower.gem = NULL;
+    tower.has_gem = false;
     tower.available_at = Time_get();
     tower.coord = coord;
     return tower;
 }
 
 /* Add gem to a tower */
-int Tower_add_gem(Tower* tower, Gem* gem) {
+bool Tower_add_gem(Tower* tower, Gem* gem) {
     if (!tower || !gem) {
-        return 0;
+        return false;
     }
-    tower->gem = gem;
+    tower->gem = Gemstone_copy(gem);
+    tower->has_gem = true;
     tower->available_at = Time_add_ms(Time_get(), TOWER_GEM_COOLDOWN_MS);
-    return 1;
+    return true;
 }
 
 /* Extract gem from a tower */
-Gem* Tower_extract_gem(Tower* tower) {
-    if (!tower || !tower->gem) {
-        return NULL;
+bool Tower_extract_gem(Tower* tower, Gem* gem) {
+    if (!tower || !tower->has_gem) {
+        return false;
     }
-    Gem* gem = tower->gem;
-    tower->gem = NULL;
-    return gem;
+    if (gem) {
+        *gem = Gemstone_copy(&tower->gem);
+    }
+    tower->has_gem = false;
+    return true;
 }

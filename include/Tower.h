@@ -9,6 +9,7 @@
 #ifndef __TOWER_H__
 #define __TOWER_H__
 
+#include <stdbool.h>
 #include <time.h>
 
 #include "Gemstone.h"
@@ -23,7 +24,8 @@
 /**************/
 
 typedef struct {
-    Gem* gem;
+    bool has_gem;
+    Gem gem;
     struct timespec available_at;
     Coord_i coord;
 } Tower;
@@ -45,16 +47,17 @@ Tower Tower_init(Coord_i coord);
  *
  * @param tower The tower will receive the gem
  * @param gem The gem to add
- * @return int 1 if success, 0 if tower, gem or both are NULL
+ * @return if the gem has been added
  */
-int Tower_add_gem(Tower* tower, Gem* gem);
+bool Tower_add_gem(Tower* tower, Gem* gem);
 
 /**
  * @brief Extract gem from a tower
  *
  * @param tower The tower will give the gem
- * @return Gem* The gem extracted
+ * @param gem pointer to store the gem.
+ * @return if the gem has been extracted
  */
-Gem* Tower_extract_gem(Tower* tower);
+bool Tower_extract_gem(Tower* tower, Gem* gem);
 
 #endif  // __TOWER_H__
