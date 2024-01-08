@@ -42,8 +42,11 @@ bool Proj_next_step(Projectile* proj) {
     return true;
 }
 
-double Proj_damage_raw(Projectile* proj) {
-    return PROJ_CONST_DMG *
-           pow(2, proj->level) *
-           (1 - cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) / 2);
+bool Proj_damage_raw(Projectile* proj) {
+    int dmg = PROJ_CONST_DMG *
+              pow(2, proj->level) *
+              (1 - cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) / 2);
+    proj->target->current_hp < dmg ? proj->target->current_hp = 0
+                                   : (proj->target->current_hp -= dmg);
+    return proj->target->current_hp <= 0;  // should be never under 0 but just in case
 }

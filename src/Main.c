@@ -104,9 +104,6 @@ int main(int argc, char const* argv[]) {
                 Tower_extract_gem(clicked_tower, &tower_gem);
                 inventory_add_gemstone(&inventory, tower_gem);
             }
-            // clicked_tower->gem = Gemstone_copy_ptr(clicked_gem);
-            if (clicked_gem)
-                fprintf(stderr, "clicked_gem: %d\n", clicked_gem->color);
             Tower_add_gem(clicked_tower, clicked_gem);
             inventory_remove_gemstone(&inventory, *clicked_gem);
             clicked_gem = NULL;
@@ -120,6 +117,7 @@ int main(int argc, char const* argv[]) {
         Wave_next_step(&map.mobs, &da);
         Map_towers_shoot(&map);
         Map_actualise_proj(&map);
+        DA_print_all(&map.mobs.mob_list);
         err =
             Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
         if (err) {

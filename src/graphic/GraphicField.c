@@ -142,7 +142,7 @@ void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img) {
                                    color);
         draw_bar(mob.pos.x * mob_width - mob_width / 3,
                  mob.pos.y * mob_height + mob_height / 4, mob_width / 1.5,
-                 mob_height / 6, 1, color, mob.current_hp / mob.max_hp,
+                 mob_height / 6, 1, color, mob.current_hp / (float)mob.max_hp,
                  MLV_COLOR_GREEN);
     }
 }

@@ -30,8 +30,9 @@ typedef enum {
     DYNA_ARR_ERR_TYPE = 2,
     DYNA_ARR_ERR_EMPTY = 3,
     DYNA_ARR_ERR_SIZE = 4,
-    MALLOC_ERR = 5,
-    GEMSTONE_NOT_FOUND = 6,
+    DYNA_ARR_ERR_NOT_FOUND = 5,
+    MALLOC_ERR = 6,
+    GEMSTONE_NOT_FOUND = 7,
 } Error;
 
 /*************/

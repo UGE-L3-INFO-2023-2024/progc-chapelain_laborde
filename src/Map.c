@@ -18,9 +18,6 @@
 #include "TimeManager.h"
 #include "Utils.h"
 
-// temp to remove when gem initialized
-#include "Gemstone.h"
-
 Map Map_init(void) {
     return (Map){
         .nest = (Coord_i){-1, -1},
@@ -99,10 +96,8 @@ bool static _tower_shoot(Tower tower, DynamicArray* mobs,
     }
     // if a target is found, shoot
     if (index_target != -1) {
-        // to remove when gem initialized in tower
-        Gemstone gem = Gemstone_init(1);
         Projectile proj = Proj_init(Utils_coord_i_to_f_center(tower.coord),
-                                    &gem, (mobs->arr[index_target].mob));
+                                    &tower.gem, (mobs->arr[index_target].mob));
         DA_add(projs, (DynamicArray_Union){.proj = proj}, PROJECTILE);
     }
     // if the tower shoot or not
@@ -112,9 +107,7 @@ bool static _tower_shoot(Tower tower, DynamicArray* mobs,
 void Map_towers_shoot(Map* map) {
     for (int i = 0; i < map->towers.real_len; i++) {
         Tower tower = map->towers.arr[i].tower;
-        //  add after check tower.gem
-        // is available and at range and got a gem
-        if (Time_is_after(tower.available_at, Time_get()) &&
+        if (Time_is_after(tower.available_at, Time_get()) && tower.has_gem &&
             _tower_shoot(map->towers.arr[i].tower, &map->mobs.mob_list,
                          &map->projs)) {
             // change available_at time
@@ -124,9 +117,41 @@ void Map_towers_shoot(Map* map) {
     }
 }
 
+/**
+ * @brief Clear all projectiles that target the mob.
+ *
+ * @param projs DynamicArray of projs.
+ * @param mob Target of the projs.
+ */
+static void _clear_projs_on_target(DynamicArray* projs, Mob* mob) {
+    for (int i = 0; i < projs->real_len; i++) {
+        if (projs->arr[i].proj.target == mob) {
+            DA_remove_index(projs, i);
+        }
+    }
+}
+
+/**
+ * @brief Clear all mobs that have 0 hp.
+ *
+ * @param mobs DynamicArray of mobs.
+ */
+static void _clear_mobs_dead(DynamicArray* mobs) {
+    for (int i = 0; i < mobs->real_len; i++) {
+        if (mobs->arr[i].mob->current_hp <= 0) {
+            DA_remove_index(mobs, i);
+        }
+    }
+}
+
 void Map_actualise_proj(Map* map) {
     for (int i = 0; i < map->projs.real_len; i++) {
         if (!Proj_next_step(&(map->projs.arr[i].proj))) {
+            if (Proj_damage_raw(&(map->projs.arr[i].proj))) {
+                _clear_projs_on_target(&map->projs, map->projs.arr[i].proj.target);
+                _clear_mobs_dead(&map->mobs.mob_list);
+            }
+
             DA_remove_index(&map->projs, i);
             --i;  // to check new placed proj
             // DA_remove_index move last to index
