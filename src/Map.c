@@ -48,17 +48,21 @@ void Map_init_board(Map* map) {
 
 Error Map_init_towers(Map* map) {
     Error err = DA_init(&map->towers, 10, TOWER);
+    err.func = __func__;
     return err;
 }
 
 Error Map_init_projs(Map* map) {
     Error err = DA_init(&map->projs, 40, PROJECTILE);
+    err.func = __func__;
     return err;
 }
 
 Error Map_add_tower(Map* map, Tower tower) {
     map->board[tower.coord.y][tower.coord.x].have_tower = true;
-    return DA_add(&map->towers, (DA_Union){.tower = tower}, TOWER);
+    Error err = DA_add(&map->towers, (DA_Union){.tower = tower}, TOWER);
+    err.func = __func__;
+    return err;
 }
 
 Tower* Map_get_tower(Map* map, Coord_i coord) {
@@ -148,7 +152,8 @@ void Map_actualise_proj(Map* map) {
     for (int i = 0; i < map->projs.real_len; i++) {
         if (!Proj_next_step(&(map->projs.arr[i].proj))) {
             if (Proj_damage_raw(&(map->projs.arr[i].proj))) {
-                _clear_projs_on_target(&map->projs, map->projs.arr[i].proj.target);
+                _clear_projs_on_target(&map->projs,
+                                       map->projs.arr[i].proj.target);
                 _clear_mobs_dead(&map->mobs.mob_list);
             }
 

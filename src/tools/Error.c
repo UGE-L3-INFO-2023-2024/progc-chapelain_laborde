@@ -1,5 +1,5 @@
 /**
- * @file Error.c
+ * @file ErrorType.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
  * @date 19-11-2023
@@ -10,8 +10,8 @@
 
 #include <stdio.h>
 
-void Error_print(Error err, char* func) {
-    char* error_msg[NB_ERRORS] = {
+void Error_print(Error error) {
+    static const char* error_msg[NB_ERRORS] = {
         "Dynamic Array Allocation error",
         "Dynamic Array Wrong Type",
         "Dynamic Array Empty",
@@ -20,6 +20,8 @@ void Error_print(Error err, char* func) {
         "Gemstone not found",
     };
 
+    const char* func = error.func;
+    ErrorType err = error.type;
     fprintf(stderr, "%s%s in function : %s %s\n", RED, error_msg[err - 1],
             func, RESET);
 }

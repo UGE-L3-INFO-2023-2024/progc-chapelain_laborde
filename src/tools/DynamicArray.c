@@ -16,21 +16,24 @@
 #include "Error.h"
 
 Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
+    Error err = (Error){__func__, CLEAR};
     // alloc array
     da->arr = (DA_Union*)malloc(size_alloc * sizeof(DynamicArray_Union));
     if (!(da->arr)) {
-        return DYNA_ARR_ERR_ALLOC;
+        err.type = DYNA_ARR_ERR_ALLOC;
+        return err;
     }
     // init other values
     da->max_len = size_alloc;
     da->real_len = 0;
     da->type = type;
-    return CLEAR;
+    return err;
 }
 
 Error DA_realloc(DynamicArray* da) {
     assert(da);
     assert(da->arr);
+    Error err = (Error){__func__, CLEAR};
 
     int new_size = da->max_len * DA_MUL_SIZE_ALLOC;
     DA_Union* tmp = realloc(da->arr, new_size * sizeof(DA_Union));
@@ -38,12 +41,13 @@ Error DA_realloc(DynamicArray* da) {
     if (!tmp) {
         free(da->arr);
         da->arr = NULL;
-        return DYNA_ARR_ERR_ALLOC;
+        err.type = DYNA_ARR_ERR_ALLOC;
+        return err;
     }
     // realloc ok
     da->arr = (DA_Union*)tmp;
     da->max_len = new_size;
-    return CLEAR;
+    return err;
 }
 
 DynamicArray_Union* DA_get(DynamicArray* da, int index) {
@@ -60,14 +64,17 @@ DynamicArray_Union* DA_get(DynamicArray* da, int index) {
 Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     assert(da);
     assert(da->arr);
+    Error err = (Error){__func__, CLEAR};
     if (type != da->type) {
-        return DYNA_ARR_ERR_TYPE;
+        err.type = DYNA_ARR_ERR_TYPE;
+        return err;
     }
 
     // realloc if needed
     if (da->real_len == da->max_len) {
-        Error err = DA_realloc(da);
-        if (err) {
+        err = DA_realloc(da);
+        if (err.type) {
+            err.func = __func__;
             return err;
         }
     }
@@ -86,22 +93,26 @@ Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
             da->arr[da->real_len++].tower = val.tower;
             break;
         default:  // should never happen (new type added)
-            return DYNA_ARR_ERR_TYPE;
+            err.type = DYNA_ARR_ERR_TYPE;
+            return err;
     }
-    return CLEAR;
+    return err;
 }
 
 Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
                      Type_array type) {
     assert(da);
     assert(da->arr);
+    Error err = (Error){__func__, CLEAR};
 
     if (type != da->type) {
-        return DYNA_ARR_ERR_TYPE;
+        err.type = DYNA_ARR_ERR_TYPE;
+        return err;
     }
 
     if (!da->real_len) {
-        return DYNA_ARR_ERR_EMPTY;
+        err.type = DYNA_ARR_ERR_EMPTY;
+        return err;
     }
     // for the return value
     switch (type) {
@@ -118,22 +129,26 @@ Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
             val->tower = da->arr[--(da->real_len)].tower;
             break;
         default:  // should never happen (new type added)
-            return DYNA_ARR_ERR_TYPE;
+            err.type = DYNA_ARR_ERR_TYPE;
+            return err;
     }
 
-    return CLEAR;
+    return err;
 }
 
 Error DA_remove_index(DynamicArray* da, int index) {
     assert(da);
     assert(da->arr);
+    Error err = (Error){__func__, CLEAR};
 
     // out of bound or empty
     if (!da->real_len) {
-        return DYNA_ARR_ERR_EMPTY;
+        err.type = DYNA_ARR_ERR_EMPTY;
+        return err;
     }
     if (index > da->real_len || index < 0) {
-        return DYNA_ARR_ERR_SIZE;
+        err.type = DYNA_ARR_ERR_SIZE;
+        return err;
     }
 
     // remove the value (switch last to the index and decrement real_len)
@@ -141,7 +156,7 @@ Error DA_remove_index(DynamicArray* da, int index) {
         free(da->arr[index].mob);
     }
     da->arr[index] = da->arr[--(da->real_len)];
-    return CLEAR;
+    return err;
 }
 
 void DA_free(DynamicArray da) {

@@ -13,6 +13,7 @@
 
 #include "ButtonAction.h"
 #include "DynamicArray.h"
+#include "Error.h"
 #include "Event.h"
 #include "FieldEvent.h"
 #include "Font.h"
@@ -35,7 +36,7 @@ int main(int argc, char const* argv[]) {
     Window window = Window_init((Coord_f){0, 0}, 1400, 880);
     srand(time(NULL));
     DynamicArray da;
-    if (DA_init(&da, 10, PATH)) {
+    if (DA_init(&da, 10, PATH).type) {
         exit(EXIT_FAILURE);
     }
     Inventory inventory;
@@ -48,23 +49,23 @@ int main(int argc, char const* argv[]) {
     }
 
     Error err = Map_init_towers(&map);
-    if (err) {
-        Error_print(err, "Map_init_towers");
+    if (err.type) {
+        Error_print(err);
         DA_free(da);
         return EXIT_FAILURE;
     }
 
     err = Wave_init(&(map.mobs));
-    if (err) {
-        Error_print(err, "Wave_Init");
+    if (err.type) {
+        Error_print(err);
         DA_free(da);
         DA_free(map.towers);
         return EXIT_FAILURE;
     }
 
     err = Map_init_projs(&map);
-    if (err) {
-        Error_print(err, "Wave_Init");
+    if (err.type) {
+        Error_print(err);
         DA_free(da);
         DA_free(map.towers);
         DA_free(map.mobs.mob_list);
@@ -143,8 +144,8 @@ int main(int argc, char const* argv[]) {
         // DA_print_all(&map.mobs.mob_list);
         err =
             Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
-        if (err) {
-            Error_print(err, "Wave_spawn_next");
+        if (err.type) {
+            Error_print(err);
             return EXIT_FAILURE;
         }
 

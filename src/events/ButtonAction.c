@@ -143,7 +143,7 @@ void doing_button_actions(ButtonTab buttons, SubWindow inventory_window,
                     actual_page,
                     (inventory->gemstones_count - 1) / GEMS_PER_PAGE);
             } else {
-                printf("Error : button name not found\n");
+                fprintf(stderr, "Error : button name not found\n");
             }
             button->pressed = false;
         }

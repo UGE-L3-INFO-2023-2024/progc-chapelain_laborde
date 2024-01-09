@@ -91,7 +91,8 @@ Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type);
  * @param type Type of the the value.
  * @return if there is a missmatch type or an empty DynamicArray.
  */
-Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val, Type_array type);
+Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
+                     Type_array type);
 
 /**
  * @brief Remove last value from a DynamicArray.

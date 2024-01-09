@@ -33,6 +33,11 @@ typedef enum {
     DYNA_ARR_ERR_NOT_FOUND = 5,
     MALLOC_ERR = 6,
     GEMSTONE_NOT_FOUND = 7,
+} ErrorType;
+
+typedef struct {
+    ErrorType type;
+    char* func;
 } Error;
 
 /*************/
@@ -42,9 +47,8 @@ typedef enum {
 /**
  * @brief Prints an error message.
  *
- * @param err Error Type.
- * @param func Function where the error append.
+ * @param err Error to print.
  */
-void Error_print(Error err, char* func);
+void Error_print(Error err);
 
 #endif

@@ -24,6 +24,7 @@ Error Wave_init(Wave *wave) {
     wave->next_wave = wave->next_mob;
     Error err = DA_init(&wave->mob_list, 24, MOB);
     wave->type_mob = UNKNOW;
+    err.func = __func__;
     return err;
 }
 
@@ -94,15 +95,19 @@ static void _add_time_last_mob(Wave *wave) {
  * @param Mob_func Function to initialize the mob.
  * @return Error (realloc DynamicArray mob or alloc mob)
  */
-static Error _add_mob_type(Wave *wave, Coord_f start, Mob (*Mob_func)(int, Coord_f)) {
+static Error _add_mob_type(Wave *wave, Coord_f start,
+                           Mob (*Mob_func)(int, Coord_f)) {
+    Error error = (Error){__func__, CLEAR};
     Mob *mob = malloc(sizeof(Mob));
     if (!mob) {
-        return MALLOC_ERR;
+        error.type = MALLOC_ERR;
+        return error;
     }
     *mob = Mob_func(wave->nb_wave, start);
 
-    return DA_add(&wave->mob_list,
-                  (DynamicArray_Union){.mob = mob}, MOB);
+    error.type =
+        DA_add(&wave->mob_list, (DynamicArray_Union){.mob = mob}, MOB).type;
+    return error;
 }
 
 /**
@@ -114,21 +119,25 @@ static Error _add_mob_type(Wave *wave, Coord_f start, Mob (*Mob_func)(int, Coord
  * @return Error (realloc DynamicArray mob or alloc mob)
  */
 static Error _add_mob(Wave *wave, Coord_f start, Type_wave type) {
+    Error err = (Error){__func__, CLEAR};
     switch (type) {
         case BOSS:
-            return _add_mob_type(wave, start, &Mob_init_boss);
+            err.type = _add_mob_type(wave, start, &Mob_init_boss).type;
+            return err;
         case FAST:
-            return _add_mob_type(wave, start, &Mob_init_fast);
+            err.type = _add_mob_type(wave, start, &Mob_init_fast).type;
+            return err;
         case MASS:
-            return _add_mob_type(wave, start, &Mob_init_basic);
         default:
-            return _add_mob_type(wave, start, &Mob_init_basic);
+            err.type = _add_mob_type(wave, start, &Mob_init_basic).type;
+            return err;
     }
     // useless
-    return CLEAR;
+    return err;
 }
 
 Error Wave_spawn_next(Wave *wave, Coord_f start) {
+    Error err = (Error){__func__, CLEAR};
     struct timespec time;
     timespec_get(&time, TIME_UTC);
 
@@ -139,8 +148,8 @@ Error Wave_spawn_next(Wave *wave, Coord_f start) {
     }
 
     if (Time_is_after(wave->next_mob, time) && wave->nb_mob_wave) {
-        Error err = _add_mob(wave, start, wave->type_mob);
-        if (err) {
+        err.type = _add_mob(wave, start, wave->type_mob).type;
+        if (err.type) {
             return err;
         }
         _add_time_mob(wave, time);
@@ -150,7 +159,7 @@ Error Wave_spawn_next(Wave *wave, Coord_f start) {
             wave->type_mob = UNKNOW;
         }
     }
-    return CLEAR;
+    return err;
 }
 
 /**
@@ -162,7 +171,8 @@ Error Wave_spawn_next(Wave *wave, Coord_f start) {
 static void _next_going_unit(Mob *mob, DynamicArray *da) {
     // first time
     if (mob->going.x == -1 && mob->going.y == -1) {
-        mob->going = Utils_coord_i_to_f_center(da->arr[1].path);  // 1 beacause 0 is the start
+        mob->going = Utils_coord_i_to_f_center(
+            da->arr[1].path);  // 1 beacause 0 is the start
         return;
     }
 

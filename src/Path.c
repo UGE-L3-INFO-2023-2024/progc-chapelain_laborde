@@ -53,8 +53,7 @@ static int Path_forward_3_4(int max) {
  * @param dir Direction of the path.
  * @param len Length of the path.
  */
-static void Path_apply_path(Map* map, Coord_i origin,
-                            Direction dir, int len) {
+static void Path_apply_path(Map* map, Coord_i origin, Direction dir, int len) {
     static int Dir_point[4][2] = {
         {0, -1},
         {1, 0},
@@ -78,8 +77,8 @@ static void Path_apply_path(Map* map, Coord_i origin,
  * @param len Length of the path.
  * @return Error (if realloc failed)
  */
-static Error Path_add_turn(DynamicArray* da, Coord_i origin,
-                           Direction dir, int len) {
+static Error Path_add_turn(DynamicArray* da, Coord_i origin, Direction dir,
+                           int len) {
     static int Dir_point[4][2] = {
         {0, -1},
         {1, 0},
@@ -91,7 +90,8 @@ static Error Path_add_turn(DynamicArray* da, Coord_i origin,
         .x = origin.x + Dir_point[dir][0] * len,
         .y = origin.y + Dir_point[dir][1] * len,
     };
-    return DA_add(da, (DynamicArray_Union){.path = coord}, PATH);
+    return (Error){DA_add(da, (DynamicArray_Union){.path = coord}, PATH).type,
+                   __func__};
 }
 
 /**
@@ -203,6 +203,7 @@ static void Path_gen_step(Map* map, Coord_i coord, Direction dir,
 }
 
 bool Path_gen(Map* map, DynamicArray* da) {
+    Error err = {CLEAR, __func__};
     int total_len = 0, total_turn = 0;
     // 1
     Map_init_board(map);
@@ -213,16 +214,17 @@ bool Path_gen(Map* map, DynamicArray* da) {
         .y = (rand() % (MAP_HEIGHT - 4)) + 2,
     };
     map->nest = origin;
-    Error err = Path_add_turn(da, origin, NORTH,
-                              0);  //  dir not important because len = 0
-    if (err != CLEAR) {
-        Error_print(err, "Path_gen");
+    err.type = Path_add_turn(da, origin, NORTH,
+                             0)
+                   .type;  //  dir not important because len = 0
+    if (err.type) {
+        Error_print(err);
         return false;
     }
 
     // 3
     int nest_to_borders[4] = {
-        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),              // NORTH
+        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),  // NORTH
         Path_manatan_dist(origin, (Coord_i){MAP_WIDTH - 1, origin.y}),  // EAST
         Path_manatan_dist(origin,
                           (Coord_i){origin.x, MAP_HEIGHT - 1}),  // SOUTH
@@ -247,9 +249,9 @@ bool Path_gen(Map* map, DynamicArray* da) {
 
     // 5
     Path_apply_path(map, origin, dir, foward_len);
-    err = Path_add_turn(da, origin, dir, foward_len);
-    if (err != CLEAR) {
-        Error_print(err, "Path_gen");
+    err.type = Path_add_turn(da, origin, dir, foward_len).type;
+    if (err.type != CLEAR) {
+        Error_print(err);
         return false;
     }
     // add to total
@@ -274,9 +276,9 @@ bool Path_gen(Map* map, DynamicArray* da) {
 
         // apply to map
         Path_apply_path(map, origin, new_dir, foward_len);
-        err = Path_add_turn(da, origin, new_dir, foward_len);
-        if (err != CLEAR) {
-            Error_print(err, "Path_gen");
+        err.type = Path_add_turn(da, origin, new_dir, foward_len).type;
+        if (err.type != CLEAR) {
+            Error_print(err);
             return false;
         }
 
