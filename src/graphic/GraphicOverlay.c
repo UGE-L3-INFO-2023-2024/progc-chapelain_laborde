@@ -13,7 +13,7 @@
 #include "Graphic.h"
 #include "Mana.h"
 
-void show_mana_bar(ManaPool pool, int x, int y, int w, int h,
+void draw_mana_bar(ManaPool pool, int x, int y, int w, int h,
                    unsigned int thickness) {
     int mana = pool.mana_real;
     int mana_max = pool.mana_max;

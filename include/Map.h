@@ -35,6 +35,7 @@ typedef struct {
     Coord_i nest;
     Coord_i castle;
     Wave mobs;
+    DynamicArray map_turns;  // This DA represents the turns of the path
     DynamicArray towers;
     DynamicArray traps;
     DynamicArray projs;
@@ -47,9 +48,17 @@ typedef struct {
 /**
  * @brief Initialize a Map.
  *
- * @return Map map.
+ * The board is initialized with fields of cell at false.
+ * The towers are initialized with Map_init_towers.
+ * The projs are initialized with Map_init_projs.
+ * The mobs are initialized with Wave_init.
+ * The nest and castle are set to (-1, -1).
+ * The towers and projs are initialized with DA_init.
+ *
+ * @param map Map to initialize.
+ * @return Error of allocation. (towers, projs, waves)
  */
-Map Map_init(void);
+Error Map_init(Map* map);
 
 /**
  * @brief Initialize the board of a Map.
@@ -114,5 +123,13 @@ void Map_actualise_proj(Map* map);
  * @param map Map to print.
  */
 void Map_print(Map* map);
+
+/**
+ * @brief Free a Map and all its fields.
+ * (towers, projs, mobs)
+ *
+ * @param map Map to free.
+ */
+void Map_free(Map* map);
 
 #endif  // __MAP_H__

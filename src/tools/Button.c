@@ -25,7 +25,7 @@ Button* init_button(char* name, Coord_i coord, int width, int height,
 }
 
 Error button_tab_init(ButtonTab* buttons) {
-    Error err = (Error){CLEAR, __func__};
+    Error err = NO_ERROR;
     buttons->buttons = malloc(sizeof(Button*) * 3);
     if (buttons->buttons == NULL) {
         err.type = MALLOC_ERR;
@@ -33,11 +33,11 @@ Error button_tab_init(ButtonTab* buttons) {
     }
     buttons->count = 0;
     buttons->capacity = 3;
-    return err;
+    return NO_ERROR;
 }
 
 Error button_tab_add(ButtonTab* buttons, Button* button) {
-    Error err = (Error){CLEAR, __func__};
+    Error err = NO_ERROR;
     if (buttons->count == buttons->capacity) {
         buttons->capacity *= 2;
         buttons->buttons =
@@ -48,7 +48,7 @@ Error button_tab_add(ButtonTab* buttons, Button* button) {
         }
     }
     buttons->buttons[buttons->count++] = button;
-    return err;
+    return NO_ERROR;
 }
 
 void button_tab_free(ButtonTab buttons) {

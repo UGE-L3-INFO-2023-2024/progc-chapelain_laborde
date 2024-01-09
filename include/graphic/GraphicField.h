@@ -22,7 +22,7 @@
  * @param map Map to draw.
  * @param map_window Window to draw on.
  */
-void draw_map(Map map, SubWindow map_window, DynamicArray* turns);
+void draw_map(Map map, SubWindow map_window);
 
 /**
  * @brief Draw the give mob on the given window.

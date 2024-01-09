@@ -18,11 +18,26 @@
 #include "TimeManager.h"
 #include "Utils.h"
 
-Map Map_init(void) {
-    return (Map){
-        .nest = (Coord_i){-1, -1},
-        .castle = (Coord_i){-1, -1},
-    };
+// TODO 0 : make static function of init
+
+Error Map_init(Map* map) {
+    Error err = NO_ERROR;
+    Map_init_board(map);
+    map->nest = (Coord_i){-1, -1};
+    map->castle = (Coord_i){-1, -1};
+    err.type = Map_init_towers(map).type;
+    if (err.type)
+        return err;
+    err.type = Map_init_projs(map).type;
+    if (err.type)
+        return err;
+    err.type = Wave_init(&(map->mobs)).type;
+    if (err.type)
+        return err;
+    err.type = DA_init(&map->map_turns, 10, PATH).type;
+    if (err.type)
+        return err;
+    return NO_ERROR;
 }
 
 /**
@@ -178,4 +193,14 @@ void Map_print(Map* map) {
         printf("|\n");
     }
     printf("------------------------------\n");
+}
+
+void Map_free(Map* map) {
+    DA_free(map->towers);
+    DA_free(map->projs);
+    DA_free(map->mobs.mob_list);
+    map->projs = (DynamicArray){0};
+    map->towers = (DynamicArray){0};
+    map->mobs = (Wave){0};
+    map = NULL;
 }

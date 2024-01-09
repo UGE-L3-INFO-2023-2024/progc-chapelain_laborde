@@ -32,7 +32,7 @@ typedef struct {
  *
  * @return ManaPool mana.
  */
-ManaPool Mana_init(void);
+ManaPool Mana_pool_init(void);
 
 /**
  * @brief Calculate the max mana of a level.

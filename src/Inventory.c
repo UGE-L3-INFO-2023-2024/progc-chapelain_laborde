@@ -14,7 +14,7 @@
 #include "Mana.h"
 
 Error inventory_init(Inventory* inventory) {
-    Error error = (Error){CLEAR, __func__};
+    Error error = NO_ERROR;
     inventory->gemstones = malloc(sizeof(Gemstone) * 3);
     if (inventory->gemstones == NULL) {
         error.type = MALLOC_ERR;
@@ -22,14 +22,15 @@ Error inventory_init(Inventory* inventory) {
     }
     inventory->gemstones_count = 0;
     inventory->gemstones_capacity = 3;
-    inventory->mana = Mana_init();
     inventory->fusion[0] = NULL;
     inventory->fusion[1] = NULL;
-    return error;
+    inventory->info.page = 0;
+    inventory->info.gem_level = 0;
+    return NO_ERROR;
 }
 
 Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone) {
-    Error error = (Error){CLEAR, __func__};
+    Error error = NO_ERROR;
     if (inventory->gemstones_count == inventory->gemstones_capacity) {
         inventory->gemstones_capacity *= 2;
         inventory->gemstones =
@@ -41,11 +42,11 @@ Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone) {
         }
     }
     inventory->gemstones[inventory->gemstones_count++] = gemstone;
-    return error;
+    return NO_ERROR;
 }
 
 Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone) {
-    Error error = (Error){CLEAR, __func__};
+    Error error = NO_ERROR;
     for (int i = 0; i < inventory->gemstones_count; i++) {
         if (Gemstone_equal(inventory->gemstones[i], gemstone)) {
             for (int j = i; j < inventory->gemstones_count - 1; j++) {
@@ -56,7 +57,7 @@ Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone) {
         }
     }
     error.type = GEMSTONE_NOT_FOUND;
-    return error;
+    return NO_ERROR;
 }
 
 void inventory_free(Inventory* inventory) {

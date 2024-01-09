@@ -13,6 +13,7 @@
 #include "Button.h"
 #include "Event.h"
 #include "FieldEvent.h"
+#include "Game.h"
 #include "Inventory.h"
 #include "InventoryEvent.h"
 #include "Mana.h"
@@ -98,8 +99,9 @@ static void gem_plus_button_action(int* gem_level) {
         (*gem_level)++;
 }
 
-static void gem_button_action(Inventory* inventory, int gem_level) {
-    if (Mana_buy(&inventory->mana, Mana_gem_cost(gem_level)))
+static void gem_button_action(Inventory* inventory, ManaPool* mana_pool,
+                              int gem_level) {
+    if (Mana_buy(mana_pool, Mana_gem_cost(gem_level)))
         inventory_add_gemstone(inventory, Gemstone_init(gem_level));
 }
 
@@ -116,8 +118,7 @@ static void right_page_inventory_button_action(int* page, int max_page) {
 }
 
 void doing_button_actions(ButtonTab buttons, SubWindow inventory_window,
-                          SubWindow map_window, Map* map, Inventory* inventory,
-                          Event event, int* gem_level, int* actual_page) {
+                          SubWindow map_window, Game* game, Event event) {
     get_clicked_button(buttons, inventory_window, event);
     Button* button = get_button_actually_pressed(buttons);
     if (button == NULL || !button->pressed || button->name == NULL) {
@@ -125,23 +126,24 @@ void doing_button_actions(ButtonTab buttons, SubWindow inventory_window,
     }
     if (event.mouse.state == MLV_RELEASED) {
         if (strcmp(button->name, "tower") == 0) {
-            tower_button_action(button, map_window, map, &inventory->mana,
-                                event);
+            tower_button_action(button, map_window, &game->map,
+                                &game->mana_pool, event);
         } else {
             if (strcmp(button->name, "mana") == 0) {
-                mana_button_action(&inventory->mana);
+                mana_button_action(&game->mana_pool);
             } else if (strcmp(button->name, "minus") == 0) {
-                gem_minus_button_action(gem_level);
+                gem_minus_button_action(&game->inventory.info.gem_level);
             } else if (strcmp(button->name, "plus") == 0) {
-                gem_plus_button_action(gem_level);
+                gem_plus_button_action(&game->inventory.info.gem_level);
             } else if (strcmp(button->name, "gem") == 0) {
-                gem_button_action(inventory, *gem_level);
+                gem_button_action(&game->inventory, &game->mana_pool,
+                                  game->inventory.info.gem_level);
             } else if (strcmp(button->name, "left") == 0) {
-                left_page_inventory_button_action(actual_page);
+                left_page_inventory_button_action(&game->inventory.info.page);
             } else if (strcmp(button->name, "right") == 0) {
                 right_page_inventory_button_action(
-                    actual_page,
-                    (inventory->gemstones_count - 1) / GEMS_PER_PAGE);
+                    &game->inventory.info.page,
+                    (game->inventory.gemstones_count - 1) / GEMS_PER_PAGE);
             } else {
                 fprintf(stderr, "Error : button name not found\n");
             }

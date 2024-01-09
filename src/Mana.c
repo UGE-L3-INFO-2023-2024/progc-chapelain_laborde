@@ -11,7 +11,7 @@
 #include <math.h>
 #include <stdbool.h>
 
-ManaPool Mana_init(void) {
+ManaPool Mana_pool_init(void) {
     return (ManaPool){
         .level = 0,
         .mana_real = MANA_START,

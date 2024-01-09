@@ -16,6 +16,7 @@ void Error_print(Error error) {
         "Dynamic Array Wrong Type",
         "Dynamic Array Empty",
         "Dynamic Array Wrong Size",
+        "Dynamic Array Element not found",
         "Malloc error",
         "Gemstone not found",
     };

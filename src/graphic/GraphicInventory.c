@@ -235,7 +235,7 @@ static void draw_gems_and_pagination(SubWindow window, Inventory inventory,
     draw_all_gems(window, inventory, page);
     draw_pagination((Coord_i){window.coord.x, window.coord.y}, window.width,
                     window.height, window.font, page + 1,
-                    (inventory.gemstones_count - 1) / GEMS_PER_PAGE + 1);
+                    ((int)inventory.gemstones_count - 1) / GEMS_PER_PAGE + 1);
 }
 
 /* @warning Don't forget to change hover_fusion_slot in InventoryEvent if

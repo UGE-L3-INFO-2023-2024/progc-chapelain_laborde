@@ -21,7 +21,7 @@
  * @param h Height of the bar
  * @param thickness Thickness of the bar
  */
-void show_mana_bar(ManaPool pool, int x, int y, int w, int h,
+void draw_mana_bar(ManaPool pool, int x, int y, int w, int h,
                    unsigned int thickness);
 
 #endif  // __GRAPHIC_OVERLAY_H__

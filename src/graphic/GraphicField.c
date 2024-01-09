@@ -194,7 +194,7 @@ static void draw_grid(SubWindow window, MLV_Color color, int thickness) {
 }
 
 /* Draw map in the window */
-void draw_map(Map map, SubWindow map_window, DynamicArray* da) {
+void draw_map(Map map, SubWindow map_window) {
     MLV_clear_window(CLEAR_COLOR);
     for (int i = 0; i < MAP_HEIGHT; i++) {
         for (int j = 0; j < MAP_WIDTH; j++) {
@@ -209,6 +209,5 @@ void draw_map(Map map, SubWindow map_window, DynamicArray* da) {
     draw_castle(map.castle, map_window, NULL);
     draw_nest(map.nest, map_window, NULL);
     draw_projectile(&map.projs, map_window, NULL);
-    // draw_turn(da, map_window, NULL);
     draw_grid(map_window, MLV_COLOR_BLACK, 2);
 }

@@ -29,7 +29,10 @@ typedef struct {
     unsigned long gemstones_count;     // The number of gemstones
     unsigned long gemstones_capacity;  // The capacity of the gemstones array.
     Gemstone* fusion[2];               // The two gemstones to fuse.
-    ManaPool mana;                     // The mana pool.
+    struct {                           // The info about the inventory.
+        int page;
+        int gem_level;
+    } info;
 } Inventory;
 
 /*************/

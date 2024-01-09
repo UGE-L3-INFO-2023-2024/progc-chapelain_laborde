@@ -22,7 +22,11 @@
 /* Structures */
 /**************/
 
-#define NB_ERRORS 6
+#define NO_ERROR        \
+    (Error) {           \
+        CLEAR, __func__ \
+    }
+#define NB_ERRORS 7
 
 typedef enum {
     CLEAR = 0,
