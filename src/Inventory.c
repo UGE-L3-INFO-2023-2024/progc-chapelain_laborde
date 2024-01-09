@@ -14,7 +14,7 @@
 #include "Mana.h"
 
 Error inventory_init(Inventory* inventory) {
-    Error error = (Error){__func__, CLEAR};
+    Error error = (Error){CLEAR, __func__};
     inventory->gemstones = malloc(sizeof(Gemstone) * 3);
     if (inventory->gemstones == NULL) {
         error.type = MALLOC_ERR;
@@ -29,7 +29,7 @@ Error inventory_init(Inventory* inventory) {
 }
 
 Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone) {
-    Error error = (Error){__func__, CLEAR};
+    Error error = (Error){CLEAR, __func__};
     if (inventory->gemstones_count == inventory->gemstones_capacity) {
         inventory->gemstones_capacity *= 2;
         inventory->gemstones =
@@ -45,7 +45,7 @@ Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone) {
 }
 
 Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone) {
-    Error error = (Error){__func__, CLEAR};
+    Error error = (Error){CLEAR, __func__};
     for (int i = 0; i < inventory->gemstones_count; i++) {
         if (Gemstone_equal(inventory->gemstones[i], gemstone)) {
             for (int j = i; j < inventory->gemstones_count - 1; j++) {

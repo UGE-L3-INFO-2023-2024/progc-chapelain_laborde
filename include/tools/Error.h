@@ -37,7 +37,7 @@ typedef enum {
 
 typedef struct {
     ErrorType type;
-    char* func;
+    const char* func;
 } Error;
 
 /*************/

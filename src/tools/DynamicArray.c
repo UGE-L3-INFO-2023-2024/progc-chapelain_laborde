@@ -16,7 +16,7 @@
 #include "Error.h"
 
 Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
-    Error err = (Error){__func__, CLEAR};
+    Error err = (Error){CLEAR, __func__};
     // alloc array
     da->arr = (DA_Union*)malloc(size_alloc * sizeof(DynamicArray_Union));
     if (!(da->arr)) {
@@ -33,7 +33,7 @@ Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
 Error DA_realloc(DynamicArray* da) {
     assert(da);
     assert(da->arr);
-    Error err = (Error){__func__, CLEAR};
+    Error err = (Error){CLEAR, __func__};
 
     int new_size = da->max_len * DA_MUL_SIZE_ALLOC;
     DA_Union* tmp = realloc(da->arr, new_size * sizeof(DA_Union));
@@ -64,7 +64,7 @@ DynamicArray_Union* DA_get(DynamicArray* da, int index) {
 Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     assert(da);
     assert(da->arr);
-    Error err = (Error){__func__, CLEAR};
+    Error err = (Error){CLEAR, __func__};
     if (type != da->type) {
         err.type = DYNA_ARR_ERR_TYPE;
         return err;
@@ -103,7 +103,7 @@ Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
                      Type_array type) {
     assert(da);
     assert(da->arr);
-    Error err = (Error){__func__, CLEAR};
+    Error err = (Error){CLEAR, __func__};
 
     if (type != da->type) {
         err.type = DYNA_ARR_ERR_TYPE;
@@ -139,7 +139,7 @@ Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
 Error DA_remove_index(DynamicArray* da, int index) {
     assert(da);
     assert(da->arr);
-    Error err = (Error){__func__, CLEAR};
+    Error err = (Error){CLEAR, __func__};
 
     // out of bound or empty
     if (!da->real_len) {

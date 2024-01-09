@@ -97,7 +97,7 @@ static void _add_time_last_mob(Wave *wave) {
  */
 static Error _add_mob_type(Wave *wave, Coord_f start,
                            Mob (*Mob_func)(int, Coord_f)) {
-    Error error = (Error){__func__, CLEAR};
+    Error error = (Error){CLEAR, __func__};
     Mob *mob = malloc(sizeof(Mob));
     if (!mob) {
         error.type = MALLOC_ERR;
@@ -119,7 +119,7 @@ static Error _add_mob_type(Wave *wave, Coord_f start,
  * @return Error (realloc DynamicArray mob or alloc mob)
  */
 static Error _add_mob(Wave *wave, Coord_f start, Type_wave type) {
-    Error err = (Error){__func__, CLEAR};
+    Error err = (Error){CLEAR, __func__};
     switch (type) {
         case BOSS:
             err.type = _add_mob_type(wave, start, &Mob_init_boss).type;
@@ -137,7 +137,7 @@ static Error _add_mob(Wave *wave, Coord_f start, Type_wave type) {
 }
 
 Error Wave_spawn_next(Wave *wave, Coord_f start) {
-    Error err = (Error){__func__, CLEAR};
+    Error err = (Error){CLEAR, __func__};
     struct timespec time;
     timespec_get(&time, TIME_UTC);
 
