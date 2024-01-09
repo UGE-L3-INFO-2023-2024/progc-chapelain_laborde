@@ -70,4 +70,19 @@ bool click_on_button(SubWindow window, Event event, Button button);
 Gemstone* click_on_gemstone(SubWindow window, Event event, Inventory inventory,
                             unsigned int page);
 
+/**
+ * @brief This function is used to check if the user hover a fusion slot with
+ * the mouse.
+ * If the user didn't hover a fusion slot, it return false.
+ * Otherwise, it returns true and set the slot to the slot hovered.
+ *
+ * @param slot The slot hovered
+ * @param window The subwindow where the fusion slots are displayed.
+ * @param event The event to check.
+ * @return true if the user hover a fusion slot
+ */
+bool hover_fusion_slot(int* slot, SubWindow window, Event event);
+
+int click_on_fusion_slot(SubWindow window, Event event);
+
 #endif  // __INVENTORY_EVENT_H__

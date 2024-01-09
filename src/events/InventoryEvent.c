@@ -103,3 +103,39 @@ Gemstone* click_on_gemstone(SubWindow window, Event event, Inventory inventory,
     }
     return NULL;
 }
+
+/* @warning Don't forget to change draw_fusion_menu in graphicInventory if
+ * change this coord. */
+bool hover_fusion_slot(int* slot, SubWindow window, Event event) {
+    int slotSizeX = window.width * 0.2;
+    int slotSizeY = window.height * 0.07;
+    int slotSpace = window.width * 0.1;
+    for (int i = 0; i < 3; i++) {
+        if (is_in_rect_area(
+                window.coord.x + slotSpace * (i + 1) + slotSizeX * i,
+                window.coord.y + window.height * 0.78, slotSizeX, slotSizeY,
+                event.mouse.x, event.mouse.y)) {
+            *slot = i;
+            return true;
+        }
+    }
+    return false;
+}
+
+int click_on_fusion_slot(SubWindow window, Event event) {
+    int slotSizeX = window.width * 0.2;
+    int slotSizeY = window.height * 0.07;
+    int slotSpace = window.width * 0.1;
+    if (event.type != MOUSE_BUTTON || event.mouse.state != MLV_PRESSED) {
+        return -1;
+    }
+    for (int i = 0; i < 3; i++) {
+        if (is_in_rect_area(
+                window.coord.x + slotSpace * (i + 1) + slotSizeX * i,
+                window.coord.y + window.height * 0.78, slotSizeX, slotSizeY,
+                event.mouse.x, event.mouse.y)) {
+            return i;
+        }
+    }
+    return -1;
+}

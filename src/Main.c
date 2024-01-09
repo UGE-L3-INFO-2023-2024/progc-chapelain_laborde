@@ -89,6 +89,7 @@ int main(int argc, char const* argv[]) {
     Event event = {NO_EVENT};
     Tower* clicked_tower = NULL;
     Gem* clicked_gem = NULL;
+    int slot = -1;
     while (!quit_event(event)) {
         event = get_event();
         doing_button_actions(buttons, inventory_window, map_window, &map,
@@ -97,6 +98,28 @@ int main(int argc, char const* argv[]) {
         if (clicked_gem == NULL)
             clicked_gem = click_on_gemstone(inventory_window, event, inventory,
                                             inventory_page);
+        slot = click_on_fusion_slot(inventory_window, event);
+        if (slot != -1 && clicked_gem != NULL) {
+            if (slot == 0 || slot == 1) {
+                if (inventory.fusion[slot] != NULL)
+                    inventory_add_gemstone(&inventory,
+                                           *inventory.fusion[slot]);
+                inventory.fusion[slot] = Gemstone_copy_ptr(clicked_gem);
+                inventory_remove_gemstone(&inventory, *clicked_gem);
+                clicked_gem = NULL;
+            }
+        }
+        if (slot == 2 && clicked_gem == NULL) {
+            if (inventory.fusion[0] != NULL && inventory.fusion[1] != NULL) {
+                if (Gemstone_merge(inventory.fusion[0], inventory.fusion[1])) {
+                    inventory_add_gemstone(&inventory, *inventory.fusion[0]);
+                    free(inventory.fusion[0]);
+                    free(inventory.fusion[1]);
+                    inventory.fusion[0] = NULL;
+                    inventory.fusion[1] = NULL;
+                }
+            }
+        }
         clicked_tower = click_on_tower(map_window, event, map);
         if (clicked_tower != NULL && clicked_gem != NULL) {
             if (clicked_tower->has_gem) {
@@ -117,7 +140,7 @@ int main(int argc, char const* argv[]) {
         Wave_next_step(&map.mobs, &da);
         Map_towers_shoot(&map);
         Map_actualise_proj(&map);
-        DA_print_all(&map.mobs.mob_list);
+        // DA_print_all(&map.mobs.mob_list);
         err =
             Wave_spawn_next(&(map.mobs), Utils_coord_i_to_f_center(map.nest));
         if (err) {

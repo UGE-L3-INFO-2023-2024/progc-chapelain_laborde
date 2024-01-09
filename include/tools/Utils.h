@@ -21,7 +21,7 @@
 typedef struct {
     int x;
     int y;
-} Coord_i;
+} Coord_i, Point;
 
 typedef struct {
     float x;
@@ -145,7 +145,7 @@ double Utils_random_0_1();
 double Utils_random_uniform(double a, double b);
 
 /**
- * @brief Return the degree equivalent of the radian angle.
+ * @brief Return the radian's angle of a degree's angle.
  *
  * @param deg double degree
  * @return double radian

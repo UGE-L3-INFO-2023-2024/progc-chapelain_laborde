@@ -35,8 +35,7 @@ static void draw_tower(Tower tower, SubWindow window, MLV_Image* img) {
         MLV_Color color = MLV_COLOR_BLACK;
         if (tower.has_gem) {
             draw_gem((Coord_i){x + cell_width * .15, y + cell_height * .15},
-                     cell_width * 0.7, cell_height * 0.7,
-                     Color_HSV_to_RGB(tower.gem.color));
+                     cell_width * 0.7, cell_height * 0.7, tower.gem);
         }
         MLV_draw_filled_rectangle(x, y, cell_width * 0.25, cell_height * 0.15,
                                   color);

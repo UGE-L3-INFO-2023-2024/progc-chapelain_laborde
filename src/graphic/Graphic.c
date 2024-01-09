@@ -88,6 +88,34 @@ void draw_centered_text(unsigned int x, unsigned int y, const char* text,
     va_end(args);
 }
 
+void draw_polygon(Polygon polygon, MLV_Color color) {
+    if (polygon.nb_points < 3)
+        return;
+    int* vx = malloc(sizeof(int) * polygon.nb_points);
+    int* vy = malloc(sizeof(int) * polygon.nb_points);
+    for (int i = 0; i < polygon.nb_points; i++) {
+        vx[i] = polygon.points[i].x;
+        vy[i] = polygon.points[i].y;
+    }
+    MLV_draw_polygon(vx, vy, polygon.nb_points, color);
+    free(vx);
+    free(vy);
+}
+
+void draw_filled_polygon(Polygon polygon, MLV_Color color) {
+    if (polygon.nb_points < 3)
+        return;
+    int* vx = malloc(sizeof(int) * polygon.nb_points);
+    int* vy = malloc(sizeof(int) * polygon.nb_points);
+    for (int i = 0; i < polygon.nb_points; i++) {
+        vx[i] = polygon.points[i].x;
+        vy[i] = polygon.points[i].y;
+    }
+    MLV_draw_filled_polygon(vx, vy, polygon.nb_points, color);
+    free(vx);
+    free(vy);
+}
+
 void clear_window(Window window) {
     MLV_draw_filled_rectangle(window.coord.x, window.coord.y, window.width,
                               window.height, CLEAR_COLOR);

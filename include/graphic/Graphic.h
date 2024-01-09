@@ -17,6 +17,11 @@
 
 #define CLEAR_COLOR MLV_COLOR_WHITE
 
+typedef struct {
+    Point* points;
+    int nb_points;
+} Polygon;
+
 /**
  * @brief Convert a RGB color to a MLV_Color.
  *
@@ -111,6 +116,28 @@ void draw_centered_text_with_font(unsigned int x, unsigned int y,
  */
 void draw_centered_text(unsigned int x, unsigned int y, const char* text,
                         MLV_Color color, ...);
+
+/**
+ * @brief Draw a polygon with the given parameters.
+ * The polygon is drawn with the given color.
+ * At the difference of the draw_filled_polygon function, this function
+ * doesn't fill the polygon with the given color. It only draw the outline.
+ * The function accept only polygons with more than 2 points. (nb_points > 2)
+ *
+ * @param polygon Polygon to draw.
+ * @param color Color of the outlined polygon.
+ */
+void draw_polygon(Polygon polygon, MLV_Color color);
+
+/**
+ * @brief Draw a polygon with the given parameters.
+ * The polygon is filled with the given color.
+ * The function accept only polygons with more than 2 points. (nb_points > 2)
+ *
+ * @param polygon Polygon to draw.
+ * @param color Color of the polygon.
+ */
+void draw_filled_polygon(Polygon polygon, MLV_Color color);
 
 /**
  * @brief This function clear the given window with the CLEAR_COLOR.
