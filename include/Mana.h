@@ -11,7 +11,7 @@
 
 #include <stdbool.h>
 
-#define MANA_START 150
+#define MANA_START 1500
 
 /**************/
 /* Structures */

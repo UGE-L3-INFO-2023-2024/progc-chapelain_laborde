@@ -22,8 +22,8 @@
 /**************/
 
 typedef struct {
-    unsigned int current_hp;
-    unsigned int max_hp;
+    int current_hp;
+    int max_hp;
     double speed;
     Coord_f pos;
     HSV_Color color;
@@ -74,6 +74,14 @@ int Mob_max(int wave, bool boss);
  * @param mob Mob to move.
  * @param dir Direction to move the mob.
  */
-void Mob_next_step(Mob *mob, Direction dir);
+void Mob_next_step(Mob* mob, Direction dir);
+
+/**
+ * @brief Apply the element to the mob.
+ *
+ * @param mob Mob to apply the element.
+ * @param type Type of the element.
+ */
+void Mob_apply_element(Mob* mob, Element_Type type);
 
 #endif  // __MOB_H__

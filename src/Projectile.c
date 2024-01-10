@@ -42,11 +42,38 @@ bool Proj_next_step(Projectile* proj) {
     return true;
 }
 
-bool Proj_damage_raw(Projectile* proj) {
+int _damage_element(Projectile* proj, int dmg) {
+    Mob_apply_element(proj->target, Gemstone_get_element(proj->gem));
+    switch (proj->target->elem.main) {
+        case BURNING:
+            dmg *= 3;
+            proj->target->elem.main = NONE;
+            break;
+        case SPRAYING:
+            dmg += (dmg * SPRAYING_DMG_PERCENT);
+        case PYRO:
+            dmg += (dmg * PYRO_DMG_PERCENT);
+            break;
+        default:
+            break;
+    }
+    return dmg;
+}
+
+int Proj_damage_raw(Projectile* proj) {
     int dmg = PROJ_CONST_DMG *
               pow(2, proj->level) *
               (1 - cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) / 2);
+    if (proj->gem.type == MIXED) {
+        dmg *= 2;
+        if (!(rand() % 10)) {  // 10% chance
+            dmg *= 2;
+        }
+    } else {
+        dmg = _damage_element(proj, dmg);
+    }
+
     proj->target->current_hp < dmg ? proj->target->current_hp = 0
                                    : (proj->target->current_hp -= dmg);
-    return proj->target->current_hp <= 0;  // should be never under 0 but just in case
+    return dmg;
 }

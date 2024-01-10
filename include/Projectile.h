@@ -14,7 +14,7 @@
 #include "Mob.h"
 
 #define PROJ_SPEED 3
-#define PROJ_CONST_DMG 200
+#define PROJ_CONST_DMG 5
 
 /**************/
 /* Structures */
@@ -54,9 +54,9 @@ bool Proj_next_step(Projectile* proj);
  * @brief Calculate the damage of the projectile.
  *
  * @param proj Projectile to calculate the damage.
- * @return if the target is dead.
+ * @return Damage done
  *
  */
-bool Proj_damage_raw(Projectile* proj);
+int Proj_damage_raw(Projectile* proj);
 
 #endif  // _PROJECTILE_H_

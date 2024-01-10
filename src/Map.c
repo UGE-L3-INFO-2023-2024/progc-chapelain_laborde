@@ -13,6 +13,7 @@
 #include <stdlib.h>
 
 #include "DynamicArray.h"
+#include "Element.h"
 #include "Error.h"
 #include "Projectile.h"
 #include "TimeManager.h"
@@ -136,29 +137,25 @@ void Map_towers_shoot(Map* map) {
     }
 }
 
-/**
- * @brief Clear all projectiles that target the mob.
- *
- * @param projs DynamicArray of projs.
- * @param mob Target of the projs.
- */
-static void _clear_projs_on_target(DynamicArray* projs, Mob* mob) {
-    for (int i = 0; i < projs->real_len; i++) {
-        if (projs->arr[i].proj.target == mob) {
-            DA_remove_index(projs, i);
+void _pyro_spread(Wave* wave, Mob* origin, int dmg) {
+    for (int i = 0; i < wave->mob_list.real_len; i++) {
+        Mob* mob = wave->mob_list.arr[i].mob;
+        if (Utils_coord_f_distance(origin->pos, mob->pos) < PYRO_RADIUS &&
+            mob != origin) {
+            mob->current_hp < dmg ? mob->current_hp = 0
+                                  : (mob->current_hp -= dmg);
         }
     }
 }
 
-/**
- * @brief Clear all mobs that have 0 hp.
- *
- * @param mobs DynamicArray of mobs.
- */
-static void _clear_mobs_dead(DynamicArray* mobs) {
-    for (int i = 0; i < mobs->real_len; i++) {
-        if (mobs->arr[i].mob->current_hp <= 0) {
-            DA_remove_index(mobs, i);
+void _spraying_spread(Wave* wave, Mob* origin) {
+    for (int i = 0; i < wave->mob_list.real_len; i++) {
+        Mob* mob = wave->mob_list.arr[i].mob;
+        if (Utils_coord_f_distance(origin->pos, mob->pos) < SPRAYING_RADIUS &&
+            mob != origin) {
+            mob->elem.second = SPRAYING;
+            mob->elem.end_apply_second = Time_add_ms(Time_get(),
+                                                     SPRAYING_DURATION_MS);
         }
     }
 }
@@ -166,12 +163,15 @@ static void _clear_mobs_dead(DynamicArray* mobs) {
 void Map_actualise_proj(Map* map) {
     for (int i = 0; i < map->projs.real_len; i++) {
         if (!Proj_next_step(&(map->projs.arr[i].proj))) {
-            if (Proj_damage_raw(&(map->projs.arr[i].proj))) {
-                _clear_projs_on_target(&map->projs,
-                                       map->projs.arr[i].proj.target);
-                _clear_mobs_dead(&map->mobs.mob_list);
+            int dmg = Proj_damage_raw(&(map->projs.arr[i].proj));
+            if (map->projs.arr[i].proj.target->elem.main == PYRO) {
+                _pyro_spread(&(map->mobs),
+                             map->projs.arr[i].proj.target,
+                             dmg * PYRO_DMG_PERCENT);
+                map->projs.arr[i].proj.target->elem.main = NONE;
+            } else if (map->projs.arr[i].proj.target->elem.main == SPRAYING) {
+                _spraying_spread(&(map->mobs), map->projs.arr[i].proj.target);
             }
-
             DA_remove_index(&map->projs, i);
             --i;  // to check new placed proj
             // DA_remove_index move last to index
