@@ -2,7 +2,7 @@
  * @file Map.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30-10-2023
+ * @date 10-01-2024
  *
  */
 
@@ -48,9 +48,10 @@ typedef struct {
 /**
  * @brief Initialize a Map.
  *
+ * @details
  * The board is initialized with fields of cell at false.
- * The towers are initialized with Map_init_towers.
- * The projs are initialized with Map_init_projs.
+ * The towers are initialized with _init_towers.
+ * The projs are initialized with _init_projs.
  * The mobs are initialized with Wave_init.
  * The nest and castle are set to (-1, -1).
  * The towers and projs are initialized with DA_init.
@@ -66,22 +67,6 @@ Error Map_init(Map* map);
  * @param map Map to initialize.
  */
 void Map_init_board(Map* map);
-
-/**
- * @brief Initialize the towers of a Map.
- *
- * @param map Map to initialize.
- * @return Error if there is a allocation error.
- */
-Error Map_init_towers(Map* map);
-
-/**
- * @brief Initialize the projs of a Map.
- *
- * @param map Map to initialize.
- * @return Error if there is a allocation error.
- */
-Error Map_init_projs(Map* map);
 
 /**
  * @brief Add a tower to a Map.

@@ -18,18 +18,18 @@
 #include "Projectile.h"
 #include "TimeManager.h"
 #include "Utils.h"
+#include "Wave.h"
 
-// TODO 0 : make static function of init
-
+/* Initialize the Map and all its fields (towers, projs, mobs, ..) */
 Error Map_init(Map* map) {
     Error err = NO_ERROR;
     Map_init_board(map);
     map->nest = (Coord_i){-1, -1};
     map->castle = (Coord_i){-1, -1};
-    err.type = Map_init_towers(map).type;
+    err.type = _init_towers(map).type;
     if (err.type)
         return err;
-    err.type = Map_init_projs(map).type;
+    err.type = _init_projs(map).type;
     if (err.type)
         return err;
     err.type = Wave_init(&(map->mobs)).type;
@@ -54,6 +54,7 @@ static Cell _init_cell(Coord_i coord) {
     };
 }
 
+/* Initialize the board of the map. */
 void Map_init_board(Map* map) {
     for (int y = 0; y < MAP_HEIGHT; y++) {
         for (int x = 0; x < MAP_WIDTH; x++) {
@@ -62,13 +63,25 @@ void Map_init_board(Map* map) {
     }
 }
 
-Error Map_init_towers(Map* map) {
+/**
+ * @brief Initialize the towers of a Map.
+ *
+ * @param map Map to initialize.
+ * @return Error if there is a allocation error.
+ */
+Error _init_towers(Map* map) {
     Error err = DA_init(&map->towers, 10, TOWER);
     err.func = __func__;
     return err;
 }
 
-Error Map_init_projs(Map* map) {
+/**
+ * @brief Initialize the projs of a Map.
+ *
+ * @param map Map to initialize.
+ * @return Error if there is a allocation error.
+ */
+Error _init_projs(Map* map) {
     Error err = DA_init(&map->projs, 40, PROJECTILE);
     err.func = __func__;
     return err;
@@ -137,7 +150,7 @@ void Map_towers_shoot(Map* map) {
     }
 }
 
-void _pyro_spread(Wave* wave, Mob* origin, int dmg) {
+static void _pyro_spread(Wave* wave, Mob* origin, int dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
         Mob* mob = wave->mob_list.arr[i].mob;
         if (Utils_coord_f_distance(origin->pos, mob->pos) < PYRO_RADIUS &&
@@ -148,7 +161,7 @@ void _pyro_spread(Wave* wave, Mob* origin, int dmg) {
     }
 }
 
-void _spraying_spread(Wave* wave, Mob* origin) {
+static void _spraying_spread(Wave* wave, Mob* origin) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
         Mob* mob = wave->mob_list.arr[i].mob;
         if (Utils_coord_f_distance(origin->pos, mob->pos) < SPRAYING_RADIUS &&

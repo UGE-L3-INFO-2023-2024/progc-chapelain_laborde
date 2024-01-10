@@ -206,7 +206,7 @@ bool Path_gen(Map* map, DynamicArray* da) {
     Error err = {CLEAR, __func__};
     int total_len = 0, total_turn = 0;
     // 1
-    Map_init_board(map);  // -> already done in Map_init
+    Map_init_board(map);
 
     // 2
     Coord_i origin = {
