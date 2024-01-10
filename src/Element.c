@@ -12,5 +12,6 @@ Element Elem_init(void) {
     return (Element){
         .main = NONE,
         .second = NONE,
+        .origin_dmg = 0,
     };
 }

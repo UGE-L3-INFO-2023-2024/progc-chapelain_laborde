@@ -18,6 +18,13 @@
 #define DENDRO_DURATION_MS 10000
 #define DENDRO_NEXT_HIT_MS 500
 
+#define SPRAYING_DMG_PERCENT 0.05
+#define DENDRO_DMG_PERCENT 0.025
+#define PYRO_DMG_PERCENT 0.15
+
+#define PYRO_RADIUS 2.0
+#define SPRAYING_RADIUS 3.5
+
 /**************/
 /* Structures */
 /**************/
@@ -33,10 +40,11 @@ typedef enum {
 } Element_Type;
 
 typedef struct {
-    Element_Type main;                 // all
-    Element_Type second;               // can only be spraying
-    struct timespec end_apply_main;    // dendro, hydro, spraying
-    struct timespec next_hit_main;     // dendro
+    Element_Type main;               // all
+    Element_Type second;             // can only be spraying
+    struct timespec end_apply_main;  // dendro, hydro, spraying
+    struct timespec next_hit_main;   // dendro
+    int origin_dmg;
     struct timespec end_apply_second;  // spraying
 } Element;
 

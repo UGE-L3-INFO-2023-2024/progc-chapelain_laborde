@@ -34,6 +34,7 @@ static void create_windows(Game* game) {
 }
 
 Error Game_Init(Game* game) {
+    srand(time(NULL));
     Error error = NO_ERROR;
     error.type = inventory_init(&(game->inventory)).type;
     if (error.type)
@@ -42,8 +43,6 @@ Error Game_Init(Game* game) {
     if (error.type)
         return error;
     game->mana_pool = Mana_pool_init();
-
-    srand(time(NULL));
 
     while (!Path_gen(&game->map, &game->map.map_turns)) {
         game->map.map_turns.real_len = 0;
@@ -68,6 +67,36 @@ void Game_draw(Game* game) {
                         game->inventory.info.page);
     draw_mobs(&(game->map.mobs), game->window.map, NULL);
     refresh_window();
+}
+
+/**
+ * @brief Clear all projectiles that target the mob.
+ *
+ * @param projs DynamicArray of projs.
+ * @param mob Target of the projs.
+ */
+static void _clear_projs_on_target(DynamicArray* projs, Mob* mob) {
+    for (int i = 0; i < projs->real_len; i++) {
+        if (projs->arr[i].proj.target == mob) {
+            DA_remove_index(projs, i);
+        }
+    }
+}
+
+static void _clear_dead_mob_proj(Map* map) {
+    for (int i = 0; i < map->mobs.mob_list.real_len; i++) {
+        if (map->mobs.mob_list.arr[i].mob->current_hp <= 0) {
+            _clear_projs_on_target(&(map->projs), map->mobs.mob_list.arr[i].mob);
+            DA_remove_index(&(map->mobs.mob_list), i);
+        }
+    }
+}
+
+void Game_update_all(Game* game) {
+    Wave_next_step(&game->map.mobs, &game->map.map_turns);
+    Map_actualise_proj(&game->map);
+    _clear_dead_mob_proj(&game->map);
+    Map_towers_shoot(&game->map);
 }
 
 Error Game_run(Game* game) {
@@ -127,9 +156,7 @@ Error Game_run(Game* game) {
         // *********************************************************************
 
         Game_draw(game);
-        Wave_next_step(&game->map.mobs, &game->map.map_turns);
-        Map_towers_shoot(&game->map);
-        Map_actualise_proj(&game->map);
+        Game_update_all(game);
         err.type = Wave_spawn_next(&(game->map.mobs),
                                    Utils_coord_i_to_f_center(game->map.nest))
                        .type;
