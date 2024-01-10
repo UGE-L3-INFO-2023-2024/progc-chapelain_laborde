@@ -16,6 +16,8 @@
 #include "Inventory.h"
 #include "Window.h"
 
+bool hovered_inventory(Event event, SubWindow inventory_window);
+
 /**
  * @brief Check if the event is a click in the inventory.
  *
@@ -84,5 +86,7 @@ Gemstone* click_on_gemstone(SubWindow window, Event event, Inventory inventory,
 bool hover_fusion_slot(int* slot, SubWindow window, Event event);
 
 int click_on_fusion_slot(SubWindow window, Event event);
+
+int get_hovered_fusion_slot(SubWindow window, Event event);
 
 #endif  // __INVENTORY_EVENT_H__

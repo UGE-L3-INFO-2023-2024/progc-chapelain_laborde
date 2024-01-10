@@ -25,6 +25,8 @@
  */
 Coord_i get_coord_on_map(Map map, SubWindow window, Coord_i coord);
 
+Tower* get_hovered_tower(SubWindow window, Event event, Map map);
+
 /**
  * @brief Get the tower on the map at the given coordinate
  * If there is no tower at the given coordinate, it returns NULL

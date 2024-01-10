@@ -84,4 +84,9 @@ bool quit_event(Event event);
 bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
                      int cible_y);
 
+bool drop_item(Event event, bool is_dragging);
+
+bool drag_item(Event event, bool *is_dragging, int *old_mouse_x,
+               int *old_mouse_y);
+
 #endif  // __EVENT_H__

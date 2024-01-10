@@ -6,11 +6,15 @@
 #include "Event.h"
 #include "Inventory.h"
 
-bool click_in_inventory(Event event, SubWindow inventory_window) {
-    return event.type == MOUSE_BUTTON &&
-           is_in_rect_area(inventory_window.coord.x, inventory_window.coord.y,
+bool hovered_inventory(Event event, SubWindow inventory_window) {
+    return is_in_rect_area(inventory_window.coord.x, inventory_window.coord.y,
                            inventory_window.width, inventory_window.height,
                            event.mouse.x, event.mouse.y);
+}
+
+bool click_in_inventory(Event event, SubWindow inventory_window) {
+    return event.type == MOUSE_BUTTON &&
+           hovered_inventory(event, inventory_window);
 }
 
 bool click_on_text(SubWindow window, Event event, const char* text, int x,
@@ -120,6 +124,12 @@ bool hover_fusion_slot(int* slot, SubWindow window, Event event) {
         }
     }
     return false;
+}
+
+int get_hovered_fusion_slot(SubWindow window, Event event) {
+    int slot = -1;
+    hover_fusion_slot(&slot, window, event);
+    return slot;
 }
 
 int click_on_fusion_slot(SubWindow window, Event event) {

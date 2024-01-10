@@ -81,3 +81,24 @@ bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
     return cible_x >= x && cible_x <= x + width && cible_y >= y &&
            cible_y <= y + height;
 }
+
+bool drop_item(Event event, bool is_dragging) {
+    if (is_dragging && event.type == MOUSE_BUTTON &&
+        event.mouse.button == MLV_BUTTON_LEFT &&
+        event.mouse.state == MLV_RELEASED) {
+        return true;
+    }
+    return false;
+}
+
+bool drag_item(Event event, bool *is_dragging, int *old_mouse_x,
+               int *old_mouse_y) {
+    if (!*is_dragging && event.type == MOUSE_BUTTON &&
+        event.mouse.button == MLV_BUTTON_LEFT &&
+        event.mouse.state == MLV_PRESSED) {
+        *is_dragging = true;
+        *old_mouse_x = event.mouse.x;
+        *old_mouse_y = event.mouse.y;
+    }
+    return *is_dragging;
+}

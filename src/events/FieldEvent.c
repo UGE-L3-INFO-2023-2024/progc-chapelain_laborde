@@ -13,7 +13,7 @@ Coord_i get_coord_on_map(Map map, SubWindow window, Coord_i coord) {
     };
 }
 
-static Tower* hovered_tower(SubWindow window, Event event, Map map) {
+Tower* get_hovered_tower(SubWindow window, Event event, Map map) {
     Coord_i coord =
         get_coord_on_map(map, window, (Coord_i){event.mouse.x, event.mouse.y});
     for (int i = 0; i < map.towers.real_len; i++) {
@@ -26,7 +26,7 @@ static Tower* hovered_tower(SubWindow window, Event event, Map map) {
 
 Tower* click_on_tower(SubWindow window, Event event, Map map) {
     if (event.type == MOUSE_BUTTON && event.mouse.state == MLV_PRESSED) {
-        return hovered_tower(window, event, map);
+        return get_hovered_tower(window, event, map);
     }
     return NULL;
 }
