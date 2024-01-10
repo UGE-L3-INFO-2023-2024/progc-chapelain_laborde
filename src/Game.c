@@ -8,6 +8,7 @@
 
 #include "Game.h"
 
+#include "Button.h"
 #include "ButtonAction.h"
 #include "DragAndDrop.h"
 #include "Error.h"
@@ -89,7 +90,7 @@ static void drag_ang_drop_action(Game* game, Event event) {
 static void _clear_projs_on_target(DynamicArray* projs, Mob* mob) {
     for (int i = 0; i < projs->real_len; i++) {
         if (projs->arr[i].proj.target == mob) {
-            DA_remove_index(projs, i);
+            DA_remove_index(projs, i--);
         }
     }
 }
@@ -99,7 +100,7 @@ static void _clear_dead_mob_proj(Map* map) {
         if (map->mobs.mob_list.arr[i].mob->current_hp <= 0) {
             _clear_projs_on_target(&(map->projs),
                                    map->mobs.mob_list.arr[i].mob);
-            DA_remove_index(&(map->mobs.mob_list), i);
+            DA_remove_index(&(map->mobs.mob_list), i--);
         }
     }
 }
@@ -139,4 +140,7 @@ Error Game_run(Game* game) {
 void Game_free(Game* game) {
     inventory_free(&(game->inventory));
     Map_free(&(game->map));
+    button_tab_free(game->buttons);
+    font_free(game->window.inventory.font);
+    MLV_free_window();
 }

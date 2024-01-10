@@ -40,7 +40,7 @@ Event get_keyboard_event() {
 }
 
 Event get_event() {
-    Event event;
+    Event event = {.type = NO_EVENT};
     MLV_Keyboard_button keyboard_button;
     MLV_Button_state state;
     MLV_Mouse_button mouse_button;

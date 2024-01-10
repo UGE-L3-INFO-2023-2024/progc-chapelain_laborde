@@ -52,8 +52,9 @@ Error button_tab_add(ButtonTab* buttons, Button* button) {
 }
 
 void button_tab_free(ButtonTab buttons) {
-    for (unsigned int i = 0; i < buttons.capacity; i++) {
+    for (unsigned int i = 0; i < buttons.count; i++) {
         free(buttons.buttons[i]);
+        buttons.buttons[i] = NULL;
     }
     free(buttons.buttons);
     buttons.buttons = NULL;

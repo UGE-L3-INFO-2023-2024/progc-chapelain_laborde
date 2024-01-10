@@ -154,8 +154,8 @@ void _spraying_spread(Wave* wave, Mob* origin) {
         if (Utils_coord_f_distance(origin->pos, mob->pos) < SPRAYING_RADIUS &&
             mob != origin) {
             mob->elem.second = SPRAYING;
-            mob->elem.end_apply_second = Time_add_ms(Time_get(),
-                                                     SPRAYING_DURATION_MS);
+            mob->elem.end_apply_second =
+                Time_add_ms(Time_get(), SPRAYING_DURATION_MS);
         }
     }
 }
@@ -165,8 +165,7 @@ void Map_actualise_proj(Map* map) {
         if (!Proj_next_step(&(map->projs.arr[i].proj))) {
             int dmg = Proj_damage_raw(&(map->projs.arr[i].proj));
             if (map->projs.arr[i].proj.target->elem.main == PYRO) {
-                _pyro_spread(&(map->mobs),
-                             map->projs.arr[i].proj.target,
+                _pyro_spread(&(map->mobs), map->projs.arr[i].proj.target,
                              dmg * PYRO_DMG_PERCENT);
                 map->projs.arr[i].proj.target->elem.main = NONE;
             } else if (map->projs.arr[i].proj.target->elem.main == SPRAYING) {
@@ -199,8 +198,10 @@ void Map_free(Map* map) {
     DA_free(map->towers);
     DA_free(map->projs);
     DA_free(map->mobs.mob_list);
+    DA_free(map->map_turns);
     map->projs = (DynamicArray){0};
     map->towers = (DynamicArray){0};
+    map->map_turns = (DynamicArray){0};
     map->mobs = (Wave){0};
     map = NULL;
 }

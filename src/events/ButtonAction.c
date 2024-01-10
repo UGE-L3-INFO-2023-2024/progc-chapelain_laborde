@@ -124,7 +124,7 @@ void doing_button_actions(ButtonTab buttons, SubWindow inventory_window,
     if (button == NULL || !button->pressed || button->name == NULL) {
         return;
     }
-    if (event.mouse.state == MLV_RELEASED) {
+    if (event.type == MOUSE_BUTTON && event.mouse.state == MLV_RELEASED) {
         if (strcmp(button->name, "tower") == 0) {
             tower_button_action(button, map_window, &game->map,
                                 &game->mana_pool, event);

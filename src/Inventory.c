@@ -63,4 +63,12 @@ Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone) {
 void inventory_free(Inventory* inventory) {
     free(inventory->gemstones);
     inventory->gemstones = NULL;
+    inventory->gemstones_count = 0;
+    inventory->gemstones_capacity = 0;
+    free(inventory->fusion[0]);
+    free(inventory->fusion[1]);
+    inventory->fusion[0] = NULL;
+    inventory->fusion[1] = NULL;
+    inventory->info.page = 0;
+    inventory->info.gem_level = 0;
 }
