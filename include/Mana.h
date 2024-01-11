@@ -11,7 +11,9 @@
 
 #include <stdbool.h>
 
-#define MANA_START 1500
+#define MANA_START 150
+#define MANA_ON_KILL_PERCENT 0.1
+#define MANA_ON_TP_PERCENT 0.15
 
 /**************/
 /* Structures */
@@ -70,6 +72,32 @@ bool Mana_pool_upgrade(ManaPool* pool);
  * @return false otherwise.
  */
 bool Mana_buy(ManaPool* pool, int price);
+
+/**
+ * @brief Add mana to a ManaPool.
+ *
+ * @param pool ManaPool to add mana.
+ * @param price gain of mana.
+ */
+void Mana_gain(ManaPool* pool, int price);
+
+/**
+ * @brief Calculate the mana gain on mob death.
+ *
+ * @param mob_max_hp Max hp of the mob.
+ * @param level_mana Level of the mana pool.
+ * @return gain of mana.
+ */
+int Mana_gain_mob_death(int mob_max_hp, int level_mana);
+
+/**
+ * @brief Calculate the mana cost of a tp mob.
+ *
+ * @param mob_max_hp Max hp of the mob.
+ * @param level_mana Level of the mana pool.
+ * @return cost of mana.
+ */
+int Mana_cost_mob_tp(int mob_max_hp, int level_mana);
 
 /**
  * @brief Calculate the cost of a tower.

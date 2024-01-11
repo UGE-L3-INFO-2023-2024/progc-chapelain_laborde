@@ -167,13 +167,15 @@ Error Wave_spawn_next(Wave *wave, Coord_f start) {
  *
  * @param mob Pointer to the mob.
  * @param da DynamicArray of the path.
+ * @return if the mob is tp in the spawn.
+ *
  */
-static void _next_going_unit(Mob *mob, DynamicArray *da) {
+static bool _next_going_unit(Mob *mob, DynamicArray *da) {
     // first time
     if (mob->going.x == -1 && mob->going.y == -1) {
         mob->going = Utils_coord_i_to_f_center(
             da->arr[1].path);  // 1 beacause 0 is the start
-        return;
+        return false;
     }
 
     Coord_i mob_going = Utils_coord_f_to_i(mob->going);
@@ -188,10 +190,11 @@ static void _next_going_unit(Mob *mob, DynamicArray *da) {
                 mob->going = Utils_coord_i_to_f_center(da->arr[1].path);
                 // start
                 mob->pos = Utils_coord_i_to_f_center(da->arr[0].path);
+                return true;
             }
-            return;
         }
     }
+    return false;
 }
 
 /**
@@ -199,19 +202,17 @@ static void _next_going_unit(Mob *mob, DynamicArray *da) {
  *
  * @param mob Pointer to the mob.
  * @param da DynamicArray of the path.
+ * @return if the mob is tp in the spawn.
+ *
  */
-static void _next_step_unit(Mob *mob, DynamicArray *da) {
+bool Wave_next_step_unit(Mob *mob, DynamicArray *da) {
+    bool got_tp = false;
     if ((mob->going.x == -1 && mob->going.y == -1) ||
         Utils_is_in_middle(mob->going, mob->pos, 0.05)) {
-        _next_going_unit(mob, da);
+        got_tp = _next_going_unit(mob, da);
     }
 
     Direction dir = Utils_get_dir(mob->going, mob->pos, 0.05);
     Mob_next_step(mob, dir);
-}
-
-void Wave_next_step(Wave *wave, DynamicArray *turns) {
-    for (int i = 0; i < wave->mob_list.real_len; i++) {
-        _next_step_unit((wave->mob_list.arr[i].mob), turns);
-    }
+    return got_tp;
 }

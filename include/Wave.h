@@ -60,11 +60,13 @@ Error Wave_init(Wave *wave);
 Error Wave_spawn_next(Wave *wave, Coord_f start);
 
 /**
- * @brief Move the wave to the next step.
+ * @brief Move the mob to the next step.
  *
- * @param wave Wave to move.
- * @param turns Turns of the path.
+ * @param mob Pointer to the mob.
+ * @param da DynamicArray of the path.
+ * @return if the mob is tp in the spawn.
+ *
  */
-void Wave_next_step(Wave *wave, DynamicArray *turns);
+bool Wave_next_step_unit(Mob *mob, DynamicArray *da);
 
 #endif  // _WAVE_H_

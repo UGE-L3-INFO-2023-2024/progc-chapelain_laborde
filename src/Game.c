@@ -53,7 +53,6 @@ Error Game_Init(Game* game) {
     create_windows(game);
 
     MLV_change_frame_rate(60);
-    Wave_next_step(&game->map.mobs, &game->map.map_turns);
 
     button_tab_init(&game->buttons);
     create_inventory_buttons(game->window.inventory, &game->buttons);
@@ -95,21 +94,48 @@ static void _clear_projs_on_target(DynamicArray* projs, Mob* mob) {
     }
 }
 
-static void _clear_dead_mob_proj(Map* map) {
-    for (int i = 0; i < map->mobs.mob_list.real_len; i++) {
-        if (map->mobs.mob_list.arr[i].mob->current_hp <= 0) {
-            _clear_projs_on_target(&(map->projs),
-                                   map->mobs.mob_list.arr[i].mob);
-            DA_remove_index(&(map->mobs.mob_list), i--);
+static void _clear_dead_mob_proj(Game* game) {
+    for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
+        if (game->map.mobs.mob_list.arr[i].mob->current_hp <= 0) {
+            _clear_projs_on_target(&(game->map.projs),
+                                   game->map.mobs.mob_list.arr[i].mob);
+            Mana_gain(&(game->mana_pool),
+                      Mana_gain_mob_death(game->map.mobs.mob_list.arr[i].mob->max_hp,
+                                          game->mana_pool.level));
+            DA_remove_index(&(game->map.mobs.mob_list), i--);
         }
     }
 }
 
-void Game_update_all(Game* game) {
-    Wave_next_step(&game->map.mobs, &game->map.map_turns);
+/**
+ * @brief Move the wave to the next step.
+ *
+ * @param wave Wave to move.
+ * @param turns Turns of the path.
+ * @return if the player is dead.
+ *
+ */
+static bool _wave_next_step(Wave* wave, DynamicArray* turns, ManaPool* pool) {
+    for (int i = 0; i < wave->mob_list.real_len; i++) {
+        if (Wave_next_step_unit((wave->mob_list.arr[i].mob), turns)) {
+            if (!Mana_buy(pool,
+                          Mana_cost_mob_tp(wave->mob_list.arr[i].mob->max_hp,
+                                           pool->level))) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Game_update_all(Game* game) {
+    if (_wave_next_step(&game->map.mobs, &game->map.map_turns, &game->mana_pool)) {
+        return true;
+    }
     Map_actualise_proj(&game->map);
-    _clear_dead_mob_proj(&game->map);
+    _clear_dead_mob_proj(game);
     Map_towers_shoot(&game->map);
+    return false;
 }
 
 Error Game_run(Game* game) {
@@ -124,7 +150,9 @@ Error Game_run(Game* game) {
 
         refresh_window();
 
-        Game_update_all(game);
+        if (Game_update_all(game)) {  // death
+            return NO_ERROR;
+        }
         err.type = Wave_spawn_next(&(game->map.mobs),
                                    Utils_coord_i_to_f_center(game->map.nest))
                        .type;

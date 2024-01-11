@@ -24,16 +24,14 @@ int Mana_max(int level) {
 }
 
 bool Mana_pool_can_be_upgrade(ManaPool pool) {
-    // 25% of max mana for an upgrade
-    return pool.mana_max / 4 <= pool.mana_real;
+    return 500 * pow(1.4, pool.level) <= pool.mana_real;
 }
 
 bool Mana_pool_upgrade(ManaPool* pool) {
     if (!pool || !Mana_pool_can_be_upgrade(*pool)) {
         return false;
     }
-    pool->level++;
-    pool->mana_real -= pool->mana_max / 4;
+    pool->mana_real -= 500 * pow(1.4, pool->level++);
     pool->mana_max = Mana_max(pool->level);
     return true;
 }
@@ -50,12 +48,26 @@ bool Mana_buy(ManaPool* pool, int price) {
     return true;
 }
 
+void Mana_gain(ManaPool* pool, int price) {
+    pool->mana_real += (price + pool->mana_real <= pool->mana_max)
+                           ? price
+                           : pool->mana_max;
+}
+
 int Mana_tower_cost(int nb_towers) {
     if (nb_towers < 0) {
         return -1;
     }
     nb_towers++;
     return nb_towers < 4 ? 0 : 100 * pow(2, nb_towers - 4);
+}
+
+int Mana_gain_mob_death(int mob_max_hp, int level_mana) {
+    return MANA_ON_KILL_PERCENT * mob_max_hp * pow(1.3, level_mana);
+}
+
+int Mana_cost_mob_tp(int mob_max_hp, int level_mana) {
+    return MANA_ON_TP_PERCENT * mob_max_hp * pow(1.3, level_mana);
 }
 
 int Mana_gem_cost(int gem_level) {
