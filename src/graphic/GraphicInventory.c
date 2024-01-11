@@ -60,10 +60,6 @@ static Polygon create_uniform_polygon(Coord_i center, int radius,
 }
 
 static void draw_empty_gem(Coord_i coord, int w, int h, int level) {
-    /* coord = (Coord_i){coord.x + w / 2, coord.y + h / 2};
-    Polygon polygon = create_uniform_polygon(coord, w / 2, level + 3);
-    draw_polygon(polygon, MLV_COLOR_BLACK);
-    free(polygon.points); */
     MLV_draw_rectangle(coord.x, coord.y, w, h, MLV_COLOR_BLACK);
 }
 
@@ -239,7 +235,7 @@ static void draw_gems_and_pagination(SubWindow window, Inventory inventory,
 }
 
 /* @warning Don't forget to change hover_fusion_slot in InventoryEvent if
- * change this coord. */
+ * changing this coordinates. */
 static void draw_fusion_menu(SubWindow window, Inventory inventory) {
     int x = window.coord.x, y = window.coord.y;
     int w = window.width, h = window.height;
@@ -260,15 +256,9 @@ static void draw_fusion_menu(SubWindow window, Inventory inventory) {
                  *slot2);
     draw_centered_text_with_font(x + w * 0.65, y + h * 0.81, "=", window.font,
                                  MLV_COLOR_BLACK);
-    if (slot1 != NULL && slot2 != NULL) {
-        Gemstone* fusion = Gemstone_copy_ptr(slot1);
-        if (Gemstone_merge(fusion, slot2)) {
-            draw_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2, h * 0.07,
-                     *fusion);
-        } else {
-            draw_empty_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2,
-                           h * 0.07, 1);
-        }
+    if (inventory.fusion[2] != NULL) {
+        draw_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2, h * 0.07,
+                 *inventory.fusion[2]);
     } else {
         draw_empty_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2, h * 0.07,
                        1);

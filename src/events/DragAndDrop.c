@@ -85,6 +85,13 @@ static bool drag_gemstone_from_fusion(Game* game, Event event,
         *clicked_gem = Gemstone_copy_ptr(game->inventory.fusion[slot]);
         free(game->inventory.fusion[slot]);
         game->inventory.fusion[slot] = NULL;
+        if (slot == 2 && game->inventory.fusion[0] != NULL &&
+            game->inventory.fusion[1] != NULL) {
+            free(game->inventory.fusion[0]);
+            free(game->inventory.fusion[1]);
+            game->inventory.fusion[0] = NULL;
+            game->inventory.fusion[1] = NULL;
+        }
         return true;
     }
     return false;
@@ -144,6 +151,15 @@ static bool drop_gemstone_on_fusion_slot(Game* game, Event event,
                 inventory_add_gemstone(&game->inventory,
                                        *game->inventory.fusion[slot]);
             game->inventory.fusion[slot] = Gemstone_copy_ptr(*clicked_gem);
+            if (game->inventory.fusion[0] != NULL &&
+                game->inventory.fusion[1] != NULL) {
+                Gem* gem = Gemstone_copy_ptr(game->inventory.fusion[0]);
+                if (!Gemstone_merge(gem, game->inventory.fusion[1])) {
+                    free(gem);
+                } else {
+                    game->inventory.fusion[2] = gem;
+                }
+            }
             *clicked_gem = NULL;
             *is_dragging = false;
             return true;
