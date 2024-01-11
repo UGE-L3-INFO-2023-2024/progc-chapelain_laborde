@@ -20,27 +20,6 @@
 #include "Utils.h"
 #include "Wave.h"
 
-/* Initialize the Map and all its fields (towers, projs, mobs, ..) */
-Error Map_init(Map* map) {
-    Error err = NO_ERROR;
-    Map_init_board(map);
-    map->nest = (Coord_i){-1, -1};
-    map->castle = (Coord_i){-1, -1};
-    err.type = _init_towers(map).type;
-    if (err.type)
-        return err;
-    err.type = _init_projs(map).type;
-    if (err.type)
-        return err;
-    err.type = Wave_init(&(map->mobs)).type;
-    if (err.type)
-        return err;
-    err.type = DA_init(&map->map_turns, 10, PATH).type;
-    if (err.type)
-        return err;
-    return NO_ERROR;
-}
-
 /**
  * @brief Initialize a Cell.
  *
@@ -69,7 +48,7 @@ void Map_init_board(Map* map) {
  * @param map Map to initialize.
  * @return Error if there is a allocation error.
  */
-Error _init_towers(Map* map) {
+static Error _init_towers(Map* map) {
     Error err = DA_init(&map->towers, 10, TOWER);
     err.func = __func__;
     return err;
@@ -81,10 +60,31 @@ Error _init_towers(Map* map) {
  * @param map Map to initialize.
  * @return Error if there is a allocation error.
  */
-Error _init_projs(Map* map) {
+static Error _init_projs(Map* map) {
     Error err = DA_init(&map->projs, 40, PROJECTILE);
     err.func = __func__;
     return err;
+}
+
+/* Initialize the Map and all its fields (towers, projs, mobs, ..) */
+Error Map_init(Map* map) {
+    Error err = NO_ERROR;
+    Map_init_board(map);
+    map->nest = (Coord_i){-1, -1};
+    map->castle = (Coord_i){-1, -1};
+    err.type = _init_towers(map).type;
+    if (err.type)
+        return err;
+    err.type = _init_projs(map).type;
+    if (err.type)
+        return err;
+    err.type = Wave_init(&(map->mobs)).type;
+    if (err.type)
+        return err;
+    err.type = DA_init(&map->map_turns, 10, PATH).type;
+    if (err.type)
+        return err;
+    return NO_ERROR;
 }
 
 Error Map_add_tower(Map* map, Tower tower) {
@@ -112,7 +112,7 @@ Tower* Map_get_tower(Map* map, Coord_i coord) {
  * @param projs Projs to add the new proj.
  * @return if the tower shoot or not.
  */
-bool static _tower_shoot(Tower tower, DynamicArray* mobs,
+static bool _tower_shoot(Tower tower, DynamicArray* mobs,
                          DynamicArray* projs) {
     Mob* mob = NULL;
     int index_target = -1, hp_target = 0;
