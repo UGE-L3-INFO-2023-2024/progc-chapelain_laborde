@@ -111,6 +111,15 @@ int Mana_cost_mob_tp(int mob_max_hp, int level_mana);
 int Mana_tower_cost(int nb_towers);
 
 /**
+ * @brief Calculate the mana gain when skiping to the next wave.
+ *
+ * @param max_mana Max mana of the mana pool.
+ * @param sec Seconds of the wave gain.
+ * @return gain of mana.
+ */
+int Mana_gain_skip_wave(int max_mana, int sec);
+
+/**
  * @brief Calculate the cost of a gem.
  * The cost is calculated with the level of the gem.
  * The level start at 1.

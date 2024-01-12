@@ -8,6 +8,8 @@
 
 #include "Game.h"
 
+#include <MLV/MLV_all.h>
+
 #include "Button.h"
 #include "ButtonAction.h"
 #include "DragAndDrop.h"
@@ -38,6 +40,7 @@ static void create_windows(Game* game) {
 Error Game_Init(Game* game) {
     srand(time(NULL));
     Error error = NO_ERROR;
+    game->has_started = false;
     error.type = inventory_init(&(game->inventory)).type;
     if (error.type)
         return error;
@@ -128,6 +131,19 @@ static bool _wave_next_step(Wave* wave, DynamicArray* turns, ManaPool* pool) {
     return false;
 }
 
+void Game_action(Game* game, Event event) {
+    if (event.type == KEYBOARD &&
+        event.keyboard.key == MLV_KEYBOARD_SPACE &&
+        event.keyboard.state == MLV_PRESSED) {
+        if (game->has_started) {
+            Mana_gain(&(game->mana_pool),
+                      Mana_gain_skip_wave(game->mana_pool.mana_max,
+                                          Wave_skip_to_next(&(game->map.mobs))));
+        }
+        game->has_started = true;
+    }
+}
+
 bool Game_update_all(Game* game) {
     if (_wave_next_step(&game->map.mobs, &game->map.map_turns, &game->mana_pool)) {
         return true;
@@ -142,6 +158,7 @@ Error Game_run(Game* game) {
     Error err = NO_ERROR;
     Event event = {NO_EVENT};
     while (!quit_event(event)) {
+        Game_action(game, event);
         Game_draw(game);
         event = get_event();
         doing_button_actions(game->buttons, game->window.inventory,
@@ -153,9 +170,11 @@ Error Game_run(Game* game) {
         if (Game_update_all(game)) {  // death
             return NO_ERROR;
         }
-        err.type = Wave_spawn_next(&(game->map.mobs),
-                                   Utils_coord_i_to_f_center(game->map.nest))
-                       .type;
+        if (game->has_started) {
+            err.type = Wave_spawn_next(&(game->map.mobs),
+                                       Utils_coord_i_to_f_center(game->map.nest))
+                           .type;
+        }
         if (err.type) {
             return err;
         }

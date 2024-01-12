@@ -70,6 +70,10 @@ int Mana_cost_mob_tp(int mob_max_hp, int level_mana) {
     return MANA_ON_TP_PERCENT * mob_max_hp * pow(1.3, level_mana);
 }
 
+int Mana_gain_skip_wave(int max_mana, int sec) {
+    return max_mana * (sec / (double)100);
+}
+
 int Mana_gem_cost(int gem_level) {
     if (gem_level < 0) {
         return -1;

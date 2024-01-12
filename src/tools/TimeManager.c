@@ -43,6 +43,10 @@ struct timespec Time_add_ms(struct timespec time, long add_ms) {
                              .tv_nsec = time.tv_nsec + _ms_to_nsec(add_ms)};
 }
 
+bool Time_is_equal(struct timespec a, struct timespec b) {
+    return (a.tv_nsec == b.tv_nsec) && (a.tv_sec == b.tv_sec);
+}
+
 void Time_print_ms(struct timespec start) {
     printf("%ld\n", start.tv_nsec / 1000);
 }

@@ -50,6 +50,14 @@ struct timespec Time_add_ms(struct timespec time, long add_ms);
 bool Time_is_after(struct timespec time, struct timespec to_compare);
 
 /**
+ * @brief Check if a timespec is equal another.
+ *
+ * @param time timespec
+ * @param to_compare timespec
+ * @return time == to_compare
+ */
+bool Time_is_equal(struct timespec a, struct timespec b);
+/**
  * @brief Print the time given (Debug function).
  *
  * @param start

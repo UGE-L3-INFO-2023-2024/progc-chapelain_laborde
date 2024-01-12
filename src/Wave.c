@@ -138,8 +138,7 @@ static Error _add_mob(Wave *wave, Coord_f start, Type_wave type) {
 
 Error Wave_spawn_next(Wave *wave, Coord_f start) {
     Error err = NO_ERROR;
-    struct timespec time;
-    timespec_get(&time, TIME_UTC);
+    struct timespec time = Time_get();
 
     if (Time_is_after(wave->next_wave, time) && wave->type_mob == UNKNOW) {
         wave->nb_wave++;
@@ -160,6 +159,17 @@ Error Wave_spawn_next(Wave *wave, Coord_f start) {
         }
     }
     return NO_ERROR;
+}
+
+int Wave_skip_to_next(Wave *wave) {
+    struct timespec time = Time_get();
+    long sec_diff = 0;
+    if (Time_is_equal(wave->next_mob, wave->next_wave)) {
+        sec_diff = wave->next_wave.tv_sec - time.tv_sec;
+        wave->next_wave = time;
+        wave->next_mob = time;
+    }
+    return sec_diff;
 }
 
 /**

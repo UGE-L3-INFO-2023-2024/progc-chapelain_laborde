@@ -23,6 +23,7 @@
  *
  */
 typedef struct {
+    bool has_started;     // Tells if the 1st wave can go;
     Map map;              // The map is where the game is played
     Inventory inventory;  // The inventory contains mainly the gems
     ManaPool mana_pool;   // The mana pool is the mana available to the player

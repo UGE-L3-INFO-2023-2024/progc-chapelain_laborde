@@ -60,6 +60,14 @@ Error Wave_init(Wave *wave);
 Error Wave_spawn_next(Wave *wave, Coord_f start);
 
 /**
+ * @brief Skip to the next wave if all the mob of acutal wave are spawned.
+ *
+ * @param wave Wave to update
+ * @return second gain compare to next wave.
+ */
+int Wave_skip_to_next(Wave *wave);
+
+/**
  * @brief Move the mob to the next step.
  *
  * @param mob Pointer to the mob.
