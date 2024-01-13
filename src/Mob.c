@@ -88,7 +88,7 @@ double _compute_elem_speed(Mob* mob) {
     return base_speed;
 }
 
-void Mob_next_step(Mob* mob, Direction dir) {
+void Mob_next_step(Mob* mob, Direction dir, int* dmg) {
     _clear_elem_time(mob);
 
     // rand between 0.9 and 1.1
@@ -112,7 +112,13 @@ void Mob_next_step(Mob* mob, Direction dir) {
     }
     if (mob->elem.main == DENDRO &&
         Time_is_after(mob->elem.next_hit_main, Time_get())) {
-        mob->current_hp -= (mob->elem.origin_dmg * DENDRO_DMG_PERCENT);
+        int damage = mob->current_hp < mob->elem.origin_dmg
+                         ? mob->current_hp
+                         : mob->elem.origin_dmg;
+        if (dmg) {
+            *dmg += damage;
+        }
+        mob->current_hp -= damage;
         Time_add_ms(Time_get(), DENDRO_NEXT_HIT_MS);
     }
 }

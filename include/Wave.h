@@ -72,9 +72,10 @@ int Wave_skip_to_next(Wave *wave);
  *
  * @param mob Pointer to the mob.
  * @param da DynamicArray of the path.
+ * @param dmg Pointer to fill with the damage to apply to the mob.
  * @return if the mob is tp in the spawn.
  *
  */
-bool Wave_next_step_unit(Mob *mob, DynamicArray *da);
+bool Wave_next_step_unit(Mob *mob, DynamicArray *da, int *dmg);
 
 #endif  // _WAVE_H_

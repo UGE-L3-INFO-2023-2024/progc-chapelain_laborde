@@ -207,15 +207,7 @@ static bool _next_going_unit(Mob *mob, DynamicArray *da) {
     return false;
 }
 
-/**
- * @brief Move the mob to the next step.
- *
- * @param mob Pointer to the mob.
- * @param da DynamicArray of the path.
- * @return if the mob is tp in the spawn.
- *
- */
-bool Wave_next_step_unit(Mob *mob, DynamicArray *da) {
+bool Wave_next_step_unit(Mob *mob, DynamicArray *da, int *dmg) {
     bool got_tp = false;
     if ((mob->going.x == -1 && mob->going.y == -1) ||
         Utils_is_in_middle(mob->going, mob->pos, 0.05)) {
@@ -223,6 +215,6 @@ bool Wave_next_step_unit(Mob *mob, DynamicArray *da) {
     }
 
     Direction dir = Utils_get_dir(mob->going, mob->pos, 0.05);
-    Mob_next_step(mob, dir);
+    Mob_next_step(mob, dir, dmg);
     return got_tp;
 }

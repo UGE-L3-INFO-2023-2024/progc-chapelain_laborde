@@ -73,8 +73,9 @@ int Mob_max(int wave, bool boss);
  *
  * @param mob Mob to move.
  * @param dir Direction to move the mob.
+ * @param dmg Pointer to fill with the damage to apply to the mob.
  */
-void Mob_next_step(Mob* mob, Direction dir);
+void Mob_next_step(Mob* mob, Direction dir, int* dmg);
 
 /**
  * @brief Apply the element to the mob.

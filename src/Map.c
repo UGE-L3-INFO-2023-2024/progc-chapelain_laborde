@@ -151,45 +151,66 @@ void Map_towers_shoot(Map* map) {
     }
 }
 
-static void _pyro_spread(Wave* wave, Mob* origin, int dmg) {
+static void _pyro_spread(Wave* wave, Mob* origin,
+                         int original_dmg, int* dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
         Mob* mob = wave->mob_list.arr[i].mob;
         if (Utils_coord_f_distance(origin->pos, mob->pos) < PYRO_RADIUS &&
             mob != origin) {
-            mob->current_hp < dmg ? mob->current_hp = 0
-                                  : (mob->current_hp -= dmg);
+            // compute the new dmg and store it in dmg for stats
+            int damage = mob->current_hp < original_dmg
+                             ? mob->current_hp
+                             : original_dmg;
+            if (dmg) {
+                *dmg += damage;
+            }
+            mob->current_hp -= damage;
         }
     }
 }
 
-static void _spraying_spread(Wave* wave, Mob* origin) {
+static void _spraying_spread(Wave* wave, Mob* origin,
+                             int original_dmg, int* dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
         Mob* mob = wave->mob_list.arr[i].mob;
         if (Utils_coord_f_distance(origin->pos, mob->pos) < SPRAYING_RADIUS &&
             mob != origin) {
+            // apply slow on neighbors
             mob->elem.second = SPRAYING;
             mob->elem.end_apply_second =
                 Time_add_ms(Time_get(), SPRAYING_DURATION_MS);
+            // compute the new dmg and store it in dmg for stats
+            int damage = mob->current_hp < original_dmg
+                             ? mob->current_hp
+                             : original_dmg;
+            if (dmg) {
+                *dmg += damage;
+            }
+            mob->current_hp -= damage;
         }
     }
 }
 
 void Map_actualise_proj(Map* map, Stats* stats) {
+    int dmg_stats = 0;
     for (int i = 0; i < map->projs.real_len; i++) {
         if (!Proj_next_step(&(map->projs.arr[i].proj))) {
             int dmg = Proj_damage_raw(&(map->projs.arr[i].proj));
+            dmg_stats += dmg;
             if (map->projs.arr[i].proj.target->elem.main == PYRO) {
                 _pyro_spread(&(map->mobs), map->projs.arr[i].proj.target,
-                             dmg * PYRO_DMG_PERCENT);
+                             dmg * PYRO_DMG_PERCENT, &dmg_stats);
                 map->projs.arr[i].proj.target->elem.main = NONE;
             } else if (map->projs.arr[i].proj.target->elem.main == SPRAYING) {
-                _spraying_spread(&(map->mobs), map->projs.arr[i].proj.target);
+                _spraying_spread(&(map->mobs), map->projs.arr[i].proj.target,
+                                 dmg, &dmg_stats);
             }
-            DA_remove_index(&map->projs, i);
-            --i;  // to check new placed proj
+            DA_remove_index(&map->projs, i--);
+            // to check new placed proj
             // DA_remove_index move last to index
         }
     }
+    stats->total_damage += dmg_stats;
 }
 
 void Map_print(Map* map) {

@@ -114,21 +114,22 @@ static void _clear_dead_mob_proj(Game* game) {
 /**
  * @brief Move the wave to the next step.
  *
- * @param wave Wave to move.
- * @param turns Turns of the path.
+ * @param game Game
  * @return if the player is dead.
  *
  */
-static bool _wave_next_step(Wave* wave, DynamicArray* turns, ManaPool* pool) {
-    for (int i = 0; i < wave->mob_list.real_len; i++) {
-        if (Wave_next_step_unit((wave->mob_list.arr[i].mob), turns)) {
-            if (!Mana_buy(pool,
-                          Mana_cost_mob_tp(wave->mob_list.arr[i].mob->max_hp,
-                                           pool->level))) {
+static bool _wave_next_step(Game* game) {
+    int dmg = 0;
+    for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
+        if (Wave_next_step_unit(game->map.mobs.mob_list.arr[i].mob, &game->map.map_turns, &dmg)) {
+            if (!Mana_buy(&game->mana_pool,
+                          Mana_cost_mob_tp(game->map.mobs.mob_list.arr[i].mob->max_hp,
+                                           game->mana_pool.level))) {
                 return true;
             }
         }
     }
+    game->stats.total_damage += dmg;
     return false;
 }
 
@@ -146,8 +147,7 @@ void Game_action(Game* game, Event event) {
 }
 
 bool Game_update_all(Game* game) {
-    if (_wave_next_step(&game->map.mobs, &game->map.map_turns,
-                        &game->mana_pool)) {
+    if (_wave_next_step(game)) {
         return true;
     }
     Map_actualise_proj(&game->map, &game->stats);

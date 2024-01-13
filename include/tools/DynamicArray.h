@@ -95,7 +95,7 @@ Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
                      Type_array type);
 
 /**
- * @brief Remove last value from a DynamicArray.
+ * @brief Remove index value from a DynamicArray.
  *
  * @param da DynamicArray to remove the value.
  * @param index Index to remove in the array.
