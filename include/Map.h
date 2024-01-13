@@ -13,6 +13,7 @@
 
 #include "DynamicArray.h"
 #include "Error.h"
+#include "Stats.h"
 #include "Tower.h"
 #include "Trap.h"
 #include "Utils.h"
@@ -99,8 +100,9 @@ void Map_towers_shoot(Map* map);
  * @brief Make all projs move.
  *
  * @param map Map to modifiy. (projs, mobs)
+ * @param stats Stats modifiy by the projs.
  */
-void Map_actualise_proj(Map* map);
+void Map_actualise_proj(Map* map, Stats* stats);
 
 /**
  * @brief Print a Map. (debug function)

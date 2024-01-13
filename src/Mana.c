@@ -49,9 +49,9 @@ bool Mana_buy(ManaPool* pool, int price) {
 }
 
 void Mana_gain(ManaPool* pool, int price) {
-    pool->mana_real += (price + pool->mana_real <= pool->mana_max)
-                           ? price
-                           : pool->mana_max;
+    pool->mana_real = (price + pool->mana_real <= pool->mana_max)
+                          ? price + pool->mana_real
+                          : pool->mana_max;
 }
 
 int Mana_tower_cost(int nb_towers) {

@@ -102,9 +102,10 @@ static void _clear_dead_mob_proj(Game* game) {
         if (game->map.mobs.mob_list.arr[i].mob->current_hp <= 0) {
             _clear_projs_on_target(&(game->map.projs),
                                    game->map.mobs.mob_list.arr[i].mob);
-            Mana_gain(&(game->mana_pool),
-                      Mana_gain_mob_death(game->map.mobs.mob_list.arr[i].mob->max_hp,
-                                          game->mana_pool.level));
+            Mana_gain(
+                &(game->mana_pool),
+                Mana_gain_mob_death(game->map.mobs.mob_list.arr[i].mob->max_hp,
+                                    game->mana_pool.level));
             DA_remove_index(&(game->map.mobs.mob_list), i--);
         }
     }
@@ -132,23 +133,24 @@ static bool _wave_next_step(Wave* wave, DynamicArray* turns, ManaPool* pool) {
 }
 
 void Game_action(Game* game, Event event) {
-    if (event.type == KEYBOARD &&
-        event.keyboard.key == MLV_KEYBOARD_SPACE &&
+    if (event.type == KEYBOARD && event.keyboard.key == MLV_KEYBOARD_SPACE &&
         event.keyboard.state == MLV_PRESSED) {
         if (game->has_started) {
-            Mana_gain(&(game->mana_pool),
-                      Mana_gain_skip_wave(game->mana_pool.mana_max,
-                                          Wave_skip_to_next(&(game->map.mobs))));
+            Mana_gain(
+                &(game->mana_pool),
+                Mana_gain_skip_wave(game->mana_pool.mana_max,
+                                    Wave_skip_to_next(&(game->map.mobs))));
         }
         game->has_started = true;
     }
 }
 
 bool Game_update_all(Game* game) {
-    if (_wave_next_step(&game->map.mobs, &game->map.map_turns, &game->mana_pool)) {
+    if (_wave_next_step(&game->map.mobs, &game->map.map_turns,
+                        &game->mana_pool)) {
         return true;
     }
-    Map_actualise_proj(&game->map);
+    Map_actualise_proj(&game->map, &game->stats);
     _clear_dead_mob_proj(game);
     Map_towers_shoot(&game->map);
     return false;
@@ -171,9 +173,10 @@ Error Game_run(Game* game) {
             return NO_ERROR;
         }
         if (game->has_started) {
-            err.type = Wave_spawn_next(&(game->map.mobs),
-                                       Utils_coord_i_to_f_center(game->map.nest))
-                           .type;
+            err.type =
+                Wave_spawn_next(&(game->map.mobs),
+                                Utils_coord_i_to_f_center(game->map.nest))
+                    .type;
         }
         if (err.type) {
             return err;

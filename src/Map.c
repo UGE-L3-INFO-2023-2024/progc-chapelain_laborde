@@ -16,6 +16,7 @@
 #include "Element.h"
 #include "Error.h"
 #include "Projectile.h"
+#include "Stats.h"
 #include "TimeManager.h"
 #include "Utils.h"
 #include "Wave.h"
@@ -173,7 +174,7 @@ static void _spraying_spread(Wave* wave, Mob* origin) {
     }
 }
 
-void Map_actualise_proj(Map* map) {
+void Map_actualise_proj(Map* map, Stats* stats) {
     for (int i = 0; i < map->projs.real_len; i++) {
         if (!Proj_next_step(&(map->projs.arr[i].proj))) {
             int dmg = Proj_damage_raw(&(map->projs.arr[i].proj));

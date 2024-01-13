@@ -14,6 +14,7 @@
 #include "Error.h"
 #include "Inventory.h"
 #include "Map.h"
+#include "Stats.h"
 #include "Window.h"
 
 /**
@@ -33,6 +34,7 @@ typedef struct {
         SubWindow inventory;
     } window;
     ButtonTab buttons;  // The buttons of the game (inventory and map)
+    Stats stats;        // The stats of the game
 } Game;
 
 /**
