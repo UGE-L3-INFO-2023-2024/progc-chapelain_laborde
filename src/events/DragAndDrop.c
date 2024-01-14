@@ -81,16 +81,23 @@ static bool drag_gemstone_from_tower(Game* game, Event event,
 static bool drag_gemstone_from_fusion(Game* game, Event event,
                                       Gem** clicked_gem) {
     int slot = click_on_fusion_slot(game->window.inventory, event);
+    if (slot == 2) {
+        if (!Mana_buy(&game->mana_pool, 100))
+            return false;
+    }
     if (slot != -1 && game->inventory.fusion[slot] != NULL) {
         *clicked_gem = Gemstone_copy_ptr(game->inventory.fusion[slot]);
-        free(game->inventory.fusion[slot]);
-        game->inventory.fusion[slot] = NULL;
         if (slot == 2 && game->inventory.fusion[0] != NULL &&
             game->inventory.fusion[1] != NULL) {
-            free(game->inventory.fusion[0]);
-            free(game->inventory.fusion[1]);
-            game->inventory.fusion[0] = NULL;
-            game->inventory.fusion[1] = NULL;
+            for (int i = 0; i < 3; i++) {
+                free(game->inventory.fusion[i]);
+                game->inventory.fusion[i] = NULL;
+            }
+        } else {
+            free(game->inventory.fusion[slot]);
+            game->inventory.fusion[slot] = NULL;
+            free(game->inventory.fusion[2]);
+            game->inventory.fusion[2] = NULL;
         }
         return true;
     }
