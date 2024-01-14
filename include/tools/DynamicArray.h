@@ -1,8 +1,8 @@
 /**
  * @file DynamicArray.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 19/11/2023
+ * @brief Module to manage a dynamic array (generic allocated array).
+ * @date 19-11-2023
  *
  */
 
@@ -12,20 +12,27 @@
 #include "Error.h"
 #include "Mob.h"
 #include "Projectile.h"
+#include "Tower.h"
 #include "Utils.h"
 
 #define DA_MUL_SIZE_ALLOC 1.5
+
+/**************/
+/* Structures */
+/**************/
 
 typedef enum {
     PATH,
     MOB,
     PROJECTILE,
+    TOWER,
 } Type_array;
 
 typedef union {
-    Mob mob;
-    Projectile project;
+    Mob* mob;
+    Projectile proj;
     Coord_i path;
+    Tower tower;
 } DynamicArray_Union, DA_Union;
 
 typedef struct {
@@ -33,8 +40,11 @@ typedef struct {
     int max_len;
     Type_array type;
     DA_Union* arr;
-    int size_alloc;
 } DynamicArray;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Initialize a DynamicArray.
@@ -55,6 +65,15 @@ Error DA_init(DynamicArray* da, int size_alloc, Type_array type);
 Error DA_realloc(DynamicArray* da);
 
 /**
+ * @brief Get a value from a DynamicArray.
+ *
+ * @param da DynamicArray to get the value.
+ * @param index Index of the value.
+ * @return DynamicArray_Union* Value.
+ */
+DynamicArray_Union* DA_get(DynamicArray* da, int index);
+
+/**
  * @brief Add a value to a DynamicArray.
  *
  * @param da DynamicArray to add the value.
@@ -65,14 +84,25 @@ Error DA_realloc(DynamicArray* da);
 Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type);
 
 /**
- * @brief Remove a value from a DynamicArray.
+ * @brief Remove last value from a DynamicArray.
  *
  * @param da DynamicArray to remove the value.
- * @param val Value to remove.
+ * @param val Value removed.
  * @param type Type of the the value.
  * @return if there is a missmatch type or an empty DynamicArray.
  */
-Error DA_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type);
+Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
+                     Type_array type);
+
+/**
+ * @brief Remove index value from a DynamicArray.
+ *
+ * @param da DynamicArray to remove the value.
+ * @param index Index to remove in the array.
+ * @return if there is a missmatch type or an empty DynamicArray or
+ *         an index out of range.
+ */
+Error DA_remove_index(DynamicArray* da, int index);
 
 /**
  * @brief Free a DynamicArray.
@@ -82,7 +112,7 @@ Error DA_remove(DynamicArray* da, DynamicArray_Union* val, Type_array type);
 void DA_free(DynamicArray da);
 
 /**
- * @brief Print a DynamicArray.
+ * @brief Print a DynamicArray. (Debug Function)
  *
  * @param da DynamicArray to print.
  */

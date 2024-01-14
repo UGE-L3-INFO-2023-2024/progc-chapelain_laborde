@@ -1,8 +1,8 @@
 /**
  * @file Color.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief Manage Generation of color HSV + conversion to RGB.
+ * @date 15-11-2023
  *
  */
 
@@ -10,6 +10,10 @@
 #define __COLOR_H__
 
 typedef unsigned short HSV_Color;  // 0 - 359 HSV color
+
+/**************/
+/* Structures */
+/**************/
 
 /**
  * @brief Define a RGB color.
@@ -20,6 +24,10 @@ typedef struct {
     unsigned char g;
     unsigned char b;
 } RGB_Color;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Convert a HSV color to a RGB color.

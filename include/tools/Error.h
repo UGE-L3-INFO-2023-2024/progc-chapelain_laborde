@@ -1,8 +1,8 @@
 /**
  * @file Error.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 19/11/2023
+ * @brief Module for error handling.
+ * @date 19-11-2023
  *
  */
 
@@ -22,6 +22,11 @@
 /* Structures */
 /**************/
 
+// __func__ == current function name
+#define NO_ERROR        \
+    (Error) {           \
+        CLEAR, __func__ \
+    }
 #define NB_ERRORS 7
 
 typedef enum {
@@ -29,7 +34,15 @@ typedef enum {
     DYNA_ARR_ERR_ALLOC = 1,
     DYNA_ARR_ERR_TYPE = 2,
     DYNA_ARR_ERR_EMPTY = 3,
-    MALLOC_ERR = 4,
+    DYNA_ARR_ERR_SIZE = 4,
+    DYNA_ARR_ERR_NOT_FOUND = 5,
+    MALLOC_ERR = 6,
+    GEMSTONE_NOT_FOUND = 7,
+} ErrorType;
+
+typedef struct {
+    ErrorType type;
+    const char* func;
 } Error;
 
 /*************/
@@ -39,9 +52,8 @@ typedef enum {
 /**
  * @brief Prints an error message.
  *
- * @param err Error Type.
- * @param func Function where the error append.
+ * @param err Error to print.
  */
-void Error_print(Error err, char* func);
+void Error_print(Error err);
 
 #endif

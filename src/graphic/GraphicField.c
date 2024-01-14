@@ -1,8 +1,8 @@
 /**
  * @file GraphicField.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief This file contains functions to draw the field.
+ * @date 15-11-2023
  *
  */
 
@@ -11,28 +11,50 @@
 #include "Color.h"
 #include "DynamicArray.h"
 #include "Graphic.h"
-#include "Map.h"
+#include "GraphicInventory.h"
+#include "Wave.h"
 
 /**
- * @brief Draw the given tower on the given window.
- * If img is NULL, draw a circle with tower color instead.
+ * @brief Draw a tower in the map.
+ * The img parameter is used to draw an image instead of the tower.
+ * If img is NULL, draw a black tower with a colored gem in the middle.
+ * The gem color is the tower gem color.
  *
  * @param tower Tower to draw.
  * @param window Window to draw on.
- * @param img Image to draw instead of a circle.
+ * @param img Image to draw instead of the drawed tower.
  */
 static void draw_tower(Tower tower, SubWindow window, MLV_Image* img) {
+    int cell_width = window.width / MAP_WIDTH;
+    int cell_height = window.height / MAP_HEIGHT;
+    int x = tower.coord.x * cell_width;
+    int y = tower.coord.y * cell_height;
     if (img) {
-        MLV_draw_image(img, tower.coord.x * window.width / MAP_WIDTH,
-                       tower.coord.y * window.height / MAP_HEIGHT);
+        MLV_draw_image(img, x, y);
     } else {
         MLV_Color color = MLV_COLOR_BLACK;
-        if (tower.gem) {
-            color = RGB_to_MLV_Color(Color_HSV_to_RGB(tower.gem->color), 255);
+        if (tower.has_gem) {
+            draw_gem((Coord_i){x + cell_width * .15, y + cell_height * .15},
+                     cell_width * 0.7, cell_height * 0.7, tower.gem);
         }
-        MLV_draw_filled_circle(tower.coord.x * window.width / MAP_WIDTH,
-                               tower.coord.y * window.height / MAP_HEIGHT,
-                               window.width / MAP_WIDTH / 2, color);
+        MLV_draw_filled_rectangle(x, y, cell_width * 0.25, cell_height * 0.15,
+                                  color);
+        MLV_draw_filled_rectangle(x, y, cell_width * 0.15, cell_height * 0.25,
+                                  color);
+        MLV_draw_filled_rectangle(x + cell_width * 0.75, y, cell_width * 0.25,
+                                  cell_height * 0.15, color);
+        MLV_draw_filled_rectangle(x + cell_width * 0.85, y, cell_width * 0.15,
+                                  cell_height * 0.25, color);
+        MLV_draw_filled_rectangle(x, y + cell_height * 0.85, cell_width * 0.25,
+                                  cell_height * 0.15, color);
+        MLV_draw_filled_rectangle(x, y + cell_height * 0.75, cell_width * 0.15,
+                                  cell_height * 0.25, color);
+        MLV_draw_filled_rectangle(x + cell_width * 0.75,
+                                  y + cell_height * 0.85, cell_width * 0.25,
+                                  cell_height * 0.15, color);
+        MLV_draw_filled_rectangle(x + cell_width * 0.85,
+                                  y + cell_height * 0.75, cell_width * 0.15,
+                                  cell_height * 0.25, color);
     }
 }
 
@@ -45,53 +67,17 @@ static void draw_tower(Tower tower, SubWindow window, MLV_Image* img) {
  *
  * @return bool true if the cell is a path, false otherwise.
  */
-static bool draw_path_cell(Cell cell, SubWindow window, MLV_Image* img) {
+static void draw_path(Coord_i coord, SubWindow window, MLV_Image* img) {
     MLV_Color color = MLV_COLOR_LIGHT_GREY;
     int cell_width = window.width / MAP_WIDTH;
     int cell_height = window.height / MAP_HEIGHT;
-    if (cell.is_path) {
-        if (img) {
-            MLV_draw_image(img, cell.coord.x * cell_width,
-                           cell.coord.y * cell_height);
-        } else {
-            MLV_draw_filled_rectangle(cell.coord.x * cell_width,
-                                      cell.coord.y * cell_height, cell_width,
-                                      cell_height, color);
-            MLV_draw_rectangle(cell.coord.x * cell_width,
-                               cell.coord.y * cell_height, cell_width,
-                               cell_height, MLV_COLOR_BLACK);
-        }
-        return true;
-    }
-    return false;
-}
-
-void draw_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window,
-                     MLV_Image* img) {
-    for (int i = 0; i < MAP_HEIGHT; i++) {
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            draw_path_cell(cells[i][j], window, NULL);
-        }
-    }
-}
-
-static bool clear_path_cell(Cell cell, SubWindow window) {
-    int cell_width = window.width / MAP_WIDTH;
-    int cell_height = window.height / MAP_HEIGHT;
-    if (cell.is_path) {
-        MLV_draw_filled_rectangle(cell.coord.x * cell_width,
-                                  cell.coord.y * cell_height, cell_width,
-                                  cell_height, CLEAR_COLOR);
-        return true;
-    }
-    return false;
-}
-
-void clear_path_cells(Cell cells[MAP_HEIGHT][MAP_WIDTH], SubWindow window) {
-    for (int i = 0; i < MAP_HEIGHT; i++) {
-        for (int j = 0; j < MAP_WIDTH; j++) {
-            clear_path_cell(cells[i][j], window);
-        }
+    if (img) {
+        MLV_draw_image(img, coord.x * cell_width, coord.y * cell_height);
+    } else {
+        MLV_draw_filled_rectangle(coord.x * cell_width, coord.y * cell_height,
+                                  cell_width, cell_height, color);
+        MLV_draw_rectangle(coord.x * cell_width, coord.y * cell_height,
+                           cell_width, cell_height, MLV_COLOR_BLACK);
     }
 }
 
@@ -134,44 +120,54 @@ static void draw_castle(Coord_i castle, SubWindow window, MLV_Image* img) {
                                   castle_height, color);
 }
 
-void draw_turn(DynamicArray* da, SubWindow window) {
-    if (da->type != PATH) {
-        fprintf(stderr, "Error in draw_turn: da is not a PATH\n");
-        return;
-    }
-
-    MLV_Color color = MLV_COLOR_LIGHT_SALMON;
-    int turn_width = window.width / MAP_WIDTH;
-    int turn_height = window.height / MAP_HEIGHT;
-    for (int i = 0; i < da->real_len; i++) {
-        Coord_i turn = da->arr[i].path;
-        MLV_draw_filled_rectangle(turn.x * turn_width, turn.y * turn_height,
-                                  turn_width, turn_height, color);
+/**
+ * @brief Draw a mob of the map.
+ *
+ * @param wave Wave to draw.
+ * @param window Window to draw on.
+ * @param img Image to draw instead of a colored circle.
+ */
+void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img) {
+    for (int i = 0; i < wave->mob_list.real_len; i++) {
+        Mob mob = *(wave->mob_list.arr[i].mob);
+        MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(mob.color), 255);
+        int mob_width = window.width / MAP_WIDTH;
+        int mob_height = window.height / MAP_HEIGHT;
+        if (img)
+            MLV_draw_image(img, mob.pos.x * mob_width, mob.pos.y * mob_height);
+        else
+            MLV_draw_filled_circle(mob.pos.x * mob_width,
+                                   mob.pos.y * mob_height, mob_width / 4,
+                                   color);
+        draw_bar(mob.pos.x * mob_width - mob_width / 3,
+                 mob.pos.y * mob_height + mob_height / 4, mob_width / 1.5,
+                 mob_height / 6, 1, color, mob.current_hp / (float)mob.max_hp,
+                 MLV_COLOR_GREEN);
     }
 }
 
 /**
- * @brief Draw a mob of the map.
+ * @brief Draw a projectile of the map.
  *
- * @param mob Mob to draw.
+ * @param wave Wave to draw.
  * @param window Window to draw on.
  * @param img Image to draw instead of a colored circle.
  */
-void draw_mob(Mob mob, SubWindow window, MLV_Image* img) {
-    MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(mob.color), 255);
-    int mob_width = window.width / MAP_WIDTH;
-    int mob_height = window.height / MAP_HEIGHT;
-    if (img)
-        MLV_draw_image(img, mob.pos.x * mob_width, mob.pos.y * mob_height);
-    else
-        MLV_draw_filled_circle(mob.pos.x * mob_width,
-                               mob.pos.y * mob_height,
-                               mob_width / 4, color);
-    draw_bar(mob.pos.x * mob_width - mob_width / 3,
-             mob.pos.y * mob_height + mob_height / 4,
-             mob_width / 1.5, mob_height / 6,
-             1, color, mob.current_hp / mob.max_hp,
-             MLV_COLOR_GREEN);
+void draw_projectile(DynamicArray* projs, SubWindow window, MLV_Image* img) {
+    for (int i = 0; i < projs->real_len; i++) {
+        Projectile proj = (projs->arr[i].proj);
+        MLV_Color color =
+            RGB_to_MLV_Color(Color_HSV_to_RGB(proj.gem.color), 255);
+        int proj_width = window.width / MAP_WIDTH;
+        int proj_height = window.height / MAP_HEIGHT;
+        if (img)
+            MLV_draw_image(img, proj.pos.x * proj_width,
+                           proj.pos.y * proj_height);
+        else
+            MLV_draw_filled_circle(proj.pos.x * proj_width,
+                                   proj.pos.y * proj_height, proj_width / 6,
+                                   color);
+    }
 }
 
 /**
@@ -198,18 +194,20 @@ static void draw_grid(SubWindow window, MLV_Color color, int thickness) {
 }
 
 /* Draw map in the window */
-void draw_map(Map map, SubWindow map_window, DynamicArray* da) {
+void draw_map(Map map, SubWindow map_window) {
     MLV_clear_window(CLEAR_COLOR);
     for (int i = 0; i < MAP_HEIGHT; i++) {
         for (int j = 0; j < MAP_WIDTH; j++) {
-            draw_path_cell(map.board[i][j], map_window, NULL);
-            if (map.board[i][j].tower) {
-                draw_tower(*map.board[i][j].tower, map_window, NULL);
+            if (map.board[i][j].is_path)
+                draw_path((Coord_i){j, i}, map_window, NULL);
+            if (map.board[i][j].have_tower) {
+                Tower tower = *Map_get_tower(&map, (Coord_i){j, i});
+                draw_tower(tower, map_window, NULL);
             }
         }
     }
     draw_castle(map.castle, map_window, NULL);
     draw_nest(map.nest, map_window, NULL);
-    // draw_turn(da, map_window, NULL);
+    draw_projectile(&map.projs, map_window, NULL);
     draw_grid(map_window, MLV_COLOR_BLACK, 2);
 }

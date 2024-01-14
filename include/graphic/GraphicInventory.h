@@ -1,58 +1,50 @@
-#ifndef __GRAPHIC_INVENTORY_H__
-#define __GRAPHIC_INVENTORY_H__
+/**
+ * @file GraphicInventory.h
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Functions to draw inventory menu.
+ * @date 07-01-2024
+ *
+ */
 
-#include "Color.h"
+#ifndef __GRAPHIC_MAIN_MENU_H__
+#define __GRAPHIC_MAIN_MENU_H__
+
+#include "Button.h"
 #include "Inventory.h"
-#include "Utils.h"
 #include "Window.h"
 
+/*************/
+/* Functions */
+/*************/
+
 /**
- * @brief Draw a gem on the screen at the given position.
- * This function use the given color to fill the gem.
- * The outline of the gem is always black.
+ * @brief Draw a gem on the screen.
  *
- * @param coord The position of the gem.
+ * @param coord The coord of the gem.
  * @param w The width of the gem.
  * @param h The height of the gem.
- * @param color The color of the gem in RGB.
+ * @param gem The gem to draw.
  */
-void draw_gem(Coord_i coord, int w, int h, RGB_Color color);
+void draw_gem(Coord_i coord, int w, int h, Gem gem);
 
 /**
- * @brief Draw all the gems of the inventory on the screen.
+ * @brief Create the buttons of the inventory.
  *
  * @param window The subwindow to draw on.
- * @param inventory The inventory containing the gems to draw.
- * @param page The page of the inventory gems to draw.
- * Page start at 0 not 1.
+ * @param buttons The array of buttons to initialize.
  */
-void draw_all_gems(SubWindow window, Inventory inventory, unsigned int page);
+void create_inventory_buttons(SubWindow window, ButtonTab* buttons);
 
 /**
- * @brief Draw the inventory of gem + the pagination in the bottom.
+ * @brief Draw the main menu.
  *
  * @param window The subwindow to draw on.
  * @param inventory The inventory to draw.
- * @param page The page of the inventory to draw starting to 0. (cf
- * draw_all_gems)
+ * @param buttons The buttons of the inventory.
+ * @param gem_level The actual level of the gem
+ * @param page The actual page of the inventory.
  */
-void draw_gems_and_pagination(SubWindow window, Inventory inventory,
-                              unsigned int page);
+void draw_inventory_menu(SubWindow window, Inventory inventory,
+                         ButtonTab buttons, int gem_level, int page);
 
-/**
- * @brief Clear the gems and pagination area of the inventory.
- * This function is used to actualize the inventory.
- *
- * @param window The subwindow to clear.
- */
-void clear_gems_and_pagination_area(SubWindow window);
-
-/**
- * @brief Draw the whole inventory on the screen.
- *
- * @param window The subwindow to draw on.
- * @param inventory The inventory to draw.
- */
-void draw_inventory(SubWindow window, Inventory inventory);
-
-#endif  // __GRAPHIC_INVENTORY_H__
+#endif  // __GRAPHIC_MAIN_MENU_H__

@@ -1,8 +1,8 @@
 /**
  * @file Window.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief Module to manage window and subwindows.
+ * @date 15-11-2023
  *
  */
 
@@ -11,6 +11,10 @@
 
 #include "Font.h"
 #include "Utils.h"
+
+/**************/
+/* Structures */
+/**************/
 
 /**
  * @brief A window is a rectangle on the screen. It is defined by its width,
@@ -25,6 +29,10 @@ typedef struct _window {
     Font font;               // The font to use in the window
     Coord_f coord;           // The north-west corner of the window
 } Window, SubWindow;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Initialize a window.

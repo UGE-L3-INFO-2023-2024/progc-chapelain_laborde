@@ -1,8 +1,8 @@
 /**
  * @file Color.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief Manage Generation of color HSV + conversion to RGB.
+ * @date 15-11-2023
  *
  */
 
@@ -11,46 +11,32 @@
 #include <math.h>
 #include <stdlib.h>
 
+/* Convert HSV color to RGB color */
 RGB_Color Color_HSV_to_RGB(HSV_Color color) {
     double v = 1;    // Brightness
     double s = 0.5;  // Saturation
     double c = v * s;
-    int h = color / 60.0;
-    double x = c * (1 - abs(h % 2 - 1));
+    double h = color / 60.0;
+    double x = c * (1 - fabs(fmod(h, 2) - 1));
     double m = v - c;
-    double r, g, b;
-    if (0 <= color && color <= 60) {
-        r = c;
-        g = x;
-        b = 0;
-    } else if (60 <= color && color <= 120) {
-        r = x;
-        g = c;
-        b = 0;
-    } else if (120 <= color && color <= 180) {
-        r = 0;
-        g = c;
-        b = x;
-    } else if (180 <= color && color <= 240) {
-        r = 0;
-        g = x;
-        b = c;
-    } else if (240 <= color && color <= 300) {
-        r = x;
-        g = 0;
-        b = c;
-    } else if (300 <= color && color <= 360) {
-        r = c;
-        g = 0;
-        b = x;
-    } else {
-        r = 0;
-        g = 0;
-        b = 0;
+    double rgb[3] = {0, 0, 0};
+
+    int color_ranges[6] = {60, 120, 180, 240, 300, 360};
+    double color_values[6][3] = {{c, x, 0}, {x, c, 0}, {0, c, x}, {0, x, c}, {x, 0, c}, {c, 0, x}};
+
+    for (int i = 0; i < 6; i++) {
+        if (color <= color_ranges[i]) {
+            rgb[0] = color_values[i][0];
+            rgb[1] = color_values[i][1];
+            rgb[2] = color_values[i][2];
+            break;
+        }
     }
-    return (RGB_Color){(r + m) * 255, (g + m) * 255, (b + m) * 255};
+
+    return (RGB_Color){(rgb[0] + m) * 255.0, (rgb[1] + m) * 255.0, (rgb[2] + m) * 255.0};
 }
 
+/* Random Color generation */
 HSV_Color Color_rand(void) {
     return rand() % 360;
 }

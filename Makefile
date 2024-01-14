@@ -12,10 +12,13 @@ INC_DIR = include
 SRCS = $(shell find $(SRC_DIR) -depth -name "*.c")
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 INCLUDES = $(foreach file,$(shell find $(INC_DIR) -type d),-I$(file))
+DEPENDENCIES = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.d, $(SRCS))
 
 EXEC = gemcraft
 
 all: $(EXEC)
+
+-include $(DEPENDENCIES)
 
 $(EXEC): $(OBJS)
 	$(CC) $(INCLUDES) $^ -o $@ $(LDLIBS)

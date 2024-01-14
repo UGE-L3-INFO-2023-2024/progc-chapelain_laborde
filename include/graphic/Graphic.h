@@ -1,8 +1,8 @@
 /**
  * @file Graphic.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief This file contains all the functions to draw on the screen.
+ * @date 07-01-2024
  *
  */
 
@@ -16,6 +16,19 @@
 #include "Window.h"
 
 #define CLEAR_COLOR MLV_COLOR_WHITE
+
+/**************/
+/* Structures */
+/**************/
+
+typedef struct {
+    Point* points;
+    int nb_points;
+} Polygon;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Convert a RGB color to a MLV_Color.
@@ -82,14 +95,57 @@ void draw_bar(unsigned int x, unsigned int y, int width, int height,
  *
  * This function use the stdarg.h library.
  *
+ * @see draw_centered_text to use the default font.
+ *
  * @param x X position of the text (center).
  * @param y Y position of the text (center).
  * @param text Text to draw.
  * @param font Font to use.
  * @param color Color of the text.
+ * @param ... Arguments to pass to the text.
+ */
+void draw_centered_text_with_font(unsigned int x, unsigned int y,
+                                  const char* text, Font font, MLV_Color color,
+                                  ...);
+
+/**
+ * @brief Draw a text centered on the given position.
+ * The text is centered on the given position with the color.
+ * This function is variadic, so you can pass arguments to the text.
+ *
+ * This function use the stdarg.h library.
+ *
+ * @param x X position of the text (center).
+ * @param y Y position of the text (center).
+ * @param text Text to draw.
+ * @param font Font to use.
+ * @param color Color of the text.
+ * @param ... Arguments to pass to the text.
  */
 void draw_centered_text(unsigned int x, unsigned int y, const char* text,
-                        Font font, MLV_Color color, ...);
+                        MLV_Color color, ...);
+
+/**
+ * @brief Draw a polygon with the given parameters.
+ * The polygon is drawn with the given color.
+ * At the difference of the draw_filled_polygon function, this function
+ * doesn't fill the polygon with the given color. It only draw the outline.
+ * The function accept only polygons with more than 2 points. (nb_points > 2)
+ *
+ * @param polygon Polygon to draw.
+ * @param color Color of the outlined polygon.
+ */
+void draw_polygon(Polygon polygon, MLV_Color color);
+
+/**
+ * @brief Draw a polygon with the given parameters.
+ * The polygon is filled with the given color.
+ * The function accept only polygons with more than 2 points. (nb_points > 2)
+ *
+ * @param polygon Polygon to draw.
+ * @param color Color of the polygon.
+ */
+void draw_filled_polygon(Polygon polygon, MLV_Color color);
 
 /**
  * @brief This function clear the given window with the CLEAR_COLOR.
@@ -98,6 +154,11 @@ void draw_centered_text(unsigned int x, unsigned int y, const char* text,
  */
 void clear_window(Window window);
 
+/**
+ * @brief This function refresh the window of a change.
+ * For more information, see the MLV_actualise_window function.
+ *
+ */
 void refresh_window();
 
 #endif  // __GRAPHIC_H__

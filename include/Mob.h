@@ -1,8 +1,9 @@
 /**
  * @file Mob.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief Module to manage mobs.
+ * (init, move, element application and dendro tick damage)
+ * @date 15-11-2023
  *
  */
 
@@ -15,17 +16,25 @@
 #include "Element.h"
 #include "Utils.h"
 
-#define MOB_CONST_HP 1
+#define MOB_CONST_HP 12
+
+/**************/
+/* Structures */
+/**************/
 
 typedef struct {
-    unsigned int current_hp;
-    unsigned int max_hp;
+    int current_hp;
+    int max_hp;
     double speed;
     Coord_f pos;
     HSV_Color color;
-    Element apply_elem;
+    Element elem;
     Coord_f going;
 } Mob;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Initialize a mob.
@@ -61,11 +70,20 @@ Mob Mob_init_boss(int wave, Coord_f start);
 int Mob_max(int wave, bool boss);
 
 /**
- * @brief Move the mob in the given direction.
+ * @brief Move the mob in the given direction and apply dendro tick damage.
  *
  * @param mob Mob to move.
  * @param dir Direction to move the mob.
+ * @param dmg Pointer to fill with the damage to apply to the mob.
  */
-void Mob_next_step(Mob *mob, Direction dir);
+void Mob_next_step(Mob* mob, Direction dir, int* dmg);
+
+/**
+ * @brief Apply the element to the mob.
+ *
+ * @param mob Mob to apply the element.
+ * @param type Type of the element.
+ */
+void Mob_apply_element(Mob* mob, Element_Type type);
 
 #endif  // __MOB_H__

@@ -1,8 +1,9 @@
 /**
  * @file Map.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 30/10/2023
+ * @brief Module to manage the map.
+ * (init, towers shooting, projs moving & damage, free)
+ * @date 10-01-2024
  *
  */
 
@@ -11,39 +12,56 @@
 
 #include <stdbool.h>
 
-#include "Mana.h"
-#include "Mob.h"
+#include "DynamicArray.h"
+#include "Error.h"
+#include "Stats.h"
 #include "Tower.h"
 #include "Trap.h"
 #include "Utils.h"
+#include "Wave.h"
 
 #define MAP_WIDTH 28
 #define MAP_HEIGHT 22
 
+/**************/
+/* Structures */
+/**************/
+
 typedef struct {
     bool is_path;
-    Coord_i coord;
-    union {
-        Tower* tower;
-        Trap* trap;
-    };
+    bool have_tower;
 } Cell;
 
 typedef struct {
     Cell board[MAP_HEIGHT][MAP_WIDTH];
     Coord_i nest;
     Coord_i castle;
-    Mob mobs;
-    Tower* towers;
-    Trap* traps;
+    Wave mobs;
+    DynamicArray map_turns;  // This DA represents the turns of the path
+    DynamicArray towers;
+    DynamicArray traps;
+    DynamicArray projs;
 } Map;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Initialize a Map.
  *
- * @return Map map.
+ * @details
+ * The board is initialized with fields of cell at false.
+ * The towers are initialized with _init_towers.
+ * The projs are initialized with _init_projs.
+ * The mobs are initialized with Wave_init.
+ * The nest and castle are set to (-1, -1).
+ * The towers and projs are initialized with DA_init.
+ *
+ * @param map Map to initialize.
+ * @return Error of allocation. (towers, projs, waves)
  */
-Map Map_init(void);
+Error Map_init(Map* map);
 
 /**
  * @brief Initialize the board of a Map.
@@ -53,27 +71,53 @@ Map Map_init(void);
 void Map_init_board(Map* map);
 
 /**
- * @brief Initialize a Cell.
+ * @brief Add a tower to a Map.
  *
- * @param coord Coord of the Cell.
- * @return Cell cell.
+ * @param map Map to modifiy.
+ * @param tower Tower to add.
+ * @return Error of allocation. (realloc of towers)
  */
-Cell Map_init_cell(Coord_i coord);
+Error Map_add_tower(Map* map, Tower tower);
 
 /**
- * @brief Print a Map.
+ * @brief Get the tower at a coord.
+ *
+ * @param map Map to look in.
+ * @param coord Coord of the tower.
+ * @return Tower* pointer to the tower. NULL if not found.
+ * (can be change after realloc do not store)
+ *
+ */
+Tower* Map_get_tower(Map* map, Coord_i coord);
+
+/**
+ * @brief Make all towers shoot if possible.
+ *
+ * @param map Map to modifiy. (tower, projs, mobs)
+ */
+void Map_towers_shoot(Map* map);
+
+/**
+ * @brief Make all projs move.
+ *
+ * @param map Map to modifiy. (projs, mobs)
+ * @param stats Stats modifiy by the projs.
+ */
+void Map_actualise_proj(Map* map, Stats* stats);
+
+/**
+ * @brief Print a Map. (debug function)
  *
  * @param map Map to print.
  */
 void Map_print(Map* map);
 
 /**
- * @brief Check thre is a path in the neighbour of the given cell.
+ * @brief Free a Map and all its fields.
+ * (towers, projs, mobs)
  *
- * @param map Map to check.
- * @param pos Position of the cell.
- * @param ignore Direction to ignore. (in case of a turn)
+ * @param map Map to free.
  */
-Direction Map_got_next_path(Map* map, Coord_i pos, Direction ignore);
+void Map_free(Map* map);
 
 #endif  // __MAP_H__
