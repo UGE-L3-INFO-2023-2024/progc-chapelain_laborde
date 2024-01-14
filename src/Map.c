@@ -3,7 +3,7 @@
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to manage the map.
  * (init, towers shooting, projs moving & damage, free)
- * @date 15-11-2023
+ * @date 02-11-2023
  *
  */
 
@@ -163,16 +163,14 @@ void Map_towers_shoot(Map* map) {
  * @param original_dmg Damage to spead.
  * @param dmg Pointer to the dmg to add.
  */
-static void _pyro_spread(Wave* wave, Mob* origin,
-                         int original_dmg, int* dmg) {
+static void _pyro_spread(Wave* wave, Mob* origin, int original_dmg, int* dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
         Mob* mob = wave->mob_list.arr[i].mob;
         if (Utils_coord_f_distance(origin->pos, mob->pos) < PYRO_RADIUS &&
             mob != origin) {
             // compute the new dmg and store it in dmg for stats
-            int damage = mob->current_hp < original_dmg
-                             ? mob->current_hp
-                             : original_dmg;
+            int damage = mob->current_hp < original_dmg ? mob->current_hp
+                                                        : original_dmg;
             if (dmg) {
                 *dmg += damage;
             }
@@ -189,8 +187,8 @@ static void _pyro_spread(Wave* wave, Mob* origin,
  * @param original_dmg Damage to spead.
  * @param dmg Pointer to the dmg to add.
  */
-static void _spraying_spread(Wave* wave, Mob* origin,
-                             int original_dmg, int* dmg) {
+static void _spraying_spread(Wave* wave, Mob* origin, int original_dmg,
+                             int* dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
         Mob* mob = wave->mob_list.arr[i].mob;
         if (Utils_coord_f_distance(origin->pos, mob->pos) < SPRAYING_RADIUS &&
@@ -200,9 +198,8 @@ static void _spraying_spread(Wave* wave, Mob* origin,
             mob->elem.end_apply_second =
                 Time_add_ms(Time_get(), SPRAYING_DURATION_MS);
             // compute the new dmg and store it in dmg for stats
-            int damage = mob->current_hp < original_dmg
-                             ? mob->current_hp
-                             : original_dmg;
+            int damage = mob->current_hp < original_dmg ? mob->current_hp
+                                                        : original_dmg;
             if (dmg) {
                 *dmg += damage;
             }

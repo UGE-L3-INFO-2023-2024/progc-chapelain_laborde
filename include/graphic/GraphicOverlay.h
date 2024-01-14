@@ -2,7 +2,7 @@
  * @file GraphicOverlay.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Overlay graphic functions (mana bar)
- * @date 07-01-2024
+ * @date 30-10-2023
  *
  */
 

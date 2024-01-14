@@ -2,7 +2,7 @@
  * @file Event.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Get event from the window.
- * @date 07-01-2024
+ * @date 28-12-2023
  *
  */
 
@@ -102,8 +102,8 @@ bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
 bool drop_item(Event event, bool is_dragging);
 
 /**
- * @brief Tells if the user start to hold his LMB and store starting coordinates.
- * (left mouse button = LMB)
+ * @brief Tells if the user start to hold his LMB and store starting
+ * coordinates. (left mouse button = LMB)
  *
  * @param event Event to check
  * @param is_dragging Pointer to store if the user is holding LMB.

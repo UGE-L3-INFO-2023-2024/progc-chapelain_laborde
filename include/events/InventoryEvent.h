@@ -2,7 +2,7 @@
  * @file InventoryEvent.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Event functions for the inventory.
- * @date 07-01-2024
+ * @date 28-12-2023
  *
  */
 

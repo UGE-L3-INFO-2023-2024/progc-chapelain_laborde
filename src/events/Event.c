@@ -2,7 +2,7 @@
  * @file Event.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Get event from the window.
- * @date 14-01-2024
+ * @date 28-12-2023
  *
  */
 

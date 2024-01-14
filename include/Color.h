@@ -2,7 +2,7 @@
  * @file Color.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Manage Generation of color HSV + conversion to RGB.
- * @date 15-11-2023
+ * @date 30-10-2023
  *
  */
 

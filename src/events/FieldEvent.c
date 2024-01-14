@@ -2,7 +2,7 @@
  * @file FieldEvent.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Get the event on the field of the game
- * @date 14-01-2024
+ * @date 29-12-2023
  *
  */
 #include "FieldEvent.h"

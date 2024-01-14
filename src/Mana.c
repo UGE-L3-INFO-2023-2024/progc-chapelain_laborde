@@ -2,7 +2,7 @@
  * @file Map.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to manage the Manapool (Init, bying, cost, upgrade).
- * @date 15-11-2023
+ * @date 02-11-2023
  *
  */
 
@@ -55,9 +55,9 @@ bool Mana_buy(ManaPool* pool, int price) {
 }
 
 /* Modify manaPool quantity gain */
-void Mana_gain(ManaPool* pool, int price) {
-    pool->mana_real = (price + pool->mana_real <= pool->mana_max)
-                          ? price + pool->mana_real
+void Mana_gain(ManaPool* pool, int gain) {
+    pool->mana_real = (gain + pool->mana_real <= pool->mana_max)
+                          ? gain + pool->mana_real
                           : pool->mana_max;
 }
 
@@ -76,7 +76,7 @@ int Mana_gain_mob_death(int mob_max_hp, int level_mana) {
 }
 
 /* Mob tp back to spawn cost */
-int Mana_cost_mob_tp(int mob_max_hp, int level_mana) {
+int Mana_cost_mob_banish(int mob_max_hp, int level_mana) {
     return MANA_ON_TP_PERCENT * mob_max_hp * pow(1.3, level_mana);
 }
 

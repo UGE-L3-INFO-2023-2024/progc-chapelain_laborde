@@ -2,7 +2,7 @@
  * @file Gemstone.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to manage gemstone.
- * @date 16-11-2023
+ * @date 30-10-2023
  *
  */
 
@@ -73,7 +73,7 @@ bool Gemstone_merge(Gemstone *gemstone, Gemstone *other);
  * @param projO gem to copy.
  * @return Deep Copied gem.
  */
-Gemstone Gemstone_copy(Gem *gemO);
+Gemstone Gemstone_copy(const Gem *gemO);
 
 /**
  * @brief Copy a gem and malloc a new one.
@@ -82,7 +82,7 @@ Gemstone Gemstone_copy(Gem *gemO);
  * @param gemO gem to copy.
  * @return Gemstone* Deep Copied gem (new malloc gem).
  */
-Gemstone *Gemstone_copy_ptr(Gem *gemO);
+Gemstone *Gemstone_copy_ptr(const Gem *gemO);
 
 /**
  * @brief Compare two gemstone and return true if they are equals.

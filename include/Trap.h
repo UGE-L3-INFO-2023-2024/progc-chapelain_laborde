@@ -2,7 +2,7 @@
  * @file Trap.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief
- * @date 30/10/2023
+ * @date 30-10-2023
  *
  */
 
@@ -11,6 +11,10 @@
 
 #include "Gemstone.h"
 #include "Utils.h"
+
+/**************/
+/* Structures */
+/**************/
 
 typedef struct {
     Coord_i coord;

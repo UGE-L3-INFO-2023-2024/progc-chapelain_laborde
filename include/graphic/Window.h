@@ -2,7 +2,7 @@
  * @file Window.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to manage window and subwindows.
- * @date 15-11-2023
+ * @date 30-10-2023
  *
  */
 

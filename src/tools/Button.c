@@ -2,7 +2,7 @@
  * @file Button.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Manage graphic buttons (array, init, add, get from name, free)
- * @date 14-01-2024
+ * @date 07-01-2024
  *
  */
 

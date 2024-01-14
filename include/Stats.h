@@ -2,7 +2,7 @@
  * @file Stats.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to manage the stats.
- * @date 30/10/2023
+ * @date 30-10-2023
  *
  */
 

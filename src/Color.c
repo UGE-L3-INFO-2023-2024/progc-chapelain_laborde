@@ -2,7 +2,7 @@
  * @file Color.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Manage Generation of color HSV + conversion to RGB.
- * @date 15-11-2023
+ * @date 14-11-2023
  *
  */
 
@@ -22,7 +22,8 @@ RGB_Color Color_HSV_to_RGB(HSV_Color color) {
     double rgb[3] = {0, 0, 0};
 
     int color_ranges[6] = {60, 120, 180, 240, 300, 360};
-    double color_values[6][3] = {{c, x, 0}, {x, c, 0}, {0, c, x}, {0, x, c}, {x, 0, c}, {c, 0, x}};
+    double color_values[6][3] = {{c, x, 0}, {x, c, 0}, {0, c, x},
+                                 {0, x, c}, {x, 0, c}, {c, 0, x}};
 
     for (int i = 0; i < 6; i++) {
         if (color <= color_ranges[i]) {
@@ -33,7 +34,8 @@ RGB_Color Color_HSV_to_RGB(HSV_Color color) {
         }
     }
 
-    return (RGB_Color){(rgb[0] + m) * 255.0, (rgb[1] + m) * 255.0, (rgb[2] + m) * 255.0};
+    return (RGB_Color){(rgb[0] + m) * 255.0, (rgb[1] + m) * 255.0,
+                       (rgb[2] + m) * 255.0};
 }
 
 /* Random Color generation */

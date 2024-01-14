@@ -2,7 +2,7 @@
  * @file Gemstone.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to manage gemstone.
- * @date 16-11-2023
+ * @date 14-11-2023
  *
  */
 
@@ -54,7 +54,7 @@ bool Gemstone_merge(Gemstone *gem, Gemstone *other) {
 }
 
 /* Copy a gemstone */
-Gemstone Gemstone_copy(Gem *gemO) {
+Gemstone Gemstone_copy(const Gem *gemO) {
     return (Gemstone){
         .type = gemO->type,
         .color = gemO->color,
@@ -63,7 +63,7 @@ Gemstone Gemstone_copy(Gem *gemO) {
 }
 
 /* Copy a gemstone pointer */
-Gemstone *Gemstone_copy_ptr(Gem *gemO) {
+Gemstone *Gemstone_copy_ptr(const Gem *gemO) {
     Gemstone *gem = malloc(sizeof(Gemstone));
     if (gem == NULL) {
         return NULL;

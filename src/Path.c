@@ -2,7 +2,7 @@
  * @file Main.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to generate a path for the map.
- * @date 15-11-2023
+ * @date 13-11-2023
  *
  */
 
@@ -225,7 +225,7 @@ bool Path_gen(Map* map, DynamicArray* da) {
 
     // 3
     int nest_to_borders[4] = {
-        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),              // NORTH
+        Path_manatan_dist(origin, (Coord_i){origin.x, 0}),  // NORTH
         Path_manatan_dist(origin, (Coord_i){MAP_WIDTH - 1, origin.y}),  // EAST
         Path_manatan_dist(origin,
                           (Coord_i){origin.x, MAP_HEIGHT - 1}),  // SOUTH

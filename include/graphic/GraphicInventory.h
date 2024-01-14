@@ -2,7 +2,7 @@
  * @file GraphicInventory.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Functions to draw inventory menu.
- * @date 07-01-2024
+ * @date 12-12-2023
  *
  */
 

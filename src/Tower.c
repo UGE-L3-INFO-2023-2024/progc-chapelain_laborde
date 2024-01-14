@@ -24,7 +24,7 @@ Tower Tower_init(Coord_i coord) {
 }
 
 /* Add gem to a tower */
-bool Tower_add_gem(Tower* tower, Gem* gem) {
+bool Tower_add_gem(Tower* tower, const Gem* gem) {
     if (!tower || !gem) {
         return false;
     }

@@ -3,7 +3,7 @@
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief This file contains the Game structure and its functions. It's the
  * main module to run the game.
- * @date 10-01-2024
+ * @date 09-01-2024
  *
  */
 
@@ -140,10 +140,12 @@ static void _clear_dead_mob_proj(Game* game) {
 static bool _wave_next_step(Game* game) {
     int dmg = 0;
     for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
-        if (Wave_next_step_unit(game->map.mobs.mob_list.arr[i].mob, &game->map.map_turns, &dmg)) {
+        if (Wave_next_step_unit(game->map.mobs.mob_list.arr[i].mob,
+                                &game->map.map_turns, &dmg)) {
             if (!Mana_buy(&game->mana_pool,
-                          Mana_cost_mob_tp(game->map.mobs.mob_list.arr[i].mob->max_hp,
-                                           game->mana_pool.level))) {
+                          Mana_cost_mob_banish(
+                              game->map.mobs.mob_list.arr[i].mob->max_hp,
+                              game->mana_pool.level))) {
                 return true;
             }
         }

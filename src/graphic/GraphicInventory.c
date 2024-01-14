@@ -2,7 +2,7 @@
  * @file GraphicInventory.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Functions to draw inventory menu.
- * @date 07-01-2024
+ * @date 12-12-2023
  *
  */
 
@@ -329,14 +329,16 @@ static void draw_fusion_menu(SubWindow window, Inventory inventory) {
     int w = window.width, h = window.height;
     Gemstone *slot1 = inventory.fusion[0], *slot2 = inventory.fusion[1];
     if (slot1 == NULL)
-        draw_empty_gem((Coord_i){x + w * 0.1, y + h * 0.78}, w * 0.2, h * 0.07);
+        draw_empty_gem((Coord_i){x + w * 0.1, y + h * 0.78}, w * 0.2,
+                       h * 0.07);
     else
         draw_gem((Coord_i){x + w * 0.1, y + h * 0.78}, w * 0.2, h * 0.07,
                  *slot1);
     draw_centered_text_with_font(x + w * 0.35, y + h * 0.81, "+", window.font,
                                  MLV_COLOR_BLACK);
     if (slot2 == NULL)
-        draw_empty_gem((Coord_i){x + w * 0.4, y + h * 0.78}, w * 0.2, h * 0.07);
+        draw_empty_gem((Coord_i){x + w * 0.4, y + h * 0.78}, w * 0.2,
+                       h * 0.07);
     else
         draw_gem((Coord_i){x + w * 0.4, y + h * 0.78}, w * 0.2, h * 0.07,
                  *slot2);
@@ -346,7 +348,8 @@ static void draw_fusion_menu(SubWindow window, Inventory inventory) {
         draw_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2, h * 0.07,
                  *inventory.fusion[2]);
     } else {
-        draw_empty_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2, h * 0.07);
+        draw_empty_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2,
+                       h * 0.07);
     }
 }
 

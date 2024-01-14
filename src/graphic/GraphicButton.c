@@ -2,7 +2,7 @@
  * @file GraphicButton.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief This file contains functions to draw buttons.
- * @date 14-01-2024
+ * @date 07-01-2024
  *
  * @copyright Copyright (c) 2024
  *

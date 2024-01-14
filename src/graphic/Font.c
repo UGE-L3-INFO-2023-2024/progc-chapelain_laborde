@@ -2,7 +2,7 @@
  * @file Font.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Font management.
- * @date 14-01-2024
+ * @date 11-12-2023
  *
  */
 #include "Font.h"

@@ -2,7 +2,7 @@
  * @file InventoryEvent.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Event functions for the inventory.
- * @date 14-01-2024
+ * @date 28-12-2023
  *
  */
 
@@ -57,8 +57,8 @@ static bool click_on_text(SubWindow window, Event event, const char* text,
  * @param y coord of the text width
  * @return if the click is on the text
  */
-static bool click_on_centered_text(SubWindow window, Event event, const char* text,
-                                   int x, int y) {
+static bool click_on_centered_text(SubWindow window, Event event,
+                                   const char* text, int x, int y) {
     int font_width, font_height;
     MLV_get_size_of_text_with_font(text, &font_width, &font_height,
                                    window.font);

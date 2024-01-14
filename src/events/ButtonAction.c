@@ -2,7 +2,7 @@
  * @file ButtonAction.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Gestor of button action
- * @date 07-01-2024
+ * @date 31-12-2023
  *
  */
 

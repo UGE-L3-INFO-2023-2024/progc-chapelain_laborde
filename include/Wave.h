@@ -2,7 +2,7 @@
  * @file Wave.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to handle wave of mob.
- * @date 12-12-2023
+ * @date 30-10-2023
  *
  */
 

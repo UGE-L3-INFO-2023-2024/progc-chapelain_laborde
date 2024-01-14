@@ -2,7 +2,7 @@
  * @file Tower.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Module to manage tower. (creation, gems)
- * @date 16-11-2023
+ * @date 30-10-2023
  *
  */
 
@@ -35,27 +35,32 @@ typedef struct {
 /*************/
 
 /**
- * @brief Create a tower object
+ * @brief Create a tower object at the given coordinates.
+ * The tower is initialized with no gem and available to shoot.
  *
  * @param coord Coord of the tower
- * @return Tower Tower created
+ * @return Tower created
  */
 Tower Tower_init(Coord_i coord);
 
 /**
- * @brief Add gem to a tower
+ * @brief Add gemstone to a tower and set the cooldown.
+ * The gemstone is copied. The gemstone is added only if the tower has no gem.
+ * The cooldown is set to TOWER_GEM_COOLDOWN_MS.
  *
- * @param tower The tower will receive the gem
- * @param gem The gem to add
- * @return if the gem has been added
+ * @param tower The tower will receive the gem (if it has no gem)
+ * @param gem The gem to add to the tower
+ * @return if the gem has been added to the tower
  */
-bool Tower_add_gem(Tower* tower, Gem* gem);
+bool Tower_add_gem(Tower* tower, const Gem* gem);
 
 /**
- * @brief Extract gem from a tower
+ * @brief Extract gem from a tower.
+ * The gemstone is copied. The gemstone is extracted only if the tower has a
+ * gem, otherwise nothing is done and false is returned.
  *
- * @param tower The tower will give the gem
- * @param gem pointer to store the gem.
+ * @param tower The tower from which the gem will be extracted
+ * @param gem pointer to store the gem extracted
  * @return if the gem has been extracted
  */
 bool Tower_extract_gem(Tower* tower, Gem* gem);

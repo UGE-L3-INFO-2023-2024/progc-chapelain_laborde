@@ -2,7 +2,7 @@
  * @file GraphicField.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief This file contains functions to draw the field.
- * @date 07-01-2024
+ * @date 30-10-2023
  *
  */
 
