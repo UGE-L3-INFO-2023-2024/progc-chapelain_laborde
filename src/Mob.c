@@ -1,7 +1,8 @@
 /**
  * @file Mob.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage mobs.
+ * (init, move, element application and dendro tick damage)
  * @date 15-11-2023
  *
  */
@@ -16,6 +17,7 @@
 #include "TimeManager.h"
 #include "Utils.h"
 
+/* Initialize a basic mob */
 Mob Mob_init_basic(int wave, Coord_f start) {
     return (Mob){
         .max_hp = Mob_max(wave, false),
@@ -28,6 +30,7 @@ Mob Mob_init_basic(int wave, Coord_f start) {
     };
 }
 
+/* Initialize a mob with the double of speed */
 Mob Mob_init_fast(int wave, Coord_f start) {
     return (Mob){
         .max_hp = Mob_max(wave, false),
@@ -40,6 +43,7 @@ Mob Mob_init_fast(int wave, Coord_f start) {
     };
 }
 
+/* Initialize a boss */
 Mob Mob_init_boss(int wave, Coord_f start) {
     return (Mob){
         .max_hp = Mob_max(wave, true),
@@ -52,12 +56,18 @@ Mob Mob_init_boss(int wave, Coord_f start) {
     };
 }
 
+/* Compute mob max hp */
 int Mob_max(int wave, bool boss) {
     int hp = MOB_CONST_HP * pow(1.2, wave);
     return (boss) ? (hp * 12) : (hp);
 }
 
-void _clear_elem_time(Mob* mob) {
+/**
+ * @brief Clear the element if the time is passed.
+ *
+ * @param mob Mob to clear the element.
+ */
+static void _clear_elem_time(Mob* mob) {
     if (Time_is_after(mob->elem.end_apply_main, Time_get())) {
         mob->elem.main = NONE;
     }
@@ -67,7 +77,13 @@ void _clear_elem_time(Mob* mob) {
     }
 }
 
-double _compute_elem_speed(Mob* mob) {
+/**
+ * @brief Compute the speed of the mob with the element.
+ *
+ * @param mob Mob to compute the speed.
+ * @return double speed.
+ */
+static double _compute_elem_speed(Mob* mob) {
     double base_speed = mob->speed;
     switch (mob->elem.main) {
         case ROOTING:
@@ -88,6 +104,7 @@ double _compute_elem_speed(Mob* mob) {
     return base_speed;
 }
 
+/* Move the move to next step and apply dendro tick damage */
 void Mob_next_step(Mob* mob, Direction dir, int* dmg) {
     _clear_elem_time(mob);
 
@@ -123,6 +140,11 @@ void Mob_next_step(Mob* mob, Direction dir, int* dmg) {
     }
 }
 
+/**
+ * @brief Apply pyro element to the mob.
+ *
+ * @param mob Mob to apply the element.
+ */
 static void _apply_pyro(Mob* mob) {
     if (mob->elem.main == NONE) {
         mob->elem.main = PYRO;
@@ -134,6 +156,11 @@ static void _apply_pyro(Mob* mob) {
     }
 }
 
+/**
+ * @brief Apply dendro element to the mob.
+ *
+ * @param mob Mob to apply the element.
+ */
 static void _apply_dendro(Mob* mob) {
     if (mob->elem.main == NONE) {
         mob->elem.main = DENDRO;
@@ -149,6 +176,11 @@ static void _apply_dendro(Mob* mob) {
     }
 }
 
+/**
+ * @brief Apply hydro element to the mob.
+ *
+ * @param mob Mob to apply the element.
+ */
 static void _apply_hydro(Mob* mob) {
     if (mob->elem.main == NONE) {
         mob->elem.main = HYDRO;
@@ -164,6 +196,7 @@ static void _apply_hydro(Mob* mob) {
     }
 }
 
+/* General function to apply elements */
 void Mob_apply_element(Mob* mob, Element_Type type) {
     switch (type) {
         case PYRO:

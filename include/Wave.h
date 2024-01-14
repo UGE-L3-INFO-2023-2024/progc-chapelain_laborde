@@ -1,7 +1,7 @@
 /**
  * @file Wave.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to handle wave of mob.
  * @date 12-12-2023
  *
  */
@@ -51,7 +51,7 @@ typedef struct {
 Error Wave_init(Wave *wave);
 
 /**
- * @brief Spawn the next mob of the wave.
+ * @brief Spawn the next mob of the wave according to time.
  *
  * @param wave Wave to spawn.
  * @param start Start of the path.
@@ -68,7 +68,7 @@ Error Wave_spawn_next(Wave *wave, Coord_f start);
 int Wave_skip_to_next(Wave *wave);
 
 /**
- * @brief Move the mob to the next step.
+ * @brief Move the mob to the next step. And aplly dendro damage.
  *
  * @param mob Pointer to the mob.
  * @param da DynamicArray of the path.

@@ -12,6 +12,10 @@
 #include <MLV/MLV_all.h>
 #include <stdbool.h>
 
+/**************/
+/* Structures */
+/**************/
+
 typedef enum {
     KEYBOARD,
     MOUSE_MOTION,
@@ -39,26 +43,30 @@ typedef struct {
     };
 } Event;
 
-/**
- * @brief Get event from the window.
- *
- * @return Event
- */
-Event get_event(void);
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Get the mouse event from the window.
  *
  * @return Event
  */
-Event get_mouse_event(void);
+Event Event_get_mouse(void);
 
 /**
  * @brief Get the keyboard event from the window.
  *
  * @return Event
  */
-Event get_keyboard_event(void);
+Event Event_get_keyboard(void);
+
+/**
+ * @brief Get event from the window.
+ *
+ * @return Event
+ */
+Event Event_get(void);
 
 /**
  * @brief Check if the event is a quit event.
@@ -67,7 +75,7 @@ Event get_keyboard_event(void);
  * @return true if user wants to quit
  * @return false otherwise
  */
-bool quit_event(Event event);
+bool Event_quit(Event event);
 
 /**
  * @brief Check if the coordinates are in the rectangle area.
@@ -84,8 +92,25 @@ bool quit_event(Event event);
 bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
                      int cible_y);
 
+/**
+ * @brief Tells is the user released the left mouse button.
+ *
+ * @param event Event to check
+ * @param is_dragging LMB holded
+ * @return release LMB
+ */
 bool drop_item(Event event, bool is_dragging);
 
+/**
+ * @brief Tells if the user start to hold his LMB and store starting coordinates.
+ * (left mouse button = LMB)
+ *
+ * @param event Event to check
+ * @param is_dragging Pointer to store if the user is holding LMB.
+ * @param old_mouse_x Poiter to start postion height.
+ * @param old_mouse_y Poiter to start postion width.
+ * @return is the user start to hold LMB
+ */
 bool drag_item(Event event, bool *is_dragging, int *old_mouse_x,
                int *old_mouse_y);
 

@@ -1,7 +1,7 @@
 /**
  * @file Mana.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage the Manapool (Init, bying, cost, upgrade).
  * @date 30-10-2023
  *
  */

@@ -14,6 +14,10 @@
 #include "Utils.h"
 #include "Window.h"
 
+/*************/
+/* Functions */
+/*************/
+
 /**
  * @brief Get the coordinate relative to the map
  * You give the coordinate relative to the window and it returns the coordinate
@@ -25,16 +29,25 @@
  */
 Coord_i get_coord_on_map(Map map, SubWindow window, Coord_i coord);
 
-Tower* get_hovered_tower(SubWindow window, Event event, Map map);
-
 /**
- * @brief Get the tower on the map at the given coordinate
+ * @brief Get the tower on the map mouse coordinates
  * If there is no tower at the given coordinate, it returns NULL
  *
  * @param window The window
  * @param event The event
  * @param map The map
- * @return Tower* The tower at the given coordinate
+ * @return Tower* The tower hovered
+ */
+Tower* get_hovered_tower(SubWindow window, Event event, Map map);
+
+/**
+ * @brief Get the tower on the map at click coordinates
+ * If there is no tower at the given coordinate, it returns NULL
+ *
+ * @param window The window
+ * @param event The event
+ * @param map The map
+ * @return Tower* The tower ckicked
  */
 Tower* click_on_tower(SubWindow window, Event event, Map map);
 

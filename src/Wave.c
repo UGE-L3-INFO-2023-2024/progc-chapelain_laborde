@@ -1,7 +1,7 @@
 /**
  * @file Wave.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to handle wave of mob.
  * @date 12-12-2023
  *
  */
@@ -17,6 +17,7 @@
 #include "Utils.h"
 #include "Wave.h"
 
+/* Initialise the Wave */
 Error Wave_init(Wave *wave) {
     wave->nb_wave = 0;
     wave->nb_mob_wave = 0;
@@ -136,6 +137,7 @@ static Error _add_mob(Wave *wave, Coord_f start, Type_wave type) {
     return NO_ERROR;
 }
 
+/* Make spawning mob and next wave (according to time)*/
 Error Wave_spawn_next(Wave *wave, Coord_f start) {
     Error err = NO_ERROR;
     struct timespec time = Time_get();
@@ -161,6 +163,7 @@ Error Wave_spawn_next(Wave *wave, Coord_f start) {
     return NO_ERROR;
 }
 
+/* Change the wave to make it spawn now */
 int Wave_skip_to_next(Wave *wave) {
     struct timespec time = Time_get();
     long sec_diff = 0;
@@ -207,6 +210,7 @@ static bool _next_going_unit(Mob *mob, DynamicArray *da) {
     return false;
 }
 
+/* Move a mob to the next position and deal drendro dmg */
 bool Wave_next_step_unit(Mob *mob, DynamicArray *da, int *dmg) {
     bool got_tp = false;
     if ((mob->going.x == -1 && mob->going.y == -1) ||

@@ -11,6 +11,10 @@
 
 #include "Mana.h"
 
+/*************/
+/* Functions */
+/*************/
+
 /**
  * @brief Show the Mana bar
  *

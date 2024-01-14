@@ -2,7 +2,7 @@
  * @file GraphicOverlay.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
  * @brief Overlay graphic functions
- * @date 2023-11-20
+ * @date 20-11-2023
  *
  */
 
@@ -13,6 +13,7 @@
 #include "Graphic.h"
 #include "Mana.h"
 
+/* Draw mana bar */
 void draw_mana_bar(ManaPool pool, int x, int y, int w, int h,
                    unsigned int thickness) {
     int mana = pool.mana_real;

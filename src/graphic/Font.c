@@ -1,11 +1,20 @@
+/**
+ * @file Font.c
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Font management.
+ * @date 14-01-2024
+ *
+ */
 #include "Font.h"
 
 #include "MLV/MLV_text.h"
 
-Font font_load(const char* path, int size) {
+/* Load font from a file */
+Font Font_load(const char* path, int size) {
     return MLV_load_font(path, size);
 }
 
-void font_free(Font font) {
+/* Free font */
+void Font_free(Font font) {
     MLV_free_font(font);
 }

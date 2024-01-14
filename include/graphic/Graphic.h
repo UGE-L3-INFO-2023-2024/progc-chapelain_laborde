@@ -17,10 +17,18 @@
 
 #define CLEAR_COLOR MLV_COLOR_WHITE
 
+/**************/
+/* Structures */
+/**************/
+
 typedef struct {
     Point* points;
     int nb_points;
 } Polygon;
+
+/*************/
+/* Functions */
+/*************/
 
 /**
  * @brief Convert a RGB color to a MLV_Color.

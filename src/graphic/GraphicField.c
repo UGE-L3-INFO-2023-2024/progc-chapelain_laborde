@@ -1,8 +1,8 @@
 /**
  * @file GraphicField.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief This file contains functions to draw the field.
+ * @date 15-11-2023
  *
  */
 

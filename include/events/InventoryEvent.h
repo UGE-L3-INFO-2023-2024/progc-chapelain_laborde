@@ -16,6 +16,17 @@
 #include "Inventory.h"
 #include "Window.h"
 
+/*************/
+/* Functions */
+/*************/
+
+/**
+ * @brief Check if the mouse is over the inventory.
+ *
+ * @param event MLV event (mouse)
+ * @param inventory_window Window to mouseover.
+ * @return if the window is under the cursor of the mouse
+ */
 bool hovered_inventory(Event event, SubWindow inventory_window);
 
 /**
@@ -85,8 +96,22 @@ Gemstone* click_on_gemstone(SubWindow window, Event event, Inventory inventory,
  */
 bool hover_fusion_slot(int* slot, SubWindow window, Event event);
 
+/**
+ * @brief This function tells which slot is clicked or -1.
+ *
+ * @param window The subwindow where the fusion slots are displayed.
+ * @param event The event to check.
+ * @return -1 or slot clicked
+ */
 int click_on_fusion_slot(SubWindow window, Event event);
 
+/**
+ * @brief Get the hovered fusion slot object
+ *
+ * @param window The subwindow where the fusion slots are displayed.
+ * @param event The event to check.
+ * @return -1 or slot who is mouve over
+ */
 int get_hovered_fusion_slot(SubWindow window, Event event);
 
 #endif  // __INVENTORY_EVENT_H__

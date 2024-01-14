@@ -1,3 +1,11 @@
+/**
+ * @file InventoryEvent.c
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Event functions for the inventory.
+ * @date 14-01-2024
+ *
+ */
+
 #include "InventoryEvent.h"
 
 #include <stdbool.h>
@@ -6,19 +14,31 @@
 #include "Event.h"
 #include "Inventory.h"
 
+/* Check if the mouse is over the inventory space */
 bool hovered_inventory(Event event, SubWindow inventory_window) {
     return is_in_rect_area(inventory_window.coord.x, inventory_window.coord.y,
                            inventory_window.width, inventory_window.height,
                            event.mouse.x, event.mouse.y);
 }
 
+/*Check if the click is in the inventory space */
 bool click_in_inventory(Event event, SubWindow inventory_window) {
     return event.type == MOUSE_BUTTON &&
            hovered_inventory(event, inventory_window);
 }
 
-bool click_on_text(SubWindow window, Event event, const char* text, int x,
-                   int y) {
+/**
+ * @brief Check if the click is on the text.
+ *
+ * @param window Window where the font is.
+ * @param event Event lMLV (mouse click)
+ * @param text Text to check
+ * @param x coord of the text height
+ * @param y coord of the text width
+ * @return if the click is on the text
+ */
+static bool click_on_text(SubWindow window, Event event, const char* text,
+                          int x, int y) {
     int font_width, font_height;
     MLV_get_size_of_text_with_font(text, &font_width, &font_height,
                                    window.font);
@@ -27,8 +47,18 @@ bool click_on_text(SubWindow window, Event event, const char* text, int x,
                            event.mouse.y);
 }
 
-bool click_on_centered_text(SubWindow window, Event event, const char* text,
-                            int x, int y) {
+/**
+ * @brief Check if the click is the centered text.
+ *
+ * @param window Window where the font is.
+ * @param event Event lMLV (mouse click)
+ * @param text Text to check
+ * @param x coord of the text height
+ * @param y coord of the text width
+ * @return if the click is on the text
+ */
+static bool click_on_centered_text(SubWindow window, Event event, const char* text,
+                                   int x, int y) {
     int font_width, font_height;
     MLV_get_size_of_text_with_font(text, &font_width, &font_height,
                                    window.font);
@@ -36,6 +66,7 @@ bool click_on_centered_text(SubWindow window, Event event, const char* text,
                          y - font_height / 2);
 }
 
+/* Check if the click is on the left arrow */
 bool click_left_arrow(SubWindow inventory_window, Event event) {
     return click_in_inventory(event, inventory_window) &&
            click_on_centered_text(
@@ -44,6 +75,7 @@ bool click_left_arrow(SubWindow inventory_window, Event event) {
                inventory_window.coord.y + inventory_window.height * 0.630);
 }
 
+/* Check if the click is on the right arrow */
 bool click_right_arrow(SubWindow inventory_window, Event event) {
     return click_in_inventory(event, inventory_window) &&
            click_on_centered_text(
@@ -52,6 +84,7 @@ bool click_right_arrow(SubWindow inventory_window, Event event) {
                inventory_window.coord.y + inventory_window.height * 0.630);
 }
 
+/* Check if the click is in a button */
 bool click_on_button(SubWindow window, Event event, Button button) {
     return event.type == MOUSE_BUTTON &&
            is_in_rect_area(button.coord.x, button.coord.y, button.width,
@@ -97,6 +130,7 @@ static Gemstone* hovered_gem(SubWindow window, Event event,
     return NULL;
 }
 
+/* Check if a gemstone is clicked */
 Gemstone* click_on_gemstone(SubWindow window, Event event, Inventory inventory,
                             unsigned int page) {
     if (!click_in_inventory(event, window)) {
@@ -126,12 +160,14 @@ bool hover_fusion_slot(int* slot, SubWindow window, Event event) {
     return false;
 }
 
+/* return wich slot is mouse over or -1 */
 int get_hovered_fusion_slot(SubWindow window, Event event) {
     int slot = -1;
     hover_fusion_slot(&slot, window, event);
     return slot;
 }
 
+/* return which slot is clicked or -1 */
 int click_on_fusion_slot(SubWindow window, Event event) {
     int slotSizeX = window.width * 0.2;
     int slotSizeY = window.height * 0.07;

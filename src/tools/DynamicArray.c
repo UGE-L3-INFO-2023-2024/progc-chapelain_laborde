@@ -1,7 +1,7 @@
 /**
  * @file DynamicArray.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage a dynamic array (generic allocated array).
  * @date 19-11-2023
  *
  */
@@ -15,6 +15,7 @@
 
 #include "Error.h"
 
+/* Initailise a DA */
 Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
     Error err = NO_ERROR;
     // alloc array
@@ -30,6 +31,7 @@ Error DA_init(DynamicArray* da, int size_alloc, Type_array type) {
     return NO_ERROR;
 }
 
+/* Realloc a DA array */
 Error DA_realloc(DynamicArray* da) {
     assert(da);
     assert(da->arr);
@@ -50,6 +52,7 @@ Error DA_realloc(DynamicArray* da) {
     return NO_ERROR;
 }
 
+/* Get index from a DA */
 DynamicArray_Union* DA_get(DynamicArray* da, int index) {
     assert(da);
     assert(da->arr);
@@ -61,6 +64,7 @@ DynamicArray_Union* DA_get(DynamicArray* da, int index) {
     return da->arr + index;
 }
 
+/* Add a value to the DynamicArray */
 Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     assert(da);
     assert(da->arr);
@@ -99,6 +103,7 @@ Error DA_add(DynamicArray* da, DynamicArray_Union val, Type_array type) {
     return NO_ERROR;
 }
 
+/* Remove last */
 Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
                      Type_array type) {
     assert(da);
@@ -136,6 +141,7 @@ Error DA_remove_last(DynamicArray* da, DynamicArray_Union* val,
     return NO_ERROR;
 }
 
+/* Remove from an index */
 Error DA_remove_index(DynamicArray* da, int index) {
     assert(da);
     assert(da->arr);
@@ -159,6 +165,7 @@ Error DA_remove_index(DynamicArray* da, int index) {
     return NO_ERROR;
 }
 
+/* Free a Dynamic Array */
 void DA_free(DynamicArray da) {
     // in case of a mob array (mob are allocated)
     if (da.type == MOB) {
@@ -169,6 +176,7 @@ void DA_free(DynamicArray da) {
     free(da.arr);
 }
 
+/* Da print (debug function) */
 void DA_print_all(DynamicArray* da) {
     // debug function who print all the array
     assert(da);

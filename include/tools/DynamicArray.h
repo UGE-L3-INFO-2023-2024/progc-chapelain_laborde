@@ -1,7 +1,7 @@
 /**
  * @file DynamicArray.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage a dynamic array (generic allocated array).
  * @date 19-11-2023
  *
  */

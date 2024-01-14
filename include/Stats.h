@@ -1,13 +1,17 @@
 /**
  * @file Stats.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage the stats.
  * @date 30/10/2023
  *
  */
 
 #ifndef __STATS_H__
 #define __STATS_H__
+
+/**************/
+/* Structures */
+/**************/
 
 typedef struct {
     unsigned int score;

@@ -16,6 +16,10 @@
 #include "Gemstone.h"
 #include "Utils.h"
 
+/*************/
+/* Functions */
+/*************/
+
 /**
  * @brief Drag and drop a gemstone from everywhere to everywhere
  *

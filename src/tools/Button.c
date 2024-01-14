@@ -1,3 +1,11 @@
+/**
+ * @file Button.c
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Manage graphic buttons (array, init, add, get from name, free)
+ * @date 14-01-2024
+ *
+ */
+
 #include "Button.h"
 
 #include <MLV/MLV_all.h>
@@ -9,7 +17,7 @@
 #include "Utils.h"
 
 /* Initialize a button with default parameters */
-Button* init_button(char* name, Coord_i coord, int width, int height,
+Button* Button_init(char* name, Coord_i coord, int width, int height,
                     MLV_Color color) {
     Button* button = malloc(sizeof(Button));
     if (button == NULL) {
@@ -24,7 +32,8 @@ Button* init_button(char* name, Coord_i coord, int width, int height,
     return button;
 }
 
-Error button_tab_init(ButtonTab* buttons) {
+/* Initialise array of button */
+Error Button_tab_init(ButtonTab* buttons) {
     Error err = NO_ERROR;
     buttons->buttons = malloc(sizeof(Button*) * 3);
     if (buttons->buttons == NULL) {
@@ -36,7 +45,8 @@ Error button_tab_init(ButtonTab* buttons) {
     return NO_ERROR;
 }
 
-Error button_tab_add(ButtonTab* buttons, Button* button) {
+/* Add a button to the array */
+Error Button_tab_add(ButtonTab* buttons, Button* button) {
     Error err = NO_ERROR;
     if (buttons->count == buttons->capacity) {
         buttons->capacity *= 2;
@@ -51,8 +61,9 @@ Error button_tab_add(ButtonTab* buttons, Button* button) {
     return NO_ERROR;
 }
 
-void button_tab_free(ButtonTab buttons) {
-    for (unsigned int i = 0; i < buttons.count; i++) {
+/* Free array of button */
+void Button_tab_free(ButtonTab buttons) {
+    for (int i = 0; i < buttons.count; i++) {
         free(buttons.buttons[i]);
         buttons.buttons[i] = NULL;
     }
@@ -60,8 +71,9 @@ void button_tab_free(ButtonTab buttons) {
     buttons.buttons = NULL;
 }
 
-Button* button_tab_get_button(ButtonTab buttons, char* name) {
-    for (unsigned int i = 0; i < buttons.count; i++) {
+/* Get button from his name */
+Button* Button_tab_get_button(ButtonTab buttons, char* name) {
+    for (int i = 0; i < buttons.count; i++) {
         if (strcmp(buttons.buttons[i]->name, name) == 0) {
             return buttons.buttons[i];
         }

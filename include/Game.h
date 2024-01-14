@@ -12,10 +12,15 @@
 
 #include "Button.h"
 #include "Error.h"
+#include "Event.h"
 #include "Inventory.h"
 #include "Map.h"
 #include "Stats.h"
 #include "Window.h"
+
+/**************/
+/* Structures */
+/**************/
 
 /**
  * @brief Structure representing the game.
@@ -37,6 +42,10 @@ typedef struct {
     Stats stats;        // The stats of the game
 } Game;
 
+/*************/
+/* Functions */
+/*************/
+
 /**
  * @brief Initialize the game.
  *
@@ -51,6 +60,22 @@ Error Game_Init(Game* game);
  * @param game Game to draw.
  */
 void Game_draw(Game* game);
+
+/**
+ * @brief Manange keyboard events.
+ *
+ * @param game Game to manage.
+ * @param event Event to manage.
+ */
+void Game_action(Game* game, Event event);
+
+/**
+ * @brief Update Towers, Projectiles, Wave.
+ *
+ * @param game Game to update.
+ * @return defeat
+ */
+bool Game_update_all(Game* game);
 
 /**
  * @brief Run the game. It's the main loop of the game.

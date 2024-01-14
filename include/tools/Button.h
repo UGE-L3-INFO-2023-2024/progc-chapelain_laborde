@@ -1,3 +1,11 @@
+/**
+ * @file Button.h
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Manage graphic buttons (array, init, add, get from name, free)
+ * @date 14-01-2024
+ *
+ */
+
 #ifndef __BUTTON_H__
 #define __BUTTON_H__
 
@@ -6,6 +14,10 @@
 
 #include "Error.h"
 #include "Utils.h"
+
+/**************/
+/* Structures */
+/**************/
 
 /**
  * @brief A button is a rectangle with a text inside.
@@ -26,6 +38,10 @@ typedef struct {
     unsigned int capacity;
 } ButtonTab;
 
+/*************/
+/* Functions */
+/*************/
+
 /**
  * @brief Initialize a button.
  * The button is set by default to not pressed.
@@ -37,7 +53,7 @@ typedef struct {
  * @param color The color of the top of the button.
  * @return Button The initialized button.
  */
-Button* init_button(char* name, Coord_i coord, int width, int height,
+Button* Button_init(char* name, Coord_i coord, int width, int height,
                     MLV_Color color);
 
 /**
@@ -46,7 +62,7 @@ Button* init_button(char* name, Coord_i coord, int width, int height,
  * @param buttons The buttons to initialize the buttons of.
  * @return Error CLEAR if no error occured, MALLOC_ERR otherwise.
  */
-Error button_tab_init(ButtonTab* buttons);
+Error Button_tab_init(ButtonTab* buttons);
 
 /**
  * @brief Add a button to the buttons.
@@ -56,14 +72,14 @@ Error button_tab_init(ButtonTab* buttons);
  *
  * @return Error CLEAR if no error occured, MALLOC_ERR otherwise.
  */
-Error button_tab_add(ButtonTab* buttons, Button* button);
+Error Button_tab_add(ButtonTab* buttons, Button* button);
 
 /**
  * @brief Free the buttons of an buttons.
  *
  * @param buttons The buttons to free the buttons of.
  */
-void button_tab_free(ButtonTab buttons);
+void Button_tab_free(ButtonTab buttons);
 
 /**
  * @brief Get a button from an buttons.
@@ -74,6 +90,6 @@ void button_tab_free(ButtonTab buttons);
  * @param name The name of the button to get.
  * @return Button* The button if it exists, NULL otherwise.
  */
-Button* button_tab_get_button(ButtonTab buttons, char* name);
+Button* Button_tab_get_button(ButtonTab buttons, char* name);
 
 #endif  // __BUTTON_H__

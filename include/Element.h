@@ -1,7 +1,7 @@
 /**
  * @file Element.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Manage element creation and store effects constants.
  * @date 30-10-2023
  *
  */

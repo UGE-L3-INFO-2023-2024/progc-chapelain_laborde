@@ -36,7 +36,7 @@ int main(int argc, char const* argv[]) {
  Gem* clicked_gem = NULL;
  int slot = -1;
  while (!quit_event(event)) {
-     event = get_event();
+     event = Event_get();
      doing_button_actions(game.buttons, game.window.inventory,
                           game.window.map, &game, event);
      if (clicked_gem == NULL)

@@ -1,7 +1,7 @@
 /**
  * @file Path.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to generate a path for the map.
  * @date 11-11-2023
  *
  */

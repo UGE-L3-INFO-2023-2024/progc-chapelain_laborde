@@ -1,7 +1,7 @@
 /**
  * @file Inventory.h
  * @author Laborde Quentin
- * @brief
+ * @brief  Module to manage the inventory (Init, add, remove, free).
  * @date 11-12-2024
  *
  */
@@ -28,8 +28,8 @@ typedef struct {
     Gemstone* gemstones;               // The gemstones in the inventory.
     unsigned long gemstones_count;     // The number of gemstones
     unsigned long gemstones_capacity;  // The capacity of the gemstones array.
-    Gemstone* fusion[3];  // The two gemstones to fuse and the result.
-    struct {              // The informations about the inventory.
+    Gemstone* fusion[3];               // The two gemstones to fuse and the result.
+    struct {                           // The informations about the inventory.
         int page;
         int gem_level;
     } info;
@@ -47,7 +47,7 @@ typedef struct {
  *
  * @return Error CLEAR if no error occured, MALLOC_ERR otherwise.
  */
-Error inventory_init(Inventory* inventory);
+Error Inventory_init(Inventory* inventory);
 
 /**
  * @brief Add a gemstone to an inventory.
@@ -57,14 +57,14 @@ Error inventory_init(Inventory* inventory);
  * @param gemstone Gemstone to add.
  * @return Error CLEAR if no error occured, MALLOC_ERR otherwise.
  */
-Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone);
+Error Inventory_add_gemstone(Inventory* inventory, Gemstone gemstone);
 
 /**
  * @brief Free an inventory.
  *
  * @param inventory Inventory to free.
  */
-void inventory_free(Inventory* inventory);
+void Inventory_free(Inventory* inventory);
 
 /**
  * @brief Remove a gemstone from the inventory.
@@ -73,6 +73,6 @@ void inventory_free(Inventory* inventory);
  * @param gemstone Gemstone to remove.
  * @return Error CLEAR if no error occured, GEMSTONE_NOT_FOUND otherwise.
  */
-Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone);
+Error Inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone);
 
 #endif  // __INVENTORY_H__

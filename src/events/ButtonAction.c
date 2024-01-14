@@ -66,6 +66,15 @@ static Button* get_clicked_button(ButtonTab buttons, SubWindow window,
     return NULL;
 }
 
+/**
+ * @brief Buy the tower and add it to the map.
+ *
+ * @param button The button to check.
+ * @param map_window Window where the click was done.
+ * @param map Map to add tower.
+ * @param mana_pool ManaPool to buy.
+ * @param event The event to check.
+ */
 static void tower_button_action(Button* button, SubWindow map_window, Map* map,
                                 ManaPool* mana_pool, Event event) {
     Coord_i coord = get_coord_on_map(*map, map_window,
@@ -83,40 +92,75 @@ static void tower_button_action(Button* button, SubWindow map_window, Map* map,
     }
 }
 
+/**
+ * @brief Upgrade the manapool and add warning effect
+ * when there is not enough mana
+ *
+ * @param pool Manapool to check
+ */
 static void mana_button_action(ManaPool* pool) {
     if (!Mana_pool_upgrade(pool)) {
         // TODO 300 : add alert if not enough mana
     }
 }
 
+/**
+ * @brief Increase the level of the gem pointer.
+ *
+ * @param gem_level Pointer to gem level.
+ */
 static void gem_minus_button_action(int* gem_level) {
     if (*gem_level > 0)
         (*gem_level)--;
 }
 
+/**
+ * @brief Decrease the level of the gem pointer.
+ *
+ * @param gem_level Pointer to gem level.
+ */
 static void gem_plus_button_action(int* gem_level) {
     if (*gem_level < 10)
         (*gem_level)++;
 }
 
+/**
+ * @brief Buy the gem at the level given
+ *
+ * @param inventory Inventory to store the gem
+ * @param mana_pool Manapool to check is the is enough mana.
+ * @param gem_level gem level.
+ */
 static void gem_button_action(Inventory* inventory, ManaPool* mana_pool,
                               int gem_level) {
     if (Mana_buy(mana_pool, Mana_gem_cost(gem_level)))
-        inventory_add_gemstone(inventory, Gemstone_init(gem_level));
+        Inventory_add_gemstone(inventory, Gemstone_init(gem_level));
 }
 
+/**
+ * @brief Decrease the selected number of page if possible.
+ *
+ * @param page Pointer to selected page.
+ */
 static void left_page_inventory_button_action(int* page) {
     if (*page > 0) {
         (*page)--;
     }
 }
 
+/**
+ * @brief Increase the selected number of page if possible.
+ *
+ * @param page Pointer to selected page.
+ * @param max_page number max of page.
+ */
 static void right_page_inventory_button_action(int* page, int max_page) {
     if (*page < max_page) {
         (*page)++;
     }
 }
 
+/* Does action like buying gem,tower, change page or gme levels */
 void doing_button_actions(ButtonTab buttons, SubWindow inventory_window,
                           SubWindow map_window, Game* game, Event event) {
     get_clicked_button(buttons, inventory_window, event);

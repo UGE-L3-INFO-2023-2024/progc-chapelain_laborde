@@ -1,7 +1,7 @@
 /**
  * @file Gemstone.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage gemstone.
  * @date 16-11-2023
  *
  */

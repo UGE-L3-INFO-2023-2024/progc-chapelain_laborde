@@ -1,7 +1,7 @@
 /**
  * @file Projectile.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage projectile (init, move, damage).
  * @date 19-11-2023
  *
  */
@@ -57,6 +57,6 @@ bool Proj_next_step(Projectile* proj);
  * @return Damage done
  *
  */
-int Proj_damage_raw(Projectile* proj);
+int Proj_damage(Projectile* proj);
 
 #endif  // _PROJECTILE_H_

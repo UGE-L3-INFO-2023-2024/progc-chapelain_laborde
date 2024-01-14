@@ -1,7 +1,7 @@
 /**
  * @file Inventory.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage the inventory (Init, add, remove, free).
  * @date 11-12-2024
  *
  */
@@ -13,7 +13,8 @@
 #include "Gemstone.h"
 #include "Mana.h"
 
-Error inventory_init(Inventory* inventory) {
+/* Initialise the inventory */
+Error Inventory_init(Inventory* inventory) {
     Error error = NO_ERROR;
     inventory->gemstones = malloc(sizeof(Gemstone) * 3);
     if (inventory->gemstones == NULL) {
@@ -30,7 +31,8 @@ Error inventory_init(Inventory* inventory) {
     return NO_ERROR;
 }
 
-Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone) {
+/* Add gems to inventory (realloc inside) */
+Error Inventory_add_gemstone(Inventory* inventory, Gemstone gemstone) {
     Error error = NO_ERROR;
     if (inventory->gemstones_count == inventory->gemstones_capacity) {
         inventory->gemstones_capacity *= 2;
@@ -46,7 +48,8 @@ Error inventory_add_gemstone(Inventory* inventory, Gemstone gemstone) {
     return NO_ERROR;
 }
 
-Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone) {
+/* Remove a gem from inventory */
+Error Inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone) {
     Error error = NO_ERROR;
     for (int i = 0; i < inventory->gemstones_count; i++) {
         if (Gemstone_equal(inventory->gemstones[i], gemstone)) {
@@ -61,7 +64,8 @@ Error inventory_remove_gemstone(Inventory* inventory, Gemstone gemstone) {
     return NO_ERROR;
 }
 
-void inventory_free(Inventory* inventory) {
+/* Free the inventory */
+void Inventory_free(Inventory* inventory) {
     free(inventory->gemstones);
     inventory->gemstones = NULL;
     inventory->gemstones_count = 0;

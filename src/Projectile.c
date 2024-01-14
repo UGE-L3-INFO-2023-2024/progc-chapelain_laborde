@@ -1,7 +1,7 @@
 /**
  * @file Projectile.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage projectile (init, move, damage).
  * @date 26-12-2023
  *
  */
@@ -16,6 +16,7 @@
 #include "Mob.h"
 #include "Utils.h"
 
+/* Initialise the projectile */
 Projectile Proj_init(Coord_f spawn, Gem* gem, Mob* target) {
     return (Projectile){
         .gem = Gemstone_copy(gem),
@@ -26,6 +27,7 @@ Projectile Proj_init(Coord_f spawn, Gem* gem, Mob* target) {
     };
 }
 
+/* Move the projectile adn tell if its too close to target */
 bool Proj_next_step(Projectile* proj) {
     double dist = Utils_coord_f_distance(proj->pos, proj->target->pos);
     // to close to the target
@@ -42,7 +44,14 @@ bool Proj_next_step(Projectile* proj) {
     return true;
 }
 
-int _damage_element(Projectile* proj, int dmg) {
+/**
+ * @brief Apply damage element to the mob.
+ *
+ * @param proj Projectile
+ * @param dmg damage original (useful to compute for SPRAYING and PYRO)
+ * @return damage done
+ */
+static int _damage_element(Projectile* proj, int dmg) {
     Mob_apply_element(proj->target, Gemstone_get_element(proj->gem));
     switch (proj->target->elem.main) {
         case BURNING:
@@ -60,7 +69,8 @@ int _damage_element(Projectile* proj, int dmg) {
     return dmg;
 }
 
-int Proj_damage_raw(Projectile* proj) {
+/* Deals damage(raw + elem) to mobs when the distance is to short*/
+int Proj_damage(Projectile* proj) {
     int dmg = PROJ_CONST_DMG *
               pow(2, proj->level) *
               (1 - cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) / 2);

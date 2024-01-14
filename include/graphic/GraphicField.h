@@ -16,6 +16,10 @@
 #include "Map.h"
 #include "Wave.h"
 
+/*************/
+/* Functions */
+/*************/
+
 /**
  * @brief Draw the map on the given window.
  *

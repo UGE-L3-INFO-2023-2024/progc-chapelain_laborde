@@ -1,7 +1,8 @@
 /**
  * @file Map.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage the map.
+ * (init, towers shooting, projs moving & damage, free)
  * @date 10-01-2024
  *
  */

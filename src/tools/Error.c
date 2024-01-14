@@ -1,7 +1,7 @@
 /**
  * @file ErrorType.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module for error handling.
  * @date 19-11-2023
  *
  */
@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 
+/* Print an error */
 void Error_print(Error error) {
     static const char* error_msg[NB_ERRORS] = {
         "Dynamic Array Allocation error",

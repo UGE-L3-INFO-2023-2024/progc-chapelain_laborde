@@ -1,7 +1,8 @@
 /**
  * @file Game.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief This file contains the Game structure and its functions. It's the
+ * main module to run the game.
  * @date 10-01-2024
  *
  */
@@ -25,6 +26,11 @@
 #include "Map.h"
 #include "Path.h"
 
+/**
+ * @brief Create all used windows (Map, Inventory)
+ *
+ * @param game Game
+ */
 static void create_windows(Game* game) {
     game->window.main = Window_init((Coord_f){0, 0}, 1400, 880);
     MLV_create_window("Gemcraft", "Gemcraft", game->window.main.width,
@@ -33,15 +39,16 @@ static void create_windows(Game* game) {
         SubWindow_init(&game->window.main, (Coord_f){0, 0}, 1120, 880);
     game->window.inventory =
         SubWindow_init(&game->window.main, (Coord_f){1120, 0}, 280, 880);
-    game->window.inventory.font = font_load("assets/fonts/unifont.ttf",
+    game->window.inventory.font = Font_load("assets/fonts/unifont.ttf",
                                             game->window.inventory.width / 7);
 }
 
+/*Initalise the game */
 Error Game_Init(Game* game) {
     srand(time(NULL));
     Error error = NO_ERROR;
     game->has_started = false;
-    error.type = inventory_init(&(game->inventory)).type;
+    error.type = Inventory_init(&(game->inventory)).type;
     if (error.type)
         return error;
     error.type = Map_init(&(game->map)).type;
@@ -57,12 +64,13 @@ Error Game_Init(Game* game) {
 
     MLV_change_frame_rate(60);
 
-    button_tab_init(&game->buttons);
+    Button_tab_init(&game->buttons);
     create_inventory_buttons(game->window.inventory, &game->buttons);
 
     return NO_ERROR;
 }
 
+/* Draw all game */
 void Game_draw(Game* game) {
     draw_map(game->map, game->window.map);
     draw_mana_bar(game->mana_pool, 180, 810, 760, 40, 3);
@@ -72,7 +80,13 @@ void Game_draw(Game* game) {
     draw_mobs(&(game->map.mobs), game->window.map, NULL);
 }
 
-static void drag_ang_drop_action(Game* game, Event event) {
+/**
+ * @brief Draw the gem that is being move.
+ *
+ * @param game Game
+ * @param event Event lMLV
+ */
+static void _drag_ang_drop_action(Game* game, Event event) {
     static Gem* clicked_gem = NULL;
     static Point new_gem_pos = {0, 0};
     int w = game->window.inventory.width * 0.2;
@@ -97,6 +111,11 @@ static void _clear_projs_on_target(DynamicArray* projs, Mob* mob) {
     }
 }
 
+/**
+ * @brief Clear all dead mobs and projectiles who target them.
+ *
+ * @param game Game
+ */
 static void _clear_dead_mob_proj(Game* game) {
     for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
         if (game->map.mobs.mob_list.arr[i].mob->current_hp <= 0) {
@@ -133,6 +152,7 @@ static bool _wave_next_step(Game* game) {
     return false;
 }
 
+/* Keyboard event gestion */
 void Game_action(Game* game, Event event) {
     if (event.type == KEYBOARD && event.keyboard.key == MLV_KEYBOARD_SPACE &&
         event.keyboard.state == MLV_PRESSED) {
@@ -146,6 +166,7 @@ void Game_action(Game* game, Event event) {
     }
 }
 
+/* Update all move (side effect update stats) */
 bool Game_update_all(Game* game) {
     if (_wave_next_step(game)) {
         return true;
@@ -156,16 +177,17 @@ bool Game_update_all(Game* game) {
     return false;
 }
 
+/* Main loop of execution (event, actualise move, draw) */
 Error Game_run(Game* game) {
     Error err = NO_ERROR;
     Event event = {NO_EVENT};
-    while (!quit_event(event)) {
+    while (!Event_quit(event)) {
         Game_action(game, event);
         Game_draw(game);
-        event = get_event();
+        event = Event_get();
         doing_button_actions(game->buttons, game->window.inventory,
                              game->window.map, game, event);
-        drag_ang_drop_action(game, event);
+        _drag_ang_drop_action(game, event);
 
         refresh_window();
 
@@ -187,10 +209,11 @@ Error Game_run(Game* game) {
     return NO_ERROR;
 }
 
+/* Free game */
 void Game_free(Game* game) {
-    inventory_free(&(game->inventory));
+    Inventory_free(&(game->inventory));
     Map_free(&(game->map));
-    button_tab_free(game->buttons);
-    font_free(game->window.inventory.font);
+    Button_tab_free(game->buttons);
+    Font_free(game->window.inventory.font);
     MLV_free_window();
 }

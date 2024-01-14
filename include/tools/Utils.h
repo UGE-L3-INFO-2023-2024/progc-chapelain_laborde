@@ -1,7 +1,8 @@
 /**
  * @file Utils.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Multifunction module
+ * (random, modulo, coord, weighted select, angle, direction)
  * @date 30-10-2023
  *
  */

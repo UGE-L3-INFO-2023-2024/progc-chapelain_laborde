@@ -1,6 +1,15 @@
+/**
+ * @file Event.c
+ * @author CHAPELAIN Nathan & LABORDE Quentin
+ * @brief Get event from the window.
+ * @date 14-01-2024
+ *
+ */
+
 #include "Event.h"
 
-Event get_mouse_event() {
+/* Get lMLV mouse event */
+Event Event_get_mouse() {
     Event event;
     MLV_Button_state mouse_state;
     MLV_Mouse_button mouse_button;
@@ -23,7 +32,8 @@ Event get_mouse_event() {
     return event;
 }
 
-Event get_keyboard_event() {
+/* Get lMLV keyboard event */
+Event Event_get_keyboard() {
     Event event;
     MLV_Keyboard_button keyboard_button;
     MLV_Button_state state;
@@ -39,7 +49,8 @@ Event get_keyboard_event() {
     return event;
 }
 
-Event get_event() {
+/* Get lMLV event */
+Event Event_get() {
     Event event = {.type = NO_EVENT};
     MLV_Keyboard_button keyboard_button;
     MLV_Button_state state;
@@ -70,18 +81,21 @@ Event get_event() {
     return event;
 }
 
-bool quit_event(Event event) {
+/* Get lMLV quit event  (q or esc) */
+bool Event_quit(Event event) {
     return event.type == KEYBOARD &&
            (event.keyboard.key == MLV_KEYBOARD_q ||
             event.keyboard.key == MLV_KEYBOARD_ESCAPE);
 }
 
+/* Check if the coord are in the rectangle */
 bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
                      int cible_y) {
     return cible_x >= x && cible_x <= x + width && cible_y >= y &&
            cible_y <= y + height;
 }
 
+/* Tells if the user released the left mouse button */
 bool drop_item(Event event, bool is_dragging) {
     if (is_dragging && event.type == MOUSE_BUTTON &&
         event.mouse.button == MLV_BUTTON_LEFT &&
@@ -91,6 +105,7 @@ bool drop_item(Event event, bool is_dragging) {
     return false;
 }
 
+/* Store info if the player is holding LMB and the start coordinates */
 bool drag_item(Event event, bool *is_dragging, int *old_mouse_x,
                int *old_mouse_y) {
     if (!*is_dragging && event.type == MOUSE_BUTTON &&

@@ -1,7 +1,7 @@
 /**
  * @file Error.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module for error handling.
  * @date 19-11-2023
  *
  */
@@ -22,6 +22,7 @@
 /* Structures */
 /**************/
 
+// __func__ == current function name
 #define NO_ERROR        \
     (Error) {           \
         CLEAR, __func__ \

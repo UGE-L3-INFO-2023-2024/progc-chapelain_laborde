@@ -1,8 +1,8 @@
 /**
  * @file Graphic.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
- * @date 2023-11-15
+ * @brief This file contains all the functions to draw on the screen.
+ * @date 15-11-2023
  *
  */
 
@@ -12,6 +12,7 @@
 
 #include "Map.h"
 
+/* Update lMLV window */
 void refresh_window() {
     MLV_update_window();
 }
@@ -88,6 +89,7 @@ void draw_centered_text(unsigned int x, unsigned int y, const char* text,
     va_end(args);
 }
 
+/* Draw empty polygon */
 void draw_polygon(Polygon polygon, MLV_Color color) {
     if (polygon.nb_points < 3)
         return;
@@ -102,6 +104,7 @@ void draw_polygon(Polygon polygon, MLV_Color color) {
     free(vy);
 }
 
+/* Draw filled polygon */
 void draw_filled_polygon(Polygon polygon, MLV_Color color) {
     if (polygon.nb_points < 3)
         return;
@@ -116,6 +119,7 @@ void draw_filled_polygon(Polygon polygon, MLV_Color color) {
     free(vy);
 }
 
+/* Clear lMLV window */
 void clear_window(Window window) {
     MLV_draw_filled_rectangle(window.coord.x, window.coord.y, window.width,
                               window.height, CLEAR_COLOR);

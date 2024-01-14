@@ -1,7 +1,7 @@
 /**
  * @file TimeManager.h
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module who help to use timespec struct.
  * @date 16-11-2023
  *
  */
@@ -60,7 +60,7 @@ bool Time_is_equal(struct timespec a, struct timespec b);
 /**
  * @brief Print the time given (Debug function).
  *
- * @param start
+ * @param start timespec
  */
 void Time_print_ms(struct timespec start);
 

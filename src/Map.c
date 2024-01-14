@@ -1,7 +1,8 @@
 /**
  * @file Map.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief
+ * @brief Module to manage the map.
+ * (init, towers shooting, projs moving & damage, free)
  * @date 15-11-2023
  *
  */
@@ -88,6 +89,7 @@ Error Map_init(Map* map) {
     return NO_ERROR;
 }
 
+/* Map add tower (error possible if realloc )*/
 Error Map_add_tower(Map* map, Tower tower) {
     map->board[tower.coord.y][tower.coord.x].have_tower = true;
     Error err = DA_add(&map->towers, (DA_Union){.tower = tower}, TOWER);
@@ -95,6 +97,7 @@ Error Map_add_tower(Map* map, Tower tower) {
     return err;
 }
 
+/* Get tower from coord or NULL */
 Tower* Map_get_tower(Map* map, Coord_i coord) {
     for (int i = 0; i < map->towers.real_len; i++) {
         if (map->towers.arr[i].tower.coord.x == coord.x &&
@@ -138,6 +141,7 @@ static bool _tower_shoot(Tower tower, DynamicArray* mobs,
     return index_target != -1;
 }
 
+/* Make all towers shoot if possible. */
 void Map_towers_shoot(Map* map) {
     for (int i = 0; i < map->towers.real_len; i++) {
         Tower tower = map->towers.arr[i].tower;
@@ -151,6 +155,14 @@ void Map_towers_shoot(Map* map) {
     }
 }
 
+/**
+ * @brief Deals pyro damage to neighbors.
+ *
+ * @param wave Wave to look in. (neighbors)
+ * @param origin Mob hit by the pyro effect.
+ * @param original_dmg Damage to spead.
+ * @param dmg Pointer to the dmg to add.
+ */
 static void _pyro_spread(Wave* wave, Mob* origin,
                          int original_dmg, int* dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
@@ -169,6 +181,14 @@ static void _pyro_spread(Wave* wave, Mob* origin,
     }
 }
 
+/**
+ * @brief Apply spraying element and damage to neighbors.
+ *
+ * @param wave Wave to look in. (neighbors)
+ * @param origin Mob hit by the spraying.
+ * @param original_dmg Damage to spead.
+ * @param dmg Pointer to the dmg to add.
+ */
 static void _spraying_spread(Wave* wave, Mob* origin,
                              int original_dmg, int* dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
@@ -191,11 +211,12 @@ static void _spraying_spread(Wave* wave, Mob* origin,
     }
 }
 
+/* Projectile move and apply damage when hit the mob */
 void Map_actualise_proj(Map* map, Stats* stats) {
     int dmg_stats = 0;
     for (int i = 0; i < map->projs.real_len; i++) {
         if (!Proj_next_step(&(map->projs.arr[i].proj))) {
-            int dmg = Proj_damage_raw(&(map->projs.arr[i].proj));
+            int dmg = Proj_damage(&(map->projs.arr[i].proj));
             dmg_stats += dmg;
             if (map->projs.arr[i].proj.target->elem.main == PYRO) {
                 _pyro_spread(&(map->mobs), map->projs.arr[i].proj.target,
@@ -213,6 +234,7 @@ void Map_actualise_proj(Map* map, Stats* stats) {
     stats->total_damage += dmg_stats;
 }
 
+/* Print a map (debug function) */
 void Map_print(Map* map) {
     printf("------------------------------\n");
     for (int y = 0; y < MAP_HEIGHT; y++) {
@@ -229,6 +251,7 @@ void Map_print(Map* map) {
     printf("------------------------------\n");
 }
 
+/* Free a map with all his DA */
 void Map_free(Map* map) {
     DA_free(map->towers);
     DA_free(map->projs);

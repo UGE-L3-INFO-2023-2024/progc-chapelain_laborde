@@ -13,6 +13,20 @@
 #include "Inventory.h"
 #include "Window.h"
 
+/*************/
+/* Functions */
+/*************/
+
+/**
+ * @brief Draw a gem on the screen.
+ *
+ * @param coord The coord of the gem.
+ * @param w The width of the gem.
+ * @param h The height of the gem.
+ * @param gem The gem to draw.
+ */
+void draw_gem(Coord_i coord, int w, int h, Gem gem);
+
 /**
  * @brief Create the buttons of the inventory.
  *
@@ -32,15 +46,5 @@ void create_inventory_buttons(SubWindow window, ButtonTab* buttons);
  */
 void draw_inventory_menu(SubWindow window, Inventory inventory,
                          ButtonTab buttons, int gem_level, int page);
-
-/**
- * @brief Draw a gem on the screen.
- *
- * @param coord The coord of the gem.
- * @param w The width of the gem.
- * @param h The height of the gem.
- * @param gem The gem to draw.
- */
-void draw_gem(Coord_i coord, int w, int h, Gem gem);
 
 #endif  // __GRAPHIC_MAIN_MENU_H__
