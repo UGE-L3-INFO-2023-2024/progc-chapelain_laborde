@@ -90,6 +90,6 @@ void Button_tab_free(ButtonTab buttons);
  * @param name The name of the button to get.
  * @return Button* The button if it exists, NULL otherwise.
  */
-Button* Button_tab_get_button(ButtonTab buttons, char* name);
+Button* Button_tab_get_button(ButtonTab buttons, const char* name);
 
 #endif  // __BUTTON_H__

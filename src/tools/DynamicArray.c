@@ -37,7 +37,7 @@ Error DA_realloc(DynamicArray* da) {
     assert(da->arr);
     Error err = NO_ERROR;
 
-    int new_size = da->max_len * DA_MUL_SIZE_ALLOC;
+    int new_size = (int)(da->max_len * DA_MUL_SIZE_ALLOC);
     DA_Union* tmp = realloc(da->arr, new_size * sizeof(DA_Union));
     // not enough memory
     if (!tmp) {
@@ -47,7 +47,7 @@ Error DA_realloc(DynamicArray* da) {
         return err;
     }
     // realloc ok
-    da->arr = (DA_Union*)tmp;
+    da->arr = tmp;
     da->max_len = new_size;
     return NO_ERROR;
 }
@@ -177,30 +177,29 @@ void DA_free(DynamicArray da) {
 }
 
 /* Da print (debug function) */
-void DA_print_all(DynamicArray* da) {
+void DA_print_all(DynamicArray da) {
     // debug function who print all the array
-    assert(da);
-    assert(da->arr);
+    assert(da.arr);
 
     printf("\n|-------------|\n");
-    for (int i = da->real_len - 1; i >= 0; --i) {
-        switch (da->type) {
+    for (int i = da.real_len - 1; i >= 0; --i) {
+        switch (da.type) {
             case PATH:
-                printf("| path: %d,%d |\n", da->arr[i].path.x,
-                       da->arr[i].path.y);
+                printf("| path: %d,%d |\n", da.arr[i].path.x,
+                       da.arr[i].path.y);
                 break;
             case MOB:
-                printf("| hp mob: %d |\n", da->arr[i].mob->current_hp);
+                printf("| hp mob: %d |\n", da.arr[i].mob->current_hp);
                 break;
             case PROJECTILE:
                 printf("| project: coord %f,%f color:%d|\n",
-                       da->arr[i].proj.pos.x, da->arr[i].proj.pos.y,
-                       da->arr[i].proj.gem.color);
+                       da.arr[i].proj.pos.x, da.arr[i].proj.pos.y,
+                       da.arr[i].proj.gem.color);
                 break;
             case TOWER:
                 printf("| tower: coord %d,%d hasgem: %d|\n",
-                       da->arr[i].tower.coord.x, da->arr[i].tower.coord.y,
-                       da->arr[i].tower.has_gem);
+                       da.arr[i].tower.coord.x, da.arr[i].tower.coord.y,
+                       da.arr[i].tower.has_gem);
                 break;
             default:
                 break;

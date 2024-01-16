@@ -103,7 +103,7 @@ static Error Path_add_turn(DynamicArray* da, Coord_i origin, Direction dir,
  * because there is the previous path)
  * @return true if the cell is valid.
  */
-static bool Path_manatan_etentu_cell(Map* map, Coord_i origin,
+static bool Path_manatan_etentu_cell(Map map, Coord_i origin,
                                      Direction ignore) {
     // too close to the border
     if (origin.x < 2 || origin.x > MAP_WIDTH - 3 || origin.y < 2 ||
@@ -129,9 +129,9 @@ static bool Path_manatan_etentu_cell(Map* map, Coord_i origin,
             (ignore == SOUTH && neighbour[i][1] < 0) ||
             (ignore == WEST && neighbour[i][0] > 0)) {
             // check if the cell is a path
-            if (map->board[origin.y + neighbour[i][1]]
-                          [origin.x + neighbour[i][0]]
-                              .is_path == true) {
+            if (map.board[origin.y + neighbour[i][1]]
+                         [origin.x + neighbour[i][0]]
+                             .is_path == true) {
                 return false;
             }
         }
@@ -148,7 +148,7 @@ static bool Path_manatan_etentu_cell(Map* map, Coord_i origin,
  * @param dir Direction to check.
  * @return int
  */
-static int Path_max_dir(Map* map, Coord_i start, Direction dir) {
+static int Path_max_dir(Map map, Coord_i start, Direction dir) {
     int acc = 0;
     static int Dir_point[4][2] = {
         {0, -1},
@@ -176,7 +176,7 @@ static int Path_max_dir(Map* map, Coord_i start, Direction dir) {
  * @param new_dir Pointer to the new direction.
  * @param new_len Pointer to the new length.
  */
-static void Path_gen_step(Map* map, Coord_i coord, Direction dir,
+static void Path_gen_step(Map map, Coord_i coord, Direction dir,
                           Direction* new_dir, int* new_len) {
     // rotation left and right
     Direction arr_dir[2] = {
@@ -205,7 +205,8 @@ static void Path_gen_step(Map* map, Coord_i coord, Direction dir,
 /* Path generation */
 bool Path_gen(Map* map, DynamicArray* da) {
     Error err = {CLEAR, __func__};
-    int total_len = 0, total_turn = 0;
+    int total_len = 0;
+    int total_turn = 0;
     // 1
     Map_init_board(map);
 
@@ -266,7 +267,7 @@ bool Path_gen(Map* map, DynamicArray* da) {
         int new_len = 0;
 
         // new dir and new len
-        Path_gen_step(map, origin, dir, &new_dir, &new_len);
+        Path_gen_step(*map, origin, dir, &new_dir, &new_len);
 
         if (new_len <= 2) {
             return (total_turn >= 7 && total_len >= 75);

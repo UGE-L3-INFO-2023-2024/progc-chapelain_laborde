@@ -50,18 +50,18 @@ void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
 
 /* Draw a bar with thickness and filled ratio */
 void draw_bar(Coord_i position, int width, int height, unsigned int thickness,
-              MLV_Color color, float filled_ratio, MLV_Color filled_color) {
+              MLV_Color color, double filled_ratio, MLV_Color filled_color) {
     int x = position.x;
     int y = position.y;
     draw_rectangle(x, y, width, height, thickness, color);
     MLV_draw_filled_rectangle(x + thickness, y + thickness,
-                              (width - 2 * thickness) * filled_ratio,
+                              (int)((width - 2 * thickness) * filled_ratio),
                               height - 2 * thickness, filled_color);
 }
 
 /* Draw a text centered on the given position with a given font */
 void draw_centered_text_with_font(unsigned int x, unsigned int y,
-                                  const char* text, Font* font,
+                                  const char* text, const Font* font,
                                   MLV_Color color, ...) {
     int text_width;
     int text_height;

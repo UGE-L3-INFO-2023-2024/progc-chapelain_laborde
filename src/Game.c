@@ -175,7 +175,7 @@ static bool _wave_next_step(Game* game) {
     int dmg = 0;
     for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
         if (Wave_next_step_unit(game->map.mobs.mob_list.arr[i].mob,
-                                &game->map.map_turns, &dmg)) {
+                                game->map.map_turns, &dmg)) {
             if (Mana_buy(&game->mana_pool,
                          Mana_cost_mob_banish(
                              game->map.mobs.mob_list.arr[i].mob->max_hp,
@@ -198,7 +198,7 @@ static bool _wave_next_step(Game* game) {
  * @param game to get the stats.
  * @param start start time of the game.
  */
-static void final_screen(Game* game, struct timespec start) {
+static void _final_screen(Game* game, struct timespec start) {
     game->stats.timeplayed = Time_ms_interval(start, Time_get()) / 1000;
     game->stats.last_wave = game->map.mobs.nb_wave;
     game->stats.score = game->stats.last_wave * 1000 + game->stats.mobs_killed;
@@ -212,10 +212,10 @@ void Game_action(Game* game, Event event) {
     if (event.type == KEYBOARD && event.keyboard.key == MLV_KEYBOARD_SPACE &&
         event.keyboard.state == MLV_PRESSED) {
         if (game->has_started) {
-            Mana_gain(
-                &(game->mana_pool),
-                Mana_gain_skip_wave(game->mana_pool.mana_max,
-                                    Wave_skip_to_next(&(game->map.mobs))));
+            Mana_gain(&(game->mana_pool),
+                      Mana_gain_skip_wave(
+                          game->mana_pool.mana_max,
+                          (int)Wave_skip_to_next(&(game->map.mobs))));
         }
         game->has_started = true;
     }
@@ -262,7 +262,7 @@ Error Game_run(Game* game) {
 
         MLV_delay_according_to_frame_rate();
     }
-    final_screen(game, start);
+    _final_screen(game, start);
     return NO_ERROR;
 }
 

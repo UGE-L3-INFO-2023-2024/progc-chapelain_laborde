@@ -17,13 +17,13 @@
 #include "Utils.h"
 
 /* Initialise the projectile */
-Projectile Proj_init(Coord_f spawn, Gem* gem, Mob* target) {
+Projectile Proj_init(Coord_f spawn, Gem gem, Mob* target) {
     return (Projectile){
-        .gem = Gemstone_copy(gem),
+        .gem = gem,
         .speed = PROJ_SPEED / (double)FRAMERATE,
         .target = target,
         .pos = spawn,
-        .level = gem->level,
+        .level = gem.level,
     };
 }
 
@@ -34,9 +34,8 @@ bool Proj_next_step(Projectile* proj) {
     if (dist <= proj->speed) {
         return false;
     }
-    Coord_f vect = {
-        .x = (proj->target->pos.x - proj->pos.x) / dist,
-        .y = (proj->target->pos.y - proj->pos.y) / dist};
+    Coord_f vect = {.x = (proj->target->pos.x - proj->pos.x) / dist,
+                    .y = (proj->target->pos.y - proj->pos.y) / dist};
 
     // cross product with the speed (vect * speed / 1)
     proj->pos.x += vect.x * proj->speed;
@@ -59,9 +58,10 @@ static int _damage_element(Projectile* proj, int dmg) {
             proj->target->elem.main = NONE;
             break;
         case SPRAYING:
-            dmg += (dmg * SPRAYING_DMG_PERCENT);
+            dmg += (int)(dmg * SPRAYING_DMG_PERCENT);
+            break;
         case PYRO:
-            dmg += (dmg * PYRO_DMG_PERCENT);
+            dmg += (int)(dmg * PYRO_DMG_PERCENT);
             break;
         default:
             break;
@@ -71,9 +71,11 @@ static int _damage_element(Projectile* proj, int dmg) {
 
 /* Deals damage(raw + elem) to mobs when the distance is to short*/
 int Proj_damage(Projectile* proj) {
-    int dmg = PROJ_CONST_DMG *
-              pow(2, proj->level) *
-              (1 - cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) / 2);
+    int dmg =
+        (int)(PROJ_CONST_DMG * pow(2, proj->level) *
+              (1 -
+               cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) /
+                   2));
     if (proj->gem.type == MIXED) {
         dmg *= 2;
         if (!(rand() % 10)) {  // 10% chance

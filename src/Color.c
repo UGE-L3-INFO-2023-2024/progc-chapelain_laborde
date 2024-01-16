@@ -33,9 +33,10 @@ RGB_Color Color_HSV_to_RGB(HSV_Color color) {
             break;
         }
     }
-
-    return (RGB_Color){(rgb[0] + m) * 255.0, (rgb[1] + m) * 255.0,
-                       (rgb[2] + m) * 255.0};
+    // We use unsigned char to store RGB values (0-255)
+    return (RGB_Color){(unsigned char)((rgb[0] + m) * 255.0),
+                       (unsigned char)((rgb[1] + m) * 255.0),
+                       (unsigned char)((rgb[2] + m) * 255.0)};
 }
 
 /* Random Color generation */

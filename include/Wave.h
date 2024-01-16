@@ -65,7 +65,7 @@ Error Wave_spawn_next(Wave *wave, Coord_f start);
  * @param wave Wave to update
  * @return second gain compare to next wave.
  */
-int Wave_skip_to_next(Wave *wave);
+long Wave_skip_to_next(Wave *wave);
 
 /**
  * @brief Move the mob to the next step. And aplly dendro damage.
@@ -76,6 +76,6 @@ int Wave_skip_to_next(Wave *wave);
  * @return if the mob is tp in the spawn.
  *
  */
-bool Wave_next_step_unit(Mob *mob, DynamicArray *da, int *dmg);
+bool Wave_next_step_unit(Mob *mob, DynamicArray da, int *dmg);
 
 #endif  // _WAVE_H_

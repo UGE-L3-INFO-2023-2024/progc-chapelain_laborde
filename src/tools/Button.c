@@ -72,7 +72,7 @@ void Button_tab_free(ButtonTab buttons) {
 }
 
 /* Get button from his name */
-Button* Button_tab_get_button(ButtonTab buttons, char* name) {
+Button* Button_tab_get_button(ButtonTab buttons, const char* name) {
     for (int i = 0; i < buttons.count; i++) {
         if (strcmp(buttons.buttons[i]->name, name) == 0) {
             return buttons.buttons[i];

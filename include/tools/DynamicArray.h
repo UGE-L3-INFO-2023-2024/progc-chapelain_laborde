@@ -116,6 +116,6 @@ void DA_free(DynamicArray da);
  *
  * @param da DynamicArray to print.
  */
-void DA_print_all(DynamicArray* da);
+void DA_print_all(DynamicArray da);
 
 #endif  // _DYNAMICARRAY_H_

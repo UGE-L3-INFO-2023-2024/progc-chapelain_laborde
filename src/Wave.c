@@ -101,6 +101,7 @@ static Error _add_mob_type(Wave *wave, Coord_f start,
     Error error = NO_ERROR;
     Mob *mob = malloc(sizeof(Mob));
     if (!mob) {
+        free(mob);
         error.type = MALLOC_ERR;
         return error;
     }
@@ -128,7 +129,6 @@ static Error _add_mob(Wave *wave, Coord_f start, Type_wave type) {
         case FAST:
             err.type = _add_mob_type(wave, start, &Mob_init_fast).type;
             return err;
-        case MASS:
         default:
             err.type = _add_mob_type(wave, start, &Mob_init_basic).type;
             return err;
@@ -164,7 +164,7 @@ Error Wave_spawn_next(Wave *wave, Coord_f start) {
 }
 
 /* Change the wave to make it spawn now */
-int Wave_skip_to_next(Wave *wave) {
+long Wave_skip_to_next(Wave *wave) {
     struct timespec time = Time_get();
     long sec_diff = 0;
     if (Time_is_equal(wave->next_mob, wave->next_wave)) {
@@ -183,26 +183,26 @@ int Wave_skip_to_next(Wave *wave) {
  * @return if the mob is tp in the spawn.
  *
  */
-static bool _next_going_unit(Mob *mob, DynamicArray *da) {
+static bool _next_going_unit(Mob *mob, DynamicArray da) {
     // first time
     if (mob->going.x == -1 && mob->going.y == -1) {
         mob->going = Utils_coord_i_to_f_center(
-            da->arr[1].path);  // 1 beacause 0 is the start
+            da.arr[1].path);  // 1 beacause 0 is the start
         return false;
     }
 
     Coord_i mob_going = Utils_coord_f_to_i(mob->going);
-    for (int i = 0; i < da->max_len; i++) {
+    for (int i = 0; i < da.max_len; i++) {
         // in the corner
-        if (mob_going.x == da->arr[i].path.x &&
-            mob_going.y == da->arr[i].path.y) {
-            if (i != da->real_len - 1) {
-                mob->going = Utils_coord_i_to_f_center(da->arr[i + 1].path);
+        if (mob_going.x == da.arr[i].path.x &&
+            mob_going.y == da.arr[i].path.y) {
+            if (i != da.real_len - 1) {
+                mob->going = Utils_coord_i_to_f_center(da.arr[i + 1].path);
             } else {
                 // 1 beacause 0 is the start
-                mob->going = Utils_coord_i_to_f_center(da->arr[1].path);
+                mob->going = Utils_coord_i_to_f_center(da.arr[1].path);
                 // start
-                mob->pos = Utils_coord_i_to_f_center(da->arr[0].path);
+                mob->pos = Utils_coord_i_to_f_center(da.arr[0].path);
                 return true;
             }
         }
@@ -211,7 +211,7 @@ static bool _next_going_unit(Mob *mob, DynamicArray *da) {
 }
 
 /* Move a mob to the next position and deal drendro dmg */
-bool Wave_next_step_unit(Mob *mob, DynamicArray *da, int *dmg) {
+bool Wave_next_step_unit(Mob *mob, DynamicArray da, int *dmg) {
     bool got_tp = false;
     if ((mob->going.x == -1 && mob->going.y == -1) ||
         Utils_is_in_middle(mob->going, mob->pos, 0.05)) {

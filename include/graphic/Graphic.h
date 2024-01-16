@@ -85,7 +85,7 @@ void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
  * @param filled_color Color of the filled part of the bar.
  */
 void draw_bar(Coord_i position, int width, int height, unsigned int thickness,
-              MLV_Color color, float filled_ratio, MLV_Color filled_color);
+              MLV_Color color, double filled_ratio, MLV_Color filled_color);
 
 /**
  * @brief Draw a text centered on the given position.
@@ -104,7 +104,7 @@ void draw_bar(Coord_i position, int width, int height, unsigned int thickness,
  * @param ... Arguments to pass to the text.
  */
 void draw_centered_text_with_font(unsigned int x, unsigned int y,
-                                  const char* text, Font* font,
+                                  const char* text, const Font* font,
                                   MLV_Color color, ...);
 
 /**

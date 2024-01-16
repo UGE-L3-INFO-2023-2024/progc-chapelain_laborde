@@ -58,7 +58,7 @@ typedef struct {
  * @param target Target of the projectile.
  * @return Projectile Projectile.
  */
-Projectile Proj_init(Coord_f spawn, Gem* gem, Mob* target);
+Projectile Proj_init(Coord_f spawn, Gem gem, Mob* target);
 
 /**
  * @brief Move the projectile to the next step. If the projectile is too close

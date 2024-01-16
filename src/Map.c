@@ -25,10 +25,9 @@
 /**
  * @brief Initialize a Cell.
  *
- * @param coord Coord of the Cell.
  * @return Cell cell.
  */
-static Cell _init_cell(Coord_i coord) {
+static Cell _init_cell() {
     return (Cell){
         .is_path = false,
         .have_tower = false,
@@ -39,7 +38,7 @@ static Cell _init_cell(Coord_i coord) {
 void Map_init_board(Map* map) {
     for (int y = 0; y < MAP_HEIGHT; y++) {
         for (int x = 0; x < MAP_WIDTH; x++) {
-            map->board[y][x] = _init_cell((Coord_i){x, y});
+            map->board[y][x] = _init_cell();
         }
     }
 }
@@ -118,8 +117,9 @@ Tower* Map_get_tower(Map* map, Coord_i coord) {
  */
 static bool _tower_shoot(Tower tower, DynamicArray* mobs,
                          DynamicArray* projs) {
-    Mob* mob = NULL;
-    int index_target = -1, hp_target = 0;
+    const Mob* mob = NULL;
+    int index_target = -1;
+    int hp_target = 0;
 
     // iterate over mobs to find the biggest hp
     for (int i = 0; i < mobs->real_len; i++) {
@@ -134,7 +134,7 @@ static bool _tower_shoot(Tower tower, DynamicArray* mobs,
     // if a target is found, shoot
     if (index_target != -1) {
         Projectile proj = Proj_init(Utils_coord_i_to_f_center(tower.coord),
-                                    &tower.gem, (mobs->arr[index_target].mob));
+                                    tower.gem, (mobs->arr[index_target].mob));
         DA_add(projs, (DynamicArray_Union){.proj = proj}, PROJECTILE);
     }
     // if the tower shoot or not
@@ -163,7 +163,8 @@ void Map_towers_shoot(Map* map) {
  * @param original_dmg Damage to spead.
  * @param dmg Pointer to the dmg to add.
  */
-static void _pyro_spread(Wave* wave, Mob* origin, int original_dmg, int* dmg) {
+static void _pyro_spread(Wave* wave, const Mob* origin, int original_dmg,
+                         int* dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
         Mob* mob = wave->mob_list.arr[i].mob;
         if (Utils_coord_f_distance(origin->pos, mob->pos) < PYRO_RADIUS &&
@@ -187,7 +188,7 @@ static void _pyro_spread(Wave* wave, Mob* origin, int original_dmg, int* dmg) {
  * @param original_dmg Damage to spead.
  * @param dmg Pointer to the dmg to add.
  */
-static void _spraying_spread(Wave* wave, Mob* origin, int original_dmg,
+static void _spraying_spread(Wave* wave, const Mob* origin, int original_dmg,
                              int* dmg) {
     for (int i = 0; i < wave->mob_list.real_len; i++) {
         Mob* mob = wave->mob_list.arr[i].mob;
@@ -217,13 +218,14 @@ void Map_actualise_proj(Map* map, Stats* stats) {
             dmg_stats += dmg;
             if (map->projs.arr[i].proj.target->elem.main == PYRO) {
                 _pyro_spread(&(map->mobs), map->projs.arr[i].proj.target,
-                             dmg * PYRO_DMG_PERCENT, &dmg_stats);
+                             (int)(dmg * PYRO_DMG_PERCENT), &dmg_stats);
                 map->projs.arr[i].proj.target->elem.main = NONE;
             } else if (map->projs.arr[i].proj.target->elem.main == SPRAYING) {
                 _spraying_spread(&(map->mobs), map->projs.arr[i].proj.target,
                                  dmg, &dmg_stats);
             }
-            DA_remove_index(&map->projs, i--);
+            DA_remove_index(&map->projs, i);
+            i--;
             // to check new placed proj
             // DA_remove_index move last to index
         }
@@ -232,12 +234,12 @@ void Map_actualise_proj(Map* map, Stats* stats) {
 }
 
 /* Print a map (debug function) */
-void Map_print(Map* map) {
+void Map_print(Map map) {
     printf("------------------------------\n");
     for (int y = 0; y < MAP_HEIGHT; y++) {
         printf("|");
         for (int x = 0; x < MAP_WIDTH; x++) {
-            if (map->board[y][x].is_path) {
+            if (map.board[y][x].is_path) {
                 printf("#");
             } else {
                 printf("*");
@@ -257,6 +259,6 @@ void Map_free(Map* map) {
     map->projs = (DynamicArray){0};
     map->towers = (DynamicArray){0};
     map->map_turns = (DynamicArray){0};
-    map->mobs = (Wave){0};
+    map->mobs.mob_list = (DynamicArray){0};
     map = NULL;
 }

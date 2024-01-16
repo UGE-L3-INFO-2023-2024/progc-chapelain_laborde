@@ -70,10 +70,10 @@ void Inventory_free(Inventory* inventory) {
     inventory->gemstones = NULL;
     inventory->gemstones_count = 0;
     inventory->gemstones_capacity = 0;
-    free(inventory->fusion[0]);
-    free(inventory->fusion[1]);
-    inventory->fusion[0] = NULL;
-    inventory->fusion[1] = NULL;
+    for (int i = 0; i < 3; i++) {
+        free(inventory->fusion[i]);
+        inventory->fusion[i] = NULL;
+    }
     inventory->info.page = 0;
     inventory->info.gem_level = 0;
 }

@@ -56,14 +56,16 @@ Coord_i Utils_coord_from_dir_len(Coord_i origin, Direction dir, int len) {
 }
 
 /* Is close enough to a coord with margin */
-bool Utils_is_in_middle(Coord_f coord_mid, Coord_f coord_other, float margin) {
-    return ((coord_other.x > coord_mid.x - margin &&
-             coord_other.x < coord_mid.x + margin &&
-             coord_other.y > coord_mid.y - margin &&
-             coord_other.y < coord_mid.y + margin));
+bool Utils_is_in_middle(Coord_f coord_mid, Coord_f coord_other,
+                        double margin) {
+    return (coord_other.x > coord_mid.x - margin &&
+            coord_other.x < coord_mid.x + margin &&
+            coord_other.y > coord_mid.y - margin &&
+            coord_other.y < coord_mid.y + margin);
 }
 
-Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other, float margin) {
+Direction Utils_get_dir(Coord_f coord_mid, Coord_f coord_other,
+                        double margin) {
     // Direction (Priority: EAST, WEST, SOUTH, NORTH)
     if (coord_other.x < coord_mid.x - margin) {
         return EAST;

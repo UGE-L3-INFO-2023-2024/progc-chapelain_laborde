@@ -37,13 +37,15 @@ static void draw_tower(MLV_Image* img, int x, int y, int width, int height) {
     } else {
         MLV_Color color = MLV_COLOR_BLACK;
         for (int i = 0; i < 3; i++) {
-            MLV_draw_filled_rectangle(x + i * width * 0.4, y, width * 0.2,
-                                      height * 0.3, color);
+            MLV_draw_filled_rectangle((int)(x + i * width * 0.4), y,
+                                      (int)(width * 0.2), (int)(height * 0.3),
+                                      color);
         }
-        MLV_draw_filled_rectangle(x + 0.15 * width, y + height * 0.15,
-                                  width * 0.7, height * 0.8, color);
-        MLV_draw_filled_rectangle(x, y + height * 0.75, width, height * 0.25,
-                                  color);
+        MLV_draw_filled_rectangle((int)(x + 0.15 * width),
+                                  (int)(y + height * 0.15), (int)(width * 0.7),
+                                  (int)(height * 0.8), color);
+        MLV_draw_filled_rectangle(x, (int)(y + height * 0.75), width,
+                                  (int)(height * 0.25), color);
     }
 }
 
@@ -57,8 +59,8 @@ static void draw_tower(MLV_Image* img, int x, int y, int width, int height) {
  */
 static Point get_circle_point_from_angle(Coord_i center, int radius,
                                          double theta) {
-    return (Point){.x = center.x + radius * cos(theta),
-                   .y = center.y + radius * sin(theta)};
+    return (Point){.x = (int)(center.x + radius * cos(theta)),
+                   .y = (int)(center.y + radius * sin(theta))};
 }
 
 /**
@@ -86,9 +88,9 @@ static Polygon create_uniform_polygon(Coord_i center, int radius,
 /**
  * @brief Draw an empty gem on the screen.
  *
- * @param coord top left corner
- * @param w width
- * @param h height
+ * @param coord top left corner of the gem
+ * @param w width of the gem
+ * @param h height of the gem
  */
 static void draw_empty_gem(Coord_i coord, int w, int h) {
     MLV_draw_rectangle(coord.x, coord.y, w, h, MLV_COLOR_BLACK);
@@ -115,16 +117,19 @@ static void create_gem_buttons(SubWindow window, ButtonTab* buttons) {
     int w = window.width;
     int h = window.height;
     Button* gem_button =
-        Button_init("gem", (Coord_i){x + w * 0.35, y + h * 0.11}, w * 0.3,
-                    h * 0.09, DEFAULT_BUTTON_COLOR);
+        Button_init("gem", (Coord_i){(int)(x + w * 0.35), (int)(y + h * 0.11)},
+                    (int)(w * 0.3), (int)(h * 0.09), DEFAULT_BUTTON_COLOR);
     Button_tab_add(buttons, gem_button);
+    int minus_plus_width = (int)(w * 0.125);
+    int minus_plus_height = (int)(h * 0.04);
+    int minus_plus_y = (int)(y + h * 0.135);
     Button* minus_button =
-        Button_init("minus", (Coord_i){x + w * 0.18, y + h * 0.135}, w * 0.125,
-                    h * 0.04, DEFAULT_BUTTON_COLOR);
+        Button_init("minus", (Coord_i){(int)(x + w * 0.18), minus_plus_y},
+                    minus_plus_width, minus_plus_height, DEFAULT_BUTTON_COLOR);
     Button_tab_add(buttons, minus_button);
     Button* plus_button =
-        Button_init("plus", (Coord_i){x + w * 0.68, y + h * 0.135}, w * 0.125,
-                    h * 0.04, DEFAULT_BUTTON_COLOR);
+        Button_init("plus", (Coord_i){(int)(x + w * 0.68), minus_plus_y},
+                    minus_plus_width, minus_plus_height, DEFAULT_BUTTON_COLOR);
     Button_tab_add(buttons, plus_button);
 }
 
@@ -139,13 +144,16 @@ static void create_pagination_buttons(SubWindow window, ButtonTab* buttons) {
     double y = window.coord.y;
     int w = window.width;
     int h = window.height;
+    int button_width = (int)(w * 0.125);
+    int button_height = (int)(h * 0.04);
+    int button_y = (int)(y + h * 0.685);
     Button* left_button =
-        Button_init("left", (Coord_i){x + w * 0.15, y + h * 0.685}, w * 0.125,
-                    h * 0.04, DEFAULT_BUTTON_COLOR);
+        Button_init("left", (Coord_i){(int)(x + w * 0.15), button_y},
+                    button_width, button_height, DEFAULT_BUTTON_COLOR);
     Button_tab_add(buttons, left_button);
     Button* right_button =
-        Button_init("right", (Coord_i){x + w * 0.735, y + h * 0.685},
-                    w * 0.125, h * 0.04, DEFAULT_BUTTON_COLOR);
+        Button_init("right", (Coord_i){(int)(x + w * 0.735), button_y},
+                    button_width, button_height, DEFAULT_BUTTON_COLOR);
     Button_tab_add(buttons, right_button);
 }
 
@@ -155,13 +163,15 @@ void create_inventory_buttons(SubWindow window, ButtonTab* buttons) {
     double y = window.coord.y;
     int w = window.width;
     int h = window.height;
+    int button_width = (int)(w * 0.3);
+    int button_height = (int)(h * 0.09);
     Button* tower_button =
-        Button_init("tower", (Coord_i){x + w * 0.2, y}, w * 0.3, h * 0.09,
-                    DEFAULT_BUTTON_COLOR);
+        Button_init("tower", (Coord_i){(int)(x + w * 0.2), (int)(y)},
+                    button_width, button_height, DEFAULT_BUTTON_COLOR);
     Button_tab_add(buttons, tower_button);
     Button* mana_button =
-        Button_init("mana", (Coord_i){x + w * 0.5, y}, w * 0.3, h * 0.09,
-                    MLV_rgba(104, 194, 245, 255));
+        Button_init("mana", (Coord_i){(int)(x + w * 0.5), (int)(y)},
+                    button_width, button_height, MLV_rgba(104, 194, 245, 255));
     Button_tab_add(buttons, mana_button);
     create_gem_buttons(window, buttons);
     create_pagination_buttons(window, buttons);
@@ -181,7 +191,8 @@ static void draw_tower_button(SubWindow window, ButtonTab buttons) {
     const Button* tower = Button_tab_get_button(buttons, "tower");
     if (tower != NULL) {
         draw_button(*tower);
-        draw_tower(NULL, x + w * 0.25, y + h * 0.015, w * 0.2, w * 0.2);
+        draw_tower(NULL, (int)(x + w * 0.25), (int)(y + h * 0.015),
+                   (int)(w * 0.2), (int)(h * 0.07));
     }
 }
 
@@ -199,8 +210,8 @@ static void draw_mana_button(SubWindow window, ButtonTab buttons) {
     const Button* mana = Button_tab_get_button(buttons, "mana");
     if (mana != NULL) {
         draw_button(*mana);
-        draw_centered_text_with_font(x + w * 0.65, y + h * 0.045, "+",
-                                     window.font, MLV_COLOR_BLACK);
+        draw_centered_text_with_font((int)(x + w * 0.65), (int)(y + h * 0.045),
+                                     "+", window.font, MLV_COLOR_BLACK);
     }
 }
 
@@ -230,14 +241,16 @@ static void draw_gem_button(SubWindow window, ButtonTab buttons,
         draw_button(*gem);
         draw_button(*minus);
         draw_button(*plus);
-        draw_centered_text_with_font(x + w * 0.24, y + h * 0.150, "-",
-                                     window.font, MLV_COLOR_BLACK);
-        draw_centered_text_with_font(x + w * 0.7425, y + h * 0.150, "+",
-                                     window.font, MLV_COLOR_BLACK);
-        draw_gem((Coord_i){x + w * 0.4, y + h * 0.12}, w * 0.2, h * 0.07,
-                 gemstone);
-        draw_centered_text_with_font(x + w / 2, y + h * 0.15, "%d",
-                                     window.font, MLV_COLOR_BLACK, gem_level);
+        draw_centered_text_with_font((int)(x + w * 0.24), (int)(y + h * 0.150),
+                                     "-", window.font, MLV_COLOR_BLACK);
+        draw_centered_text_with_font((int)(x + w * 0.7425),
+                                     (int)(y + h * 0.150), "+", window.font,
+                                     MLV_COLOR_BLACK);
+        draw_gem((Coord_i){(int)(x + w * 0.4), (int)(y + h * 0.12)},
+                 (int)(w * 0.2), (int)(h * 0.07), gemstone);
+        draw_centered_text_with_font((int)(x + w / 2), (int)(y + h * 0.15),
+                                     "%d", window.font, MLV_COLOR_BLACK,
+                                     gem_level);
     }
 }
 
@@ -247,7 +260,7 @@ static void draw_gem_button(SubWindow window, ButtonTab buttons,
  * @param window The window to draw on.
  * @param buttons Storage of buttons.
  */
-static void draw_pagination_buttons(SubWindow window, ButtonTab buttons) {
+static void draw_pagination_buttons(ButtonTab buttons) {
     const Button* left = Button_tab_get_button(buttons, "left");
     const Button* right = Button_tab_get_button(buttons, "right");
     if (left != NULL && right != NULL) {
@@ -268,8 +281,8 @@ static void draw_all_gems(SubWindow window, Inventory inventory,
                           unsigned int page) {
     double height_in_window = 0.3;
     Coord_i coord;
-    int gemSize = window.width * 0.6 / 3;
-    int gemSpace = window.width * 0.4 / 4;
+    int gemSize = (int)(window.width * 0.6 / 3);
+    int gemSpace = (int)(window.width * 0.4 / 4);
 
     for (int i = page * GEMS_PER_PAGE, j = 0;
          i < inventory.gemstones_count &&
@@ -279,8 +292,9 @@ static void draw_all_gems(SubWindow window, Inventory inventory,
             height_in_window += 0.1;
             j = 0;
         }
-        coord = (Coord_i){window.coord.x + gemSpace * (j + 1) + gemSize * j,
-                          window.coord.y + window.height * height_in_window};
+        coord = (Coord_i){
+            (int)(window.coord.x + gemSpace * (j + 1) + gemSize * j),
+            (int)(window.coord.y + window.height * height_in_window)};
         draw_gem(coord, gemSize, gemSize, inventory.gemstones[i]);
     }
 }
@@ -306,14 +320,13 @@ static void draw_pagination(Coord_i coord, int w, int h, Font* font,
     if (max_page == page) {
         right_chevron = MLV_COLOR_LIGHT_GRAY;
     }
-    draw_centered_text_with_font(coord.x + w * 0.2,
-                                 coord.y + h * height_in_window, "<", font,
+    int text_y = (int)(coord.y + h * height_in_window);
+    int margin_x = (int)(w * 0.2);
+    draw_centered_text_with_font(coord.x + margin_x, text_y, "<", font,
                                  left_chevron);
-    draw_centered_text_with_font(coord.x + w / 2,
-                                 coord.y + h * height_in_window, "%d/%d", font,
+    draw_centered_text_with_font(coord.x + w / 2, text_y, "%d/%d", font,
                                  MLV_COLOR_BLACK, page, max_page);
-    draw_centered_text_with_font(coord.x + w * 0.8,
-                                 coord.y + h * height_in_window, ">", font,
+    draw_centered_text_with_font(coord.x + w - margin_x, text_y, ">", font,
                                  right_chevron);
 }
 
@@ -327,9 +340,17 @@ static void draw_pagination(Coord_i coord, int w, int h, Font* font,
 static void draw_gems_and_pagination(SubWindow window, Inventory inventory,
                                      unsigned int page) {
     draw_all_gems(window, inventory, page);
-    draw_pagination((Coord_i){window.coord.x, window.coord.y}, window.width,
-                    window.height, window.font, page + 1,
+    draw_pagination((Coord_i){(int)window.coord.x, (int)window.coord.y},
+                    window.width, window.height, window.font, page + 1,
                     ((int)inventory.gemstones_count - 1) / GEMS_PER_PAGE + 1);
+}
+
+static void draw_gem_or_empty(Coord_i coord, int w, int h,
+                              const Gemstone* gem) {
+    if (gem == NULL)
+        draw_empty_gem(coord, w, h);
+    else
+        draw_gem(coord, w, h, *gem);
 }
 
 /* @warning Don't forget to change hover_fusion_slot in InventoryEvent if
@@ -339,31 +360,20 @@ static void draw_fusion_menu(SubWindow window, Inventory inventory) {
     double y = window.coord.y;
     int w = window.width;
     int h = window.height;
-    const Gemstone* slot1 = inventory.fusion[0];
-    const Gemstone* slot2 = inventory.fusion[1];
-    if (slot1 == NULL)
-        draw_empty_gem((Coord_i){x + w * 0.1, y + h * 0.78}, w * 0.2,
-                       h * 0.07);
-    else
-        draw_gem((Coord_i){x + w * 0.1, y + h * 0.78}, w * 0.2, h * 0.07,
-                 *slot1);
-    draw_centered_text_with_font(x + w * 0.35, y + h * 0.81, "+", window.font,
-                                 MLV_COLOR_BLACK);
-    if (slot2 == NULL)
-        draw_empty_gem((Coord_i){x + w * 0.4, y + h * 0.78}, w * 0.2,
-                       h * 0.07);
-    else
-        draw_gem((Coord_i){x + w * 0.4, y + h * 0.78}, w * 0.2, h * 0.07,
-                 *slot2);
-    draw_centered_text_with_font(x + w * 0.65, y + h * 0.81, "=", window.font,
-                                 MLV_COLOR_BLACK);
-    if (inventory.fusion[2] != NULL) {
-        draw_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2, h * 0.07,
-                 *inventory.fusion[2]);
-    } else {
-        draw_empty_gem((Coord_i){x + w * 0.7, y + h * 0.78}, w * 0.2,
-                       h * 0.07);
-    }
+    int fusion_width = (int)(w * 0.2);
+    int fusion_height = (int)(h * 0.07);
+    int fusion_y = (int)(y + h * 0.78);
+
+    draw_gem_or_empty((Coord_i){(int)(x + w * 0.1), fusion_y}, fusion_width,
+                      fusion_height, inventory.fusion[0]);
+    draw_centered_text_with_font((int)(x + w * 0.35), (int)(y + h * 0.81), "+",
+                                 window.font, MLV_COLOR_BLACK);
+    draw_gem_or_empty((Coord_i){(int)(x + w * 0.4), fusion_y}, fusion_width,
+                      fusion_height, inventory.fusion[1]);
+    draw_centered_text_with_font((int)(x + w * 0.65), (int)(y + h * 0.81), "=",
+                                 window.font, MLV_COLOR_BLACK);
+    draw_gem_or_empty((Coord_i){(int)(x + w * 0.7), fusion_y}, fusion_width,
+                      fusion_height, inventory.fusion[2]);
 }
 
 /* Draw all inventory interface */
@@ -373,15 +383,18 @@ void draw_inventory_menu(SubWindow window, Inventory inventory,
     double y = window.coord.y;
     int w = window.width;
     int h = window.height;
+    int line_y;
     draw_tower_button(window, buttons);
     draw_mana_button(window, buttons);
     draw_gem_button(window, buttons, gem_level);
-    draw_centered_text_with_font(x + w / 2, y + h * 0.24, "cost: %d",
-                                 window.font, MLV_COLOR_BLACK,
+    draw_centered_text_with_font((int)(x + w / 2), (int)(y + h * 0.24),
+                                 "cost: %d", window.font, MLV_COLOR_BLACK,
                                  Mana_gem_cost(gem_level));
-    draw_line(x, y + h * 0.275, x + w, y + h * 0.275, 2, MLV_COLOR_BLACK);
-    draw_pagination_buttons(window, buttons);
+    line_y = (int)(y + h * 0.275);
+    draw_line((int)x, line_y, (int)(x + w), line_y, 2, MLV_COLOR_BLACK);
+    draw_pagination_buttons(buttons);
     draw_gems_and_pagination(window, inventory, page);
-    draw_line(x, y + h * 0.75, x + w, y + h * 0.75, 2, MLV_COLOR_BLACK);
+    line_y = (int)(y + h * 0.75);
+    draw_line((int)x, line_y, (int)(x + w), line_y, 2, MLV_COLOR_BLACK);
     draw_fusion_menu(window, inventory);
 }

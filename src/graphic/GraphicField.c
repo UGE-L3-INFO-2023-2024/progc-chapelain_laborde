@@ -30,32 +30,32 @@ static void draw_tower(Tower tower, SubWindow window, const MLV_Image* img) {
     int cell_height = window.height / MAP_HEIGHT;
     int x = tower.coord.x * cell_width;
     int y = tower.coord.y * cell_height;
+    int corner_width = (int)(cell_width * 0.25);
+    int corner_height = (int)(cell_height * 0.25);
+    int gem_margin_w = (int)(cell_width * 0.15);
+    int gem_margin_h = (int)(cell_height * 0.15);
     if (img) {
         MLV_draw_image(img, x, y);
     } else {
+        // Drawing tower
         MLV_Color color = MLV_COLOR_BLACK;
+        MLV_draw_filled_rectangle(x, y, corner_width, corner_height, color);
+        MLV_draw_filled_rectangle(x + cell_width - corner_width, y,
+                                  corner_width, corner_height, color);
+        MLV_draw_filled_rectangle(x, y + cell_height - corner_height,
+                                  corner_width, corner_height, color);
+        MLV_draw_filled_rectangle(x + cell_width - corner_width,
+                                  y + cell_height - corner_height,
+                                  corner_width, corner_height, color);
+        MLV_draw_filled_rectangle(x + corner_width / 2, y + corner_height / 2,
+                                  cell_width - corner_width,
+                                  cell_height - corner_height, CLEAR_COLOR);
+        // Drawing gem
         if (tower.has_gem) {
-            draw_gem((Coord_i){x + cell_width * .15, y + cell_height * .15},
-                     cell_width * 0.7, cell_height * 0.7, tower.gem);
+            draw_gem((Coord_i){x + gem_margin_w, y + gem_margin_h},
+                     cell_width - 2 * gem_margin_w,
+                     cell_height - 2 * gem_margin_h, tower.gem);
         }
-        MLV_draw_filled_rectangle(x, y, cell_width * 0.25, cell_height * 0.15,
-                                  color);
-        MLV_draw_filled_rectangle(x, y, cell_width * 0.15, cell_height * 0.25,
-                                  color);
-        MLV_draw_filled_rectangle(x + cell_width * 0.75, y, cell_width * 0.25,
-                                  cell_height * 0.15, color);
-        MLV_draw_filled_rectangle(x + cell_width * 0.85, y, cell_width * 0.15,
-                                  cell_height * 0.25, color);
-        MLV_draw_filled_rectangle(x, y + cell_height * 0.85, cell_width * 0.25,
-                                  cell_height * 0.15, color);
-        MLV_draw_filled_rectangle(x, y + cell_height * 0.75, cell_width * 0.15,
-                                  cell_height * 0.25, color);
-        MLV_draw_filled_rectangle(x + cell_width * 0.75,
-                                  y + cell_height * 0.85, cell_width * 0.25,
-                                  cell_height * 0.15, color);
-        MLV_draw_filled_rectangle(x + cell_width * 0.85,
-                                  y + cell_height * 0.75, cell_width * 0.15,
-                                  cell_height * 0.25, color);
     }
 }
 
@@ -134,18 +134,21 @@ void draw_mobs(Wave wave, SubWindow window, const MLV_Image* img) {
     int mob_height = window.height / MAP_HEIGHT;
     for (int i = 0; i < wave.mob_list.real_len; i++) {
         Mob mob = *(wave.mob_list.arr[i].mob);
-        Coord_i bar_pos = {.x = mob.pos.x * mob_width - mob_width / 3,
-                           .y = mob.pos.y * mob_height + mob_height / 4};
+        Coord_i bar_pos = {
+            .x = (int)(mob.pos.x * mob_width - mob_width / 3),
+            .y = (int)(mob.pos.y * mob_height + mob_height / 4)};
         MLV_Color color = RGB_to_MLV_Color(Color_HSV_to_RGB(mob.color), 255);
         if (img)
-            MLV_draw_image(img, mob.pos.x * mob_width, mob.pos.y * mob_height);
+            MLV_draw_image(img, (int)(mob.pos.x * mob_width),
+                           (int)(mob.pos.y * mob_height));
         else
-            MLV_draw_filled_circle(mob.pos.x * mob_width,
-                                   mob.pos.y * mob_height, mob_width / 4,
-                                   color);
+            MLV_draw_filled_circle((int)(mob.pos.x * mob_width),
+                                   (int)(mob.pos.y * mob_height),
+                                   mob_width / 4, color);
 
-        draw_bar(bar_pos, mob_width / 1.5, mob_height / 6, 1, color,
-                 mob.current_hp / (float)mob.max_hp, MLV_COLOR_GREEN);
+        draw_bar(bar_pos, (int)(mob_width / 1.5), mob_height / 6, 1, color,
+                 (float)(mob.current_hp / (double)mob.max_hp),
+                 MLV_COLOR_GREEN);
     }
 }
 
@@ -165,12 +168,12 @@ static void draw_projectile(DynamicArray projs, SubWindow window,
         int proj_width = window.width / MAP_WIDTH;
         int proj_height = window.height / MAP_HEIGHT;
         if (img)
-            MLV_draw_image(img, proj.pos.x * proj_width,
-                           proj.pos.y * proj_height);
+            MLV_draw_image(img, (int)(proj.pos.x * proj_width),
+                           (int)(proj.pos.y * proj_height));
         else
-            MLV_draw_filled_circle(proj.pos.x * proj_width,
-                                   proj.pos.y * proj_height, proj_width / 6,
-                                   color);
+            MLV_draw_filled_circle((int)(proj.pos.x * proj_width),
+                                   (int)(proj.pos.y * proj_height),
+                                   proj_width / 6, color);
     }
 }
 

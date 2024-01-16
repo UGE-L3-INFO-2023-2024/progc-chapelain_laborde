@@ -131,7 +131,7 @@ void Map_actualise_proj(Map* map, Stats* stats);
  *
  * @param map Map to print.
  */
-void Map_print(Map* map);
+void Map_print(Map map);
 
 /**
  * @brief Free a Map and all its fields.

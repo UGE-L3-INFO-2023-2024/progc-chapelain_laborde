@@ -8,6 +8,9 @@
 
 #include "Event.h"
 
+#include <MLV/MLV_event.h>
+#include <stdbool.h>
+
 /* Get lMLV mouse event */
 Event Event_get_mouse() {
     Event event;
@@ -86,9 +89,12 @@ Event Event_get() {
 /* Wait for event */
 Event Event_wait() {
     Event event = {.type = NO_EVENT};
-    while (event.type == NO_EVENT || event.type == MOUSE_MOTION) {
+    while (true) {
         event = Event_get();
-        // TODO : check for state !
+        if ((event.type == KEYBOARD && event.keyboard.state == MLV_PRESSED) ||
+            (event.type == MOUSE_BUTTON && event.mouse.state == MLV_PRESSED)) {
+            break;
+        }
         continue;
     }
     return event;
