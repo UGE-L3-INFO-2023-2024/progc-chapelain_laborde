@@ -241,8 +241,7 @@ Error Game_run(Game* game) {
         Game_action(game, event);
         Game_draw(game);
         event = Event_get();
-        doing_button_actions(game->buttons, game->window.inventory,
-                             game->window.map, game, event);
+        doing_button_actions(game->buttons, game->window.map, game, event);
         _drag_ang_drop_action(game, event);
 
         refresh_window();

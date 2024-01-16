@@ -62,13 +62,11 @@ bool click_right_arrow(SubWindow inventory_window, Event event);
 /**
  * @brief Check if the event is a click on the given button.
  *
- * @param window The subwindow where the button is displayed.
  * @param event The event to check.
  * @param button The button to check.
  * @return true if the event is a click on the button
- * @return false otherwise.
  */
-bool click_on_button(SubWindow window, Event event, Button button);
+bool click_on_button(Event event, Button button);
 
 /**
  * @brief This function return the gemstone on which the user clicked on.

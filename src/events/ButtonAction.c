@@ -49,12 +49,11 @@ static Button* get_button_actually_pressed(ButtonTab buttons) {
  * @param event The event to check.
  * @return Button* The button clicked on
  */
-static Button* get_clicked_button(ButtonTab buttons, SubWindow window,
-                                  Event event) {
+static Button* get_clicked_button(ButtonTab buttons, Event event) {
     Button* pressed_button = get_button_actually_pressed(buttons);
     for (int i = 0; i < buttons.count; i++) {
         Button* button = buttons.buttons[i];
-        if (button != NULL && click_on_button(window, event, *button) &&
+        if (button != NULL && click_on_button(event, *button) &&
             event.mouse.state == MLV_PRESSED) {
             if (pressed_button != NULL && pressed_button != button) {
                 pressed_button->pressed = false;
@@ -82,8 +81,8 @@ static ManaError tower_button_action(Button* button, SubWindow map_window,
                                      Map* map, ManaPool* mana_pool,
                                      Event event) {
     ManaError err = {0, Time_get()};
-    Coord_i coord = get_coord_on_map(*map, map_window,
-                                     (Coord_i){event.mouse.x, event.mouse.y});
+    Coord_i coord =
+        get_coord_on_map(map_window, (Coord_i){event.mouse.x, event.mouse.y});
     if (coord.x >= 0 && coord.x < MAP_WIDTH && coord.y >= 0 &&
         coord.y < MAP_HEIGHT && !map->board[coord.y][coord.x].is_path &&
         !map->board[coord.y][coord.x].have_tower) {
@@ -179,9 +178,9 @@ static void right_page_inventory_button_action(int* page, int max_page) {
 }
 
 /* Does action like buying gem,tower, change page or gme levels */
-void doing_button_actions(ButtonTab buttons, SubWindow inventory_window,
-                          SubWindow map_window, Game* game, Event event) {
-    get_clicked_button(buttons, inventory_window, event);
+void doing_button_actions(ButtonTab buttons, SubWindow map_window, Game* game,
+                          Event event) {
+    get_clicked_button(buttons, event);
     Button* button = get_button_actually_pressed(buttons);
     if (button == NULL || !button->pressed || button->name == NULL) {
         return;

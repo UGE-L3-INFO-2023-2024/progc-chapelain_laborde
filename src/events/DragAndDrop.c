@@ -31,7 +31,7 @@
  */
 static bool drag_gemstone_from_inventory(Game* game, Event event,
                                          Gem** clicked_gem) {
-    Gem* temp;
+    const Gem* temp;
     if ((temp =
              click_on_gemstone(game->window.inventory, event, game->inventory,
                                game->inventory.info.page)) != NULL) {
@@ -56,10 +56,9 @@ static bool drag_gemstone_from_inventory(Game* game, Event event,
  * @param clicked_tower The pointer to the tower clicked
  * @return true If a tower is clicked and has a gemstone
  */
-static bool drag_gemstone_from_tower(Game* game, Event event,
-                                     Gem** clicked_gem,
+static bool drag_gemstone_from_tower(Game game, Event event, Gem** clicked_gem,
                                      Tower** clicked_tower) {
-    *clicked_tower = click_on_tower(game->window.map, event, game->map);
+    *clicked_tower = click_on_tower(game.window.map, event, game.map);
     if (*clicked_tower != NULL && (*clicked_tower)->has_gem) {
         *clicked_gem = Gemstone_copy_ptr(&(*clicked_tower)->gem);
         Tower_extract_gem(*clicked_tower, *clicked_gem);
@@ -81,9 +80,8 @@ static bool drag_gemstone_from_tower(Game* game, Event event,
 static bool drag_gemstone_from_fusion(Game* game, Event event,
                                       Gem** clicked_gem) {
     int slot = click_on_fusion_slot(game->window.inventory, event);
-    if (slot == 2) {
-        if (!Mana_buy(&game->mana_pool, 100))
-            return false;
+    if (slot == 2 && !Mana_buy(&game->mana_pool, 100)) {
+        return false;
     }
     if (slot != -1 && game->inventory.fusion[slot] != NULL) {
         *clicked_gem = Gemstone_copy_ptr(game->inventory.fusion[slot]);
@@ -152,25 +150,24 @@ static bool drop_gemstone_on_fusion_slot(Game* game, Event event,
                                          Gem** clicked_gem,
                                          bool* is_dragging) {
     int slot = get_hovered_fusion_slot(game->window.inventory, event);
-    if (drop_item(event, is_dragging) && slot != -1 && *clicked_gem != NULL) {
-        if (slot == 0 || slot == 1) {
-            if (game->inventory.fusion[slot] != NULL)
-                Inventory_add_gemstone(&game->inventory,
-                                       *game->inventory.fusion[slot]);
-            game->inventory.fusion[slot] = Gemstone_copy_ptr(*clicked_gem);
-            if (game->inventory.fusion[0] != NULL &&
-                game->inventory.fusion[1] != NULL) {
-                Gem* gem = Gemstone_copy_ptr(game->inventory.fusion[0]);
-                if (!Gemstone_merge(gem, game->inventory.fusion[1])) {
-                    free(gem);
-                } else {
-                    game->inventory.fusion[2] = gem;
-                }
+    if (drop_item(event, is_dragging) && slot != -1 && *clicked_gem != NULL &&
+        (slot == 0 || slot == 1)) {
+        if (game->inventory.fusion[slot] != NULL)
+            Inventory_add_gemstone(&game->inventory,
+                                   *game->inventory.fusion[slot]);
+        game->inventory.fusion[slot] = Gemstone_copy_ptr(*clicked_gem);
+        if (game->inventory.fusion[0] != NULL &&
+            game->inventory.fusion[1] != NULL) {
+            Gem* gem = Gemstone_copy_ptr(game->inventory.fusion[0]);
+            if (!Gemstone_merge(gem, game->inventory.fusion[1])) {
+                free(gem);
+            } else {
+                game->inventory.fusion[2] = gem;
             }
-            *clicked_gem = NULL;
-            *is_dragging = false;
-            return true;
         }
+        *clicked_gem = NULL;
+        *is_dragging = false;
+        return true;
     }
     return false;
 }
@@ -182,7 +179,7 @@ bool drag_and_drop_gemstone(Game* game, Event event, Gem** clicked_gem,
     static Tower* clicked_tower = NULL;
     if (!is_dragging &&
         (drag_gemstone_from_inventory(game, event, clicked_gem) ||
-         drag_gemstone_from_tower(game, event, clicked_gem, &clicked_tower) ||
+         drag_gemstone_from_tower(*game, event, clicked_gem, &clicked_tower) ||
          drag_gemstone_from_fusion(game, event, clicked_gem))) {
         is_dragging = true;
     }
@@ -194,7 +191,8 @@ bool drag_and_drop_gemstone(Game* game, Event event, Gem** clicked_gem,
             *clicked_gem = NULL;
             return false;
         }
-        if (drop_item(event, is_dragging)) {
+        if (drop_item(event, is_dragging) && clicked_gem != NULL &&
+            *clicked_gem != NULL) {
             Inventory_add_gemstone(&game->inventory, **clicked_gem);
             free(*clicked_gem);
             *clicked_gem = NULL;

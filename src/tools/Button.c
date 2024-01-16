@@ -8,7 +8,7 @@
 
 #include "Button.h"
 
-#include <MLV/MLV_all.h>
+#include <MLV/MLV_color.h>
 #include <stdbool.h>
 #include <string.h>
 

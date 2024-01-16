@@ -309,7 +309,7 @@ static void draw_all_gems(SubWindow window, Inventory inventory,
  * @param page current page
  * @param max_page max page
  */
-static void draw_pagination(Coord_i coord, int w, int h, Font* font,
+static void draw_pagination(Coord_i coord, int w, int h, const Font* font,
                             unsigned int page, unsigned int max_page) {
     double height_in_window = 0.7;
     MLV_Color left_chevron = MLV_COLOR_BLACK;
