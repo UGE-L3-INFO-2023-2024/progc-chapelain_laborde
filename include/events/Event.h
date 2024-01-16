@@ -69,6 +69,15 @@ Event Event_get_keyboard(void);
 Event Event_get(void);
 
 /**
+ * @brief Wait for an event from the window.
+ *
+ * @note This function is blocking until an event is received.
+ *
+ * @return Event received
+ */
+Event Event_wait(void);
+
+/**
  * @brief Check if the event is a quit event.
  *
  * @param event Event to check

@@ -73,22 +73,22 @@ int Mana_tower_cost(int nb_towers) {
         return -1;
     }
     nb_towers++;
-    return nb_towers < 4 ? 0 : 100 * pow(2, nb_towers - 4);
+    return nb_towers < 4 ? 0 : (int)(100 * pow(2, nb_towers - 4));
 }
 
 /* Mana gain when a mob as been killed */
 int Mana_gain_mob_death(int mob_max_hp, int level_mana) {
-    return MANA_ON_KILL_PERCENT * mob_max_hp * pow(1.3, level_mana);
+    return (int)(MANA_ON_KILL_PERCENT * mob_max_hp * pow(1.3, level_mana));
 }
 
 /* Mob tp back to spawn cost */
 int Mana_cost_mob_banish(int mob_max_hp, int level_mana) {
-    return MANA_ON_TP_PERCENT * mob_max_hp * pow(1.3, level_mana);
+    return (int)(MANA_ON_TP_PERCENT * mob_max_hp * pow(1.3, level_mana));
 }
 
 /* Mana gain when skip wave */
 int Mana_gain_skip_wave(int max_mana, int sec) {
-    return max_mana * (sec / (double)100);
+    return (int)(max_mana * (sec / 100.0));
 }
 
 /* Mana gem buying cost */
@@ -96,5 +96,5 @@ int Mana_gem_cost(int gem_level) {
     if (gem_level < 0) {
         return -1;
     }
-    return 100 * pow(2, gem_level);
+    return (int)(100 * pow(2, gem_level));
 }

@@ -10,6 +10,7 @@
 #include "Game.h"
 
 #include <MLV/MLV_all.h>
+#include <time.h>
 
 #include "Button.h"
 #include "ButtonAction.h"
@@ -26,6 +27,7 @@
 #include "Mana.h"
 #include "Map.h"
 #include "Path.h"
+#include "Stats.h"
 #include "TimeManager.h"
 #include "Utils.h"
 #include "Wave.h"
@@ -73,6 +75,8 @@ Error Game_Init(Game* game) {
     while (!Path_gen(&game->map, &game->map.map_turns)) {
         game->map.map_turns.real_len = 0;
     }
+
+    game->stats = Stats_init();
 
     create_windows(game, 1400, 880);
 
@@ -153,6 +157,7 @@ static void _clear_dead_mob_proj(Game* game) {
                 &(game->mana_pool),
                 Mana_gain_mob_death(game->map.mobs.mob_list.arr[i].mob->max_hp,
                                     game->mana_pool.level));
+            game->stats.mobs_killed++;
             DA_remove_index(&(game->map.mobs.mob_list), i);
             i--;
         }
@@ -170,16 +175,36 @@ static bool _wave_next_step(Game* game) {
     int dmg = 0;
     for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
         if (Wave_next_step_unit(game->map.mobs.mob_list.arr[i].mob,
-                                &game->map.map_turns, &dmg) &&
-            !Mana_buy(&game->mana_pool,
-                      Mana_cost_mob_banish(
-                          game->map.mobs.mob_list.arr[i].mob->max_hp,
-                          game->mana_pool.level))) {
-            return true;
+                                &game->map.map_turns, &dmg)) {
+            if (Mana_buy(&game->mana_pool,
+                         Mana_cost_mob_banish(
+                             game->map.mobs.mob_list.arr[i].mob->max_hp,
+                             game->mana_pool.level))) {
+                game->stats.mana_lost += Mana_cost_mob_banish(
+                    game->map.mobs.mob_list.arr[i].mob->max_hp,
+                    game->mana_pool.level);
+            } else {
+                return true;
+            }
         }
     }
     game->stats.total_damage += dmg;
     return false;
+}
+
+/**
+ * @brief Draw the final screen. (score, time, ...)
+ *
+ * @param game to get the stats.
+ * @param start start time of the game.
+ */
+static void final_screen(Game* game, struct timespec start) {
+    game->stats.timeplayed = Time_ms_interval(start, Time_get()) / 1000;
+    game->stats.last_wave = game->map.mobs.nb_wave;
+    game->stats.score = game->stats.last_wave * 1000 + game->stats.mobs_killed;
+    draw_game_over_screen(game->window.map, game->stats);
+    refresh_window();
+    Event_wait();
 }
 
 /* Keyboard event gestion */
@@ -209,6 +234,7 @@ bool Game_update_all(Game* game) {
 
 /* Main loop of execution (event, actualise move, draw) */
 Error Game_run(Game* game) {
+    struct timespec start = Time_get();
     Error err = NO_ERROR;
     Event event = {NO_EVENT};
     while (!Event_quit(event)) {
@@ -236,6 +262,7 @@ Error Game_run(Game* game) {
 
         MLV_delay_according_to_frame_rate();
     }
+    final_screen(game, start);
     return NO_ERROR;
 }
 

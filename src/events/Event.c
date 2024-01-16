@@ -13,7 +13,8 @@ Event Event_get_mouse() {
     Event event;
     MLV_Button_state mouse_state;
     MLV_Mouse_button mouse_button;
-    int mouse_x, mouse_y;
+    int mouse_x;
+    int mouse_y;
     MLV_Event mlv_event = MLV_get_event(NULL, NULL, NULL, NULL, NULL, &mouse_x,
                                         &mouse_y, &mouse_button, &mouse_state);
     if (mlv_event == MLV_MOUSE_MOTION || mlv_event == MLV_MOUSE_BUTTON) {
@@ -55,7 +56,8 @@ Event Event_get() {
     MLV_Keyboard_button keyboard_button;
     MLV_Button_state state;
     MLV_Mouse_button mouse_button;
-    int mouse_x, mouse_y;
+    int mouse_x;
+    int mouse_y;
     MLV_Event mlv_event =
         MLV_get_event(&keyboard_button, NULL, NULL, NULL, NULL, &mouse_x,
                       &mouse_y, &mouse_button, &state);
@@ -77,6 +79,17 @@ Event Event_get() {
         event.mouse.state = state;
     } else {
         event.type = NO_EVENT;
+    }
+    return event;
+}
+
+/* Wait for event */
+Event Event_wait() {
+    Event event = {.type = NO_EVENT};
+    while (event.type == NO_EVENT || event.type == MOUSE_MOTION) {
+        event = Event_get();
+        // TODO : check for state !
+        continue;
     }
     return event;
 }

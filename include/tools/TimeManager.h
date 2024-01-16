@@ -26,9 +26,9 @@ struct timespec Time_get();
 /**
  * @brief Get the interval between two timespec.
  *
- * @param start timespec
- * @param end timespec
- * @return int
+ * @param start timespec start
+ * @param end timespec end
+ * @return long interval in ms
  */
 long Time_ms_interval(struct timespec start, struct timespec end);
 

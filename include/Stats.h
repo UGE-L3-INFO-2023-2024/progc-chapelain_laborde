@@ -9,16 +9,30 @@
 #ifndef __STATS_H__
 #define __STATS_H__
 
+#include <stdint.h>
+
 /**************/
 /* Structures */
 /**************/
 
 typedef struct {
-    unsigned int score;
-    unsigned int total_damage;
-    unsigned int last_wave;
-    unsigned int mobs_killed;
-    unsigned int timeplayed;
+    uint64_t score;
+    uint64_t total_damage;
+    uint64_t mana_lost;
+    uint64_t last_wave;
+    uint64_t mobs_killed;
+    uint64_t timeplayed;
 } Stats;
+
+/*************/
+/* Functions */
+/*************/
+
+/**
+ * @brief Initialize the stats.
+ *
+ * @return Stats stats.
+ */
+Stats Stats_init(void);
 
 #endif  // __STATS_H__

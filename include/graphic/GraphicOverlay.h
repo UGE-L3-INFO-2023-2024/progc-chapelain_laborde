@@ -13,6 +13,8 @@
 
 #include "Font.h"
 #include "Mana.h"
+#include "Stats.h"
+#include "Window.h"
 
 /*************/
 /* Functions */
@@ -46,5 +48,13 @@ void draw_mana_bar(ManaPool pool, int x, int y, int w, int h,
  */
 void draw_mana_error(int x, int y, int w, int h, int mana_needed, Font* font,
                      MLV_Color color);
+
+/**
+ * @brief Show the game over screen with the stats of the player
+ *
+ * @param map_window Window of the map
+ * @param stats Stats of the player
+ */
+void draw_game_over_screen(SubWindow map_window, Stats stats);
 
 #endif  // __GRAPHIC_OVERLAY_H__
