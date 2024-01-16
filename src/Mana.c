@@ -22,12 +22,17 @@ ManaPool Mana_pool_init(void) {
 
 /* Compute max mana storage for a level */
 int Mana_max(int level) {
-    return 2000 * pow(1.4, level);
+    return (int)(2000 * pow(1.4, level));
 }
 
 /* Check if the upgrade of the manapool is possible */
 bool Mana_pool_can_be_upgrade(ManaPool pool) {
-    return 500 * pow(1.4, pool.level) <= pool.mana_real;
+    return Mana_pool_upgrade_cost(pool) <= pool.mana_real;
+}
+
+/* Get the cost to upgrade mana pool */
+int Mana_pool_upgrade_cost(ManaPool pool) {
+    return (int)(500 * pow(1.4, pool.level));
 }
 
 /* Upgrade the manaPool if possible */
@@ -35,7 +40,8 @@ bool Mana_pool_upgrade(ManaPool* pool) {
     if (!pool || !Mana_pool_can_be_upgrade(*pool)) {
         return false;
     }
-    pool->mana_real -= 500 * pow(1.4, pool->level++);
+    pool->mana_real -= Mana_pool_upgrade_cost(*pool);
+    pool->level++;
     pool->mana_max = Mana_max(pool->level);
     return true;
 }

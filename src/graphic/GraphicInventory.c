@@ -20,7 +20,7 @@
 #include "math.h"
 
 /**
- * @brief Draw the given tower on the given window.
+ * @brief Draw the given tower on the given position.
  * If img is NULL, draw a circle with tower color instead.
  *
  * @param window Window to draw on.
@@ -30,8 +30,7 @@
  * @param width Width of the tower.
  * @param height Height of the tower.
  */
-static void draw_tower(SubWindow window, MLV_Image* img, int x, int y,
-                       int width, int height) {
+static void draw_tower(MLV_Image* img, int x, int y, int width, int height) {
     if (img) {
         MLV_resize_image(img, width, height);
         MLV_draw_image(img, x, y);
@@ -111,8 +110,10 @@ void draw_gem(Coord_i coord, int w, int h, Gem gem) {
  * @param buttons Storage of buttons.
  */
 static void create_gem_buttons(SubWindow window, ButtonTab* buttons) {
-    int x = window.coord.x, y = window.coord.y;
-    int w = window.width, h = window.height;
+    double x = window.coord.x;
+    double y = window.coord.y;
+    int w = window.width;
+    int h = window.height;
     Button* gem_button =
         Button_init("gem", (Coord_i){x + w * 0.35, y + h * 0.11}, w * 0.3,
                     h * 0.09, DEFAULT_BUTTON_COLOR);
@@ -134,8 +135,10 @@ static void create_gem_buttons(SubWindow window, ButtonTab* buttons) {
  * @param buttons Storage of buttons.
  */
 static void create_pagination_buttons(SubWindow window, ButtonTab* buttons) {
-    int x = window.coord.x, y = window.coord.y;
-    int w = window.width, h = window.height;
+    double x = window.coord.x;
+    double y = window.coord.y;
+    int w = window.width;
+    int h = window.height;
     Button* left_button =
         Button_init("left", (Coord_i){x + w * 0.15, y + h * 0.685}, w * 0.125,
                     h * 0.04, DEFAULT_BUTTON_COLOR);
@@ -148,8 +151,10 @@ static void create_pagination_buttons(SubWindow window, ButtonTab* buttons) {
 
 /* Create all useful buttons for the sideway part */
 void create_inventory_buttons(SubWindow window, ButtonTab* buttons) {
-    int x = window.coord.x, y = window.coord.y;
-    int w = window.width, h = window.height;
+    double x = window.coord.x;
+    double y = window.coord.y;
+    int w = window.width;
+    int h = window.height;
     Button* tower_button =
         Button_init("tower", (Coord_i){x + w * 0.2, y}, w * 0.3, h * 0.09,
                     DEFAULT_BUTTON_COLOR);
@@ -169,13 +174,14 @@ void create_inventory_buttons(SubWindow window, ButtonTab* buttons) {
  * @param buttons Storage of buttons.
  */
 static void draw_tower_button(SubWindow window, ButtonTab buttons) {
-    int x = window.coord.x, y = window.coord.y;
-    int w = window.width, h = window.height;
-    Button* tower = Button_tab_get_button(buttons, "tower");
+    double x = window.coord.x;
+    double y = window.coord.y;
+    int w = window.width;
+    int h = window.height;
+    const Button* tower = Button_tab_get_button(buttons, "tower");
     if (tower != NULL) {
         draw_button(*tower);
-        draw_tower(window, NULL, x + w * 0.25, y + h * 0.015, w * 0.2,
-                   w * 0.2);
+        draw_tower(NULL, x + w * 0.25, y + h * 0.015, w * 0.2, w * 0.2);
     }
 }
 
@@ -186,9 +192,11 @@ static void draw_tower_button(SubWindow window, ButtonTab buttons) {
  * @param buttons Storage of buttons.
  */
 static void draw_mana_button(SubWindow window, ButtonTab buttons) {
-    int x = window.coord.x, y = window.coord.y;
-    int w = window.width, h = window.height;
-    Button* mana = Button_tab_get_button(buttons, "mana");
+    double x = window.coord.x;
+    double y = window.coord.y;
+    int w = window.width;
+    int h = window.height;
+    const Button* mana = Button_tab_get_button(buttons, "mana");
     if (mana != NULL) {
         draw_button(*mana);
         draw_centered_text_with_font(x + w * 0.65, y + h * 0.045, "+",
@@ -205,11 +213,13 @@ static void draw_mana_button(SubWindow window, ButtonTab buttons) {
  */
 static void draw_gem_button(SubWindow window, ButtonTab buttons,
                             int gem_level) {
-    int x = window.coord.x, y = window.coord.y;
-    int w = window.width, h = window.height;
-    Button* gem = Button_tab_get_button(buttons, "gem");
-    Button* minus = Button_tab_get_button(buttons, "minus");
-    Button* plus = Button_tab_get_button(buttons, "plus");
+    double x = window.coord.x;
+    double y = window.coord.y;
+    int w = window.width;
+    int h = window.height;
+    const Button* gem = Button_tab_get_button(buttons, "gem");
+    const Button* minus = Button_tab_get_button(buttons, "minus");
+    const Button* plus = Button_tab_get_button(buttons, "plus");
     static int old_level = -1;
     static Gem gemstone;
     if (gem_level != old_level) {
@@ -238,8 +248,8 @@ static void draw_gem_button(SubWindow window, ButtonTab buttons,
  * @param buttons Storage of buttons.
  */
 static void draw_pagination_buttons(SubWindow window, ButtonTab buttons) {
-    Button* left = Button_tab_get_button(buttons, "left");
-    Button* right = Button_tab_get_button(buttons, "right");
+    const Button* left = Button_tab_get_button(buttons, "left");
+    const Button* right = Button_tab_get_button(buttons, "right");
     if (left != NULL && right != NULL) {
         draw_button(*left);
         draw_button(*right);
@@ -285,7 +295,7 @@ static void draw_all_gems(SubWindow window, Inventory inventory,
  * @param page current page
  * @param max_page max page
  */
-static void draw_pagination(Coord_i coord, int w, int h, Font font,
+static void draw_pagination(Coord_i coord, int w, int h, Font* font,
                             unsigned int page, unsigned int max_page) {
     double height_in_window = 0.7;
     MLV_Color left_chevron = MLV_COLOR_BLACK;
@@ -325,9 +335,12 @@ static void draw_gems_and_pagination(SubWindow window, Inventory inventory,
 /* @warning Don't forget to change hover_fusion_slot in InventoryEvent if
  * changing this coordinates. */
 static void draw_fusion_menu(SubWindow window, Inventory inventory) {
-    int x = window.coord.x, y = window.coord.y;
-    int w = window.width, h = window.height;
-    Gemstone *slot1 = inventory.fusion[0], *slot2 = inventory.fusion[1];
+    double x = window.coord.x;
+    double y = window.coord.y;
+    int w = window.width;
+    int h = window.height;
+    const Gemstone* slot1 = inventory.fusion[0];
+    const Gemstone* slot2 = inventory.fusion[1];
     if (slot1 == NULL)
         draw_empty_gem((Coord_i){x + w * 0.1, y + h * 0.78}, w * 0.2,
                        h * 0.07);
@@ -356,8 +369,10 @@ static void draw_fusion_menu(SubWindow window, Inventory inventory) {
 /* Draw all inventory interface */
 void draw_inventory_menu(SubWindow window, Inventory inventory,
                          ButtonTab buttons, int gem_level, int page) {
-    int x = window.coord.x, y = window.coord.y;
-    int w = window.width, h = window.height;
+    double x = window.coord.x;
+    double y = window.coord.y;
+    int w = window.width;
+    int h = window.height;
     draw_tower_button(window, buttons);
     draw_mana_button(window, buttons);
     draw_gem_button(window, buttons, gem_level);

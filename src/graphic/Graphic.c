@@ -11,6 +11,7 @@
 #include <stdarg.h>
 
 #include "Map.h"
+#include "Utils.h"
 
 /* Update lMLV window */
 void refresh_window() {
@@ -18,7 +19,7 @@ void refresh_window() {
 }
 
 /* Convert a RGB color to a MLV_Color */
-MLV_Color RGB_to_MLV_Color(RGB_Color rgb, int alpha) {
+MLV_Color RGB_to_MLV_Color(RGB_Color rgb, Uint8 alpha) {
     return MLV_rgba(rgb.r, rgb.g, rgb.b, alpha);
 }
 
@@ -48,9 +49,10 @@ void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
 }
 
 /* Draw a bar with thickness and filled ratio */
-void draw_bar(unsigned int x, unsigned int y, int width, int height,
-              unsigned int thickness, MLV_Color color, float filled_ratio,
-              MLV_Color filled_color) {
+void draw_bar(Coord_i position, int width, int height, unsigned int thickness,
+              MLV_Color color, float filled_ratio, MLV_Color filled_color) {
+    int x = position.x;
+    int y = position.y;
     draw_rectangle(x, y, width, height, thickness, color);
     MLV_draw_filled_rectangle(x + thickness, y + thickness,
                               (width - 2 * thickness) * filled_ratio,
@@ -59,9 +61,10 @@ void draw_bar(unsigned int x, unsigned int y, int width, int height,
 
 /* Draw a text centered on the given position with a given font */
 void draw_centered_text_with_font(unsigned int x, unsigned int y,
-                                  const char* text, Font font, MLV_Color color,
-                                  ...) {
-    int text_width, text_height;
+                                  const char* text, Font* font,
+                                  MLV_Color color, ...) {
+    int text_width;
+    int text_height;
     va_list args;
     va_list args_copy;
     va_start(args, color);
@@ -77,7 +80,8 @@ void draw_centered_text_with_font(unsigned int x, unsigned int y,
 /* Draw a text centered on the given position */
 void draw_centered_text(unsigned int x, unsigned int y, const char* text,
                         MLV_Color color, ...) {
-    int text_width, text_height;
+    int text_width;
+    int text_height;
     va_list args;
     va_list args_copy;
     va_start(args, color);
@@ -121,6 +125,6 @@ void draw_filled_polygon(Polygon polygon, MLV_Color color) {
 
 /* Clear lMLV window */
 void clear_window(Window window) {
-    MLV_draw_filled_rectangle(window.coord.x, window.coord.y, window.width,
-                              window.height, CLEAR_COLOR);
+    MLV_draw_filled_rectangle((int)window.coord.x, (int)window.coord.y,
+                              window.width, window.height, CLEAR_COLOR);
 }

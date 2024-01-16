@@ -10,6 +10,7 @@
 #define __MANA_H__
 
 #include <stdbool.h>
+#include <time.h>
 
 #define MANA_START 150
 #define MANA_ON_KILL_PERCENT 0.1
@@ -34,6 +35,11 @@ typedef struct {
     unsigned int mana_real;
     unsigned int mana_max;
 } ManaPool;
+
+typedef struct {
+    int cost;
+    struct timespec timeout;
+} ManaError;
 
 /*************/
 /* Functions */
@@ -68,6 +74,16 @@ int Mana_max(int level);
  * @return true if can be upgraded.
  */
 bool Mana_pool_can_be_upgrade(ManaPool pool);
+
+/**
+ * @brief Calculate the cost of a ManaPool upgrade.
+ *
+ * @details The cost is calculated with the level of the ManaPool.
+ *
+ * @param pool ManaPool to calculate the cost.
+ * @return int cost.
+ */
+int Mana_pool_upgrade_cost(ManaPool pool);
 
 /**
  * @brief Upgrade a ManaPool if possible.

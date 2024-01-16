@@ -26,8 +26,8 @@ typedef struct {
 } Coord_i, Point;
 
 typedef struct {
-    float x;
-    float y;
+    double x;
+    double y;
 } Coord_f;
 
 typedef enum {
@@ -58,17 +58,25 @@ int Utils_modulo(int a, int b);
  * @param len array length
  * @return int sum
  */
-int Utils_sum_arr_i(int arr[], int len);
+int Utils_sum_arr_i(const int arr[], int len);
 
 /**
- * @brief
+ * @brief Effectue une sélection pondérée à partir d'un tableau d'entiers.
  *
- * @param arr int array
- * @param val value to select
- * @param len array length
- * @return index where the value <= sum(val) // -1 not obtained
+ * @details
+ * Cette fonction parcourt le tableau arr[] et ajoute chaque élément à un
+ * accumulateur. Elle retourne l'index du premier élément pour lequel la somme
+ * cumulée est supérieure ou égale à val. Si aucun élément ne satisfait cette
+ * condition, elle retourne -1.
+ *
+ * @param arr Le tableau d'entiers à partir duquel effectuer la sélection.
+ * @param val La valeur à comparer à la somme cumulée des éléments du tableau.
+ * @param len La longueur du tableau arr.
+ * @return L'index du premier élément pour lequel la somme cumulée est
+ * supérieure ou égale à val, ou -1 si aucun élément ne satisfait cette
+ * condition.
  */
-int Utils_weighted_select(int arr[], int val, int len);
+int Utils_weighted_select(const int arr[], int val, int len);
 
 /**
  * @brief Return the coordinate of the end of a line of length len

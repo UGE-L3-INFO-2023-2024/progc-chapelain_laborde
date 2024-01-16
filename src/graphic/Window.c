@@ -10,12 +10,13 @@
 #include <stdlib.h>
 
 /* Initalize the window */
-Window Window_init(Coord_f coord, unsigned int width, unsigned int height) {
+Window Window_init(Coord_f coord, unsigned int width, unsigned int height,
+                   Font* font) {
     Window window;
     window.window = NULL;
     window.width = width;
     window.height = height;
-    window.font = NULL;
+    window.font = font;
     window.coord = coord;
     return window;
 }

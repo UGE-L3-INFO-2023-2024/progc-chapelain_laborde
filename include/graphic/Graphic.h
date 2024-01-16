@@ -34,9 +34,10 @@ typedef struct {
  * @brief Convert a RGB color to a MLV_Color.
  *
  * @param rgb RGB color to convert.
+ * @param alpha Alpha value of the color.
  * @return MLV_Color Converted color.
  */
-MLV_Color RGB_to_MLV_Color(RGB_Color rgb, int alpha);
+MLV_Color RGB_to_MLV_Color(RGB_Color rgb, Uint8 alpha);
 
 /**
  * @brief Resize the given image to fit the given cell size.
@@ -75,8 +76,7 @@ void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
 /**
  * @brief Draw a bar with the given parameters.
  *
- * @param x X position of the bar.
- * @param y Y position of the bar.
+ * @param position Position of the bar. (Top left corner)
  * @param width Width of the bar.
  * @param height Height of the bar.
  * @param thickness Thickness of the bar.
@@ -84,9 +84,8 @@ void draw_rectangle(unsigned int x, unsigned int y, int width, int height,
  * @param filled_ratio Ratio of the bar to fill.
  * @param filled_color Color of the filled part of the bar.
  */
-void draw_bar(unsigned int x, unsigned int y, int width, int height,
-              unsigned int thickness, MLV_Color color, float filled_ratio,
-              MLV_Color filled_color);
+void draw_bar(Coord_i position, int width, int height, unsigned int thickness,
+              MLV_Color color, float filled_ratio, MLV_Color filled_color);
 
 /**
  * @brief Draw a text centered on the given position.
@@ -105,8 +104,8 @@ void draw_bar(unsigned int x, unsigned int y, int width, int height,
  * @param ... Arguments to pass to the text.
  */
 void draw_centered_text_with_font(unsigned int x, unsigned int y,
-                                  const char* text, Font font, MLV_Color color,
-                                  ...);
+                                  const char* text, Font* font,
+                                  MLV_Color color, ...);
 
 /**
  * @brief Draw a text centered on the given position.
@@ -118,7 +117,6 @@ void draw_centered_text_with_font(unsigned int x, unsigned int y,
  * @param x X position of the text (center).
  * @param y Y position of the text (center).
  * @param text Text to draw.
- * @param font Font to use.
  * @param color Color of the text.
  * @param ... Arguments to pass to the text.
  */

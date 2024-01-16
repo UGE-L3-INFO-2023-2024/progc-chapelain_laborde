@@ -21,15 +21,14 @@
 
 /**
  * @brief The inventory with the gemstones and the mana pool.
- * @todo gemstones must be a dynamic array (DA) ?
  *
  */
 typedef struct {
-    Gemstone* gemstones;               // The gemstones in the inventory.
-    unsigned long gemstones_count;     // The number of gemstones
-    unsigned long gemstones_capacity;  // The capacity of the gemstones array.
-    Gemstone* fusion[3];               // The two gemstones to fuse and the result.
-    struct {                           // The informations about the inventory.
+    Gemstone* gemstones;              // The gemstones in the inventory.
+    unsigned int gemstones_count;     // The number of gemstones
+    unsigned int gemstones_capacity;  // The capacity of the gemstones array.
+    Gemstone* fusion[3];  // The two gemstones to fuse and the result.
+    struct {              // The informations about the inventory.
         int page;
         int gem_level;
     } info;

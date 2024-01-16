@@ -26,7 +26,7 @@ typedef struct _window {
     struct _window* window;  // The encapsulating window
     unsigned int width;      // The width of the window
     unsigned int height;     // The height of the window
-    Font font;               // The font to use in the window
+    Font* font;              // The font to use in the window
     Coord_f coord;           // The north-west corner of the window
 } Window, SubWindow;
 
@@ -40,9 +40,11 @@ typedef struct _window {
  * @param width Width of the window.
  * @param height Height of the window.
  * @param coord Coordinates of the north-west corner of the window.
+ * @param font Font to use in the window.
  * @return Window Initialized window.
  */
-Window Window_init(Coord_f coord, unsigned int width, unsigned int height);
+Window Window_init(Coord_f coord, unsigned int width, unsigned int height,
+                   Font* font);
 
 /**
  * @brief Initialize a sub-window. A sub-window is a window that is contained

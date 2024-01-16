@@ -23,9 +23,9 @@ Error Inventory_init(Inventory* inventory) {
     }
     inventory->gemstones_count = 0;
     inventory->gemstones_capacity = 3;
-    inventory->fusion[0] = NULL;
-    inventory->fusion[1] = NULL;
-    inventory->fusion[2] = NULL;
+    for (int i = 0; i < 3; i++) {
+        inventory->fusion[i] = NULL;
+    }
     inventory->info.page = 0;
     inventory->info.gem_level = 0;
     return NO_ERROR;

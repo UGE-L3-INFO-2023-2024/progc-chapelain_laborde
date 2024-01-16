@@ -65,7 +65,7 @@ Gemstone Gemstone_init(int level);
  *
  * @return true if the merge is possible
  */
-bool Gemstone_merge(Gemstone *gemstone, Gemstone *other);
+bool Gemstone_merge(Gemstone *gemstone, const Gemstone *other);
 
 /**
  * @brief Copy a gem.

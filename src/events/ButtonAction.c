@@ -1,7 +1,7 @@
 /**
  * @file ButtonAction.c
  * @author CHAPELAIN Nathan & LABORDE Quentin
- * @brief Gestor of button action
+ * @brief Do the action of the button clicked on.
  * @date 31-12-2023
  *
  */
@@ -14,10 +14,12 @@
 #include "Event.h"
 #include "FieldEvent.h"
 #include "Game.h"
+#include "GraphicOverlay.h"
 #include "Inventory.h"
 #include "InventoryEvent.h"
 #include "Mana.h"
 #include "Map.h"
+#include "TimeManager.h"
 #include "Utils.h"
 #include "Window.h"
 
@@ -74,22 +76,27 @@ static Button* get_clicked_button(ButtonTab buttons, SubWindow window,
  * @param map Map to add tower.
  * @param mana_pool ManaPool to buy.
  * @param event The event to check.
+ * @return ManaError Error if there is not enough mana.
  */
-static void tower_button_action(Button* button, SubWindow map_window, Map* map,
-                                ManaPool* mana_pool, Event event) {
+static ManaError tower_button_action(Button* button, SubWindow map_window,
+                                     Map* map, ManaPool* mana_pool,
+                                     Event event) {
+    ManaError err = {0, Time_get()};
     Coord_i coord = get_coord_on_map(*map, map_window,
                                      (Coord_i){event.mouse.x, event.mouse.y});
     if (coord.x >= 0 && coord.x < MAP_WIDTH && coord.y >= 0 &&
-        coord.y < MAP_HEIGHT) {
-        if (!map->board[coord.y][coord.x].is_path &&
-            !map->board[coord.y][coord.x].have_tower) {
-            Tower tower = Tower_init(coord);
-            // TODO 300 : add alert if not enough mana
-            if (Mana_buy(mana_pool, Mana_tower_cost(map->towers.real_len)))
-                Map_add_tower(map, tower);
-            button->pressed = false;
+        coord.y < MAP_HEIGHT && !map->board[coord.y][coord.x].is_path &&
+        !map->board[coord.y][coord.x].have_tower) {
+        Tower tower = Tower_init(coord);
+        if (Mana_buy(mana_pool, Mana_tower_cost(map->towers.real_len))) {
+            Map_add_tower(map, tower);
+        } else {
+            err = (ManaError){.cost = Mana_tower_cost(map->towers.real_len),
+                              .timeout = Time_add_ms(Time_get(), 2000)};
         }
+        button->pressed = false;
     }
+    return err;
 }
 
 /**
@@ -97,11 +104,14 @@ static void tower_button_action(Button* button, SubWindow map_window, Map* map,
  * when there is not enough mana
  *
  * @param pool Manapool to check
+ * @return ManaError Error if there is not enough mana.
  */
-static void mana_button_action(ManaPool* pool) {
+static ManaError mana_button_action(ManaPool* pool) {
     if (!Mana_pool_upgrade(pool)) {
-        // TODO 300 : add alert if not enough mana
+        return (ManaError){.cost = Mana_pool_upgrade_cost(*pool),
+                           .timeout = Time_add_ms(Time_get(), 2000)};
     }
+    return (ManaError){.cost = 0, .timeout = Time_get()};
 }
 
 /**
@@ -130,11 +140,19 @@ static void gem_plus_button_action(int* gem_level) {
  * @param inventory Inventory to store the gem
  * @param mana_pool Manapool to check is the is enough mana.
  * @param gem_level gem level.
+ * @return ManaError Error if there is not enough mana.
  */
-static void gem_button_action(Inventory* inventory, ManaPool* mana_pool,
-                              int gem_level) {
-    if (Mana_buy(mana_pool, Mana_gem_cost(gem_level)))
+static ManaError gem_button_action(Inventory* inventory, ManaPool* mana_pool,
+                                   int gem_level) {
+    ManaError err = {0, Time_get()};
+    int cost = Mana_gem_cost(gem_level);
+    if (Mana_buy(mana_pool, cost)) {
         Inventory_add_gemstone(inventory, Gemstone_init(gem_level));
+    } else {
+        err = (ManaError){.cost = cost,
+                          .timeout = Time_add_ms(Time_get(), 2000)};
+    }
+    return err;
 }
 
 /**
@@ -170,24 +188,26 @@ void doing_button_actions(ButtonTab buttons, SubWindow inventory_window,
     }
     if (event.type == MOUSE_BUTTON && event.mouse.state == MLV_RELEASED) {
         if (strcmp(button->name, "tower") == 0) {
-            tower_button_action(button, map_window, &game->map,
-                                &game->mana_pool, event);
+            game->mana_error = tower_button_action(
+                button, map_window, &game->map, &game->mana_pool, event);
         } else {
             if (strcmp(button->name, "mana") == 0) {
-                mana_button_action(&game->mana_pool);
+                game->mana_error = mana_button_action(&game->mana_pool);
             } else if (strcmp(button->name, "minus") == 0) {
                 gem_minus_button_action(&game->inventory.info.gem_level);
             } else if (strcmp(button->name, "plus") == 0) {
                 gem_plus_button_action(&game->inventory.info.gem_level);
             } else if (strcmp(button->name, "gem") == 0) {
-                gem_button_action(&game->inventory, &game->mana_pool,
-                                  game->inventory.info.gem_level);
+                game->mana_error =
+                    gem_button_action(&game->inventory, &game->mana_pool,
+                                      game->inventory.info.gem_level);
             } else if (strcmp(button->name, "left") == 0) {
                 left_page_inventory_button_action(&game->inventory.info.page);
             } else if (strcmp(button->name, "right") == 0) {
                 right_page_inventory_button_action(
                     &game->inventory.info.page,
-                    (game->inventory.gemstones_count - 1) / GEMS_PER_PAGE);
+                    ((int)game->inventory.gemstones_count - 1) /
+                        GEMS_PER_PAGE);
             } else {
                 fprintf(stderr, "Error : button name not found\n");
             }

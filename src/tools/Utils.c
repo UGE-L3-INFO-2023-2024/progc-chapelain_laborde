@@ -19,7 +19,7 @@ int Utils_modulo(int a, int b) {
 }
 
 /* Sum an int array */
-int Utils_sum_arr_i(int arr[], int len) {
+int Utils_sum_arr_i(const int arr[], int len) {
     int acc = 0;
     for (int i = 0; i < len; i++) {
         acc += arr[i];
@@ -28,8 +28,9 @@ int Utils_sum_arr_i(int arr[], int len) {
 }
 
 /* Make a weighted select
-https://www.educative.io/answers/what-is-the-weighted-random-selection-algorithm*/
-int Utils_weighted_select(int arr[], int val, int len) {
+https://www.educative.io/answers/what-is-the-weighted-random-selection-algorithm
+*/
+int Utils_weighted_select(const int arr[], int val, int len) {
     int acc = 0;
     for (int i = 0; i < len; i++) {
         acc += arr[i];

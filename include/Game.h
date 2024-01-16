@@ -14,6 +14,7 @@
 #include "Error.h"
 #include "Event.h"
 #include "Inventory.h"
+#include "Mana.h"
 #include "Map.h"
 #include "Stats.h"
 #include "Window.h"
@@ -24,8 +25,9 @@
 
 /**
  * @brief Structure representing the game.
- * It contains the map, the inventory, the mana pool, the windows and the
- * buttons.
+ * It contains the map, the inventory, the mana pool, the windows, the buttons
+ * and the stats. It also contains a boolean to know if the 1st wave has
+ * started or not and a ManaError to know if there is an error due to the mana.
  *
  */
 typedef struct {
@@ -38,8 +40,9 @@ typedef struct {
         SubWindow map;
         SubWindow inventory;
     } window;
-    ButtonTab buttons;  // The buttons of the game (inventory and map)
-    Stats stats;        // The stats of the game
+    ButtonTab buttons;     // The buttons of the game (inventory and map)
+    Stats stats;           // The stats of the game
+    ManaError mana_error;  // The error due to the mana
 } Game;
 
 /*************/
@@ -59,7 +62,7 @@ Error Game_Init(Game* game);
  *
  * @param game Game to draw.
  */
-void Game_draw(Game* game);
+void Game_draw(const Game* game);
 
 /**
  * @brief Manange keyboard events.

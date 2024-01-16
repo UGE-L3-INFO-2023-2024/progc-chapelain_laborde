@@ -9,6 +9,9 @@
 #ifndef __GRAPHIC_OVERLAY_H__
 #define __GRAPHIC_OVERLAY_H__
 
+#include <MLV/MLV_color.h>
+
+#include "Font.h"
 #include "Mana.h"
 
 /*************/
@@ -27,5 +30,21 @@
  */
 void draw_mana_bar(ManaPool pool, int x, int y, int w, int h,
                    unsigned int thickness);
+
+/**
+ * @brief Show an error message when the player doesn't have enough mana.
+ * The message is shown at the center of the given rectangle.
+ * Of course, the rectangle is not shown, it's just used to center the text.
+ *
+ * @param x Coordinate x of the North West corner of the rectangle
+ * @param y Coordinate y of the North West corner of the rectangle
+ * @param w Width of the rectangle
+ * @param h Height of the rectangle
+ * @param mana_needed Mana needed to cast the spell
+ * @param font Font to use
+ * @param color Color of the text
+ */
+void draw_mana_error(int x, int y, int w, int h, int mana_needed, Font* font,
+                     MLV_Color color);
 
 #endif  // __GRAPHIC_OVERLAY_H__

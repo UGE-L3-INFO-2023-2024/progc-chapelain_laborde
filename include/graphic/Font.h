@@ -11,7 +11,7 @@
 
 #include <MLV/MLV_all.h>
 
-typedef MLV_Font* Font;
+typedef MLV_Font Font;
 
 /*************/
 /* Functions */
@@ -24,13 +24,13 @@ typedef MLV_Font* Font;
  * @param size Size of the font.
  * @return Font loaded.
  */
-Font Font_load(const char* path, int size);
+Font* Font_load(const char* path, int size);
 
 /**
  * @brief Free a font.
  *
  * @param font Font to free.
  */
-void Font_free(Font font);
+void Font_free(Font* font);
 
 #endif  // __FONT_H__

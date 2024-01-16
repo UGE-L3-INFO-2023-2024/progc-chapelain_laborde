@@ -11,10 +11,9 @@
 
 #include <MLV/MLV_all.h>
 
-#include "DynamicArray.h"
-#include "Graphic.h"
 #include "Map.h"
 #include "Wave.h"
+#include "Window.h"
 
 /*************/
 /* Functions */
@@ -35,6 +34,6 @@ void draw_map(Map map, SubWindow map_window);
  * @param window Window to draw on.
  * @param img Image to draw instead of a circle.
  */
-void draw_mobs(Wave* wave, SubWindow window, MLV_Image* img);
+void draw_mobs(Wave wave, SubWindow window, const MLV_Image* img);
 
 #endif  // __GRAPHICFIELD_H__
