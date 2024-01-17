@@ -30,6 +30,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 run: $(EXEC)
 	./$(EXEC)
 
+doxygen:
+	doxygen Doxyfile2
+
 clean:
 	rm -fr $(OBJ_DIR)/*
 
