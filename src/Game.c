@@ -24,17 +24,24 @@
 #include "InventoryEvent.h"
 #include "Mana.h"
 #include "Map.h"
+#include "Parser.h"
 #include "Path.h"
 
 /**
  * @brief Create all used windows (Map, Inventory)
  *
  * @param game Game
+ * @param option Option of the game
  */
-static void create_windows(Game* game) {
-    game->window.main = Window_init((Coord_f){0, 0}, 1400, 880);
-    MLV_create_window("Gemcraft", "Gemcraft", game->window.main.width,
-                      game->window.main.height);
+static void create_windows(Game* game, Option option) {
+    game->window.main = Window_init((Coord_f){0, 0}, option.width, 880);
+    if (option.flag_full_screen) {
+        MLV_create_full_screen_window("Gemcraft", "Gemcraft", MLV_get_desktop_width(),
+                                      MLV_get_desktop_height());
+    } else {
+        MLV_create_window("Gemcraft", "Gemcraft", game->window.main.width,
+                          game->window.main.height);
+    }
     game->window.map =
         SubWindow_init(&game->window.main, (Coord_f){0, 0}, 1120, 880);
     game->window.inventory =
@@ -44,7 +51,7 @@ static void create_windows(Game* game) {
 }
 
 /*Initalise the game */
-Error Game_Init(Game* game) {
+Error Game_Init(Game* game, Option option) {
     srand(time(NULL));
     Error error = NO_ERROR;
     game->has_started = false;
@@ -60,7 +67,7 @@ Error Game_Init(Game* game) {
         game->map.map_turns.real_len = 0;
     }
 
-    create_windows(game);
+    create_windows(game, option);
 
     MLV_change_frame_rate(60);
 
@@ -141,6 +148,8 @@ static bool _wave_next_step(Game* game) {
     int dmg = 0;
     for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
         if (Wave_next_step_unit(game->map.mobs.mob_list.arr[i].mob, &game->map.map_turns, &dmg)) {
+            _clear_projs_on_target(&(game->map.projs),
+                                   game->map.mobs.mob_list.arr[i].mob);
             if (!Mana_buy(&game->mana_pool,
                           Mana_cost_mob_tp(game->map.mobs.mob_list.arr[i].mob->max_hp,
                                            game->mana_pool.level))) {
