@@ -35,6 +35,7 @@
 #include "Window.h"
 
 #define INVENTORY_PROPORTION 0.2
+#define FONT_PATH "resources/fonts/unifont.ttf"
 
 /**
  * @brief Create all used windows (Map, Inventory)
@@ -46,9 +47,11 @@
  * @param option Option of the game
  */
 static void create_windows(Game* game, Option option) {
-    game->window.main = Window_init((Coord_f){0, 0}, option.width, option.height, NULL);
+    game->window.main =
+        Window_init((Coord_f){0, 0}, option.width, option.height, NULL);
     if (option.flag_full_screen) {
-        MLV_create_full_screen_window("Gemcraft", "Gemcraft", MLV_get_desktop_width(),
+        MLV_create_full_screen_window("Gemcraft", "Gemcraft",
+                                      MLV_get_desktop_width(),
                                       MLV_get_desktop_height());
         option.width = MLV_get_desktop_width();
         option.height = MLV_get_desktop_height();
@@ -64,9 +67,8 @@ static void create_windows(Game* game, Option option) {
         SubWindow_init(&game->window.main, (Coord_f){map_width, 0},
                        (int)inventory_width, option.height);
     game->window.inventory.font =
-        Font_load("assets/fonts/unifont.ttf", (int)inventory_width / 7);
-    game->window.map.font =
-        Font_load("assets/fonts/unifont.ttf", (int)map_width / 28);
+        Font_load(FONT_PATH, (int)inventory_width / 7);
+    game->window.map.font = Font_load(FONT_PATH, (int)map_width / 28);
 }
 
 /*Initalise the game */
@@ -225,8 +227,9 @@ void Game_action(Game* game, Event event, bool hard_mode) {
         if (game->has_started) {
             long sec_gain = Wave_skip_to_next(&(game->map.mobs));
             if (!hard_mode) {
-                Mana_gain(&(game->mana_pool),
-                          Mana_gain_skip_wave(game->mana_pool.mana_max, sec_gain));
+                Mana_gain(
+                    &(game->mana_pool),
+                    Mana_gain_skip_wave(game->mana_pool.mana_max, sec_gain));
             }
         }
         game->has_started = true;
