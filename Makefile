@@ -8,6 +8,8 @@ LDLIBS = -lm -lMLV
 SRC_DIR = src
 OBJ_DIR = bin
 INC_DIR = include
+DOC_DIR = doc
+RESOURCES_DIR = resources
 
 SRCS = $(shell find $(SRC_DIR) -depth -name "*.c")
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
@@ -30,8 +32,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 run: $(EXEC)
 	./$(EXEC)
 
+rapport:
+	pandoc --pdf-engine=xelatex $(DOC_DIR)/$@.md -H $(RESOURCES_DIR)/metadata.tex -o $(DOC_DIR)/$@.pdf -V colorlinks=true
+
 doxygen:
-	doxygen Doxyfile2
+	doxygen Doxyfile
 
 clean:
 	rm -fr $(OBJ_DIR)/*
