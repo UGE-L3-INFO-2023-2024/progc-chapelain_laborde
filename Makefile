@@ -43,3 +43,4 @@ clean:
 
 distclean: clean
 	rm -f $(EXEC)
+	rm -fr $(DOC_DIR)/html
