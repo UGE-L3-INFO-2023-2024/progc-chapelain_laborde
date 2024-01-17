@@ -16,6 +16,7 @@
 #include "Inventory.h"
 #include "Mana.h"
 #include "Map.h"
+#include "Parser.h"
 #include "Stats.h"
 #include "Window.h"
 
@@ -53,9 +54,10 @@ typedef struct {
  * @brief Initialize the game.
  *
  * @param game Game to initialize.
+ * @param option Option given by the user in command line.
  * @return Error due to allocation of the game.
  */
-Error Game_Init(Game* game);
+Error Game_Init(Game* game, Option option);
 
 /**
  * @brief Draw the game.

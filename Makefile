@@ -6,7 +6,7 @@ CFLAGS = -std=c17 -pedantic -Wall -Wfatal-errors -g -g3 -MMD
 LDLIBS = -lm -lMLV
 
 SRC_DIR = src
-OBJ_DIR = obj
+OBJ_DIR = bin
 INC_DIR = include
 
 SRCS = $(shell find $(SRC_DIR) -depth -name "*.c")
@@ -31,7 +31,7 @@ run: $(EXEC)
 	./$(EXEC)
 
 clean:
-	rm -fr obj
+	rm -fr $(OBJ_DIR)/*
 
 distclean: clean
 	rm -f $(EXEC)

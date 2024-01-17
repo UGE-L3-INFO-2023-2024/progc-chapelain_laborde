@@ -11,11 +11,16 @@
 
 #include "Error.h"
 #include "Game.h"
+#include "Parser.h"
 
 int main(int argc, char const* argv[]) {
+    Option option = parser(argc, (char**)argv);
+    if (option.flag_help) {
+        return EXIT_SUCCESS;
+    }
     Game game;
     Error err = NO_ERROR;
-    err.type = Game_Init(&game).type;
+    err.type = Game_Init(&game, option).type;
     if (err.type) {
         Game_free(&game);
         Error_print(err);

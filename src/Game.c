@@ -26,6 +26,7 @@
 #include "InventoryEvent.h"
 #include "Mana.h"
 #include "Map.h"
+#include "Parser.h"
 #include "Path.h"
 #include "Stats.h"
 #include "TimeManager.h"
@@ -42,17 +43,26 @@
  * inventory.
  *
  * @param game Game
+ * @param option Option of the game
  */
-static void create_windows(Game* game, int width, int height) {
-    game->window.main = Window_init((Coord_f){0, 0}, width, height, NULL);
-    MLV_create_window("Gemcraft", "Gemcraft", width, height);
-    double inventory_width = width * INVENTORY_PROPORTION;
-    double map_width = width - inventory_width;
+static void create_windows(Game* game, Option option) {
+    game->window.main = Window_init((Coord_f){0, 0}, option.width, option.height, NULL);
+    if (option.flag_full_screen) {
+        MLV_create_full_screen_window("Gemcraft", "Gemcraft", MLV_get_desktop_width(),
+                                      MLV_get_desktop_height());
+        option.width = MLV_get_desktop_width();
+        option.height = MLV_get_desktop_height();
+    } else {
+        MLV_create_window("Gemcraft", "Gemcraft", game->window.main.width,
+                          game->window.main.height);
+    }
+    double inventory_width = option.width * INVENTORY_PROPORTION;
+    double map_width = option.width - inventory_width;
     game->window.map = SubWindow_init(&game->window.main, (Coord_f){0, 0},
-                                      (int)map_width, height);
+                                      (int)map_width, option.height);
     game->window.inventory =
         SubWindow_init(&game->window.main, (Coord_f){map_width, 0},
-                       (int)inventory_width, height);
+                       (int)inventory_width, option.height);
     game->window.inventory.font =
         Font_load("assets/fonts/unifont.ttf", (int)inventory_width / 7);
     game->window.map.font =
@@ -60,7 +70,7 @@ static void create_windows(Game* game, int width, int height) {
 }
 
 /*Initalise the game */
-Error Game_Init(Game* game) {
+Error Game_Init(Game* game, Option option) {
     srand(time(NULL));
     Error error = NO_ERROR;
     game->has_started = false;
@@ -77,8 +87,7 @@ Error Game_Init(Game* game) {
     }
 
     game->stats = Stats_init();
-
-    create_windows(game, 1400, 880);
+    create_windows(game, option);
 
     MLV_change_frame_rate(FRAMERATE);
 
@@ -176,6 +185,8 @@ static bool _wave_next_step(Game* game) {
     for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
         if (Wave_next_step_unit(game->map.mobs.mob_list.arr[i].mob,
                                 game->map.map_turns, &dmg)) {
+            _clear_projs_on_target(&(game->map.projs),
+                                   game->map.mobs.mob_list.arr[i].mob);
             if (Mana_buy(&game->mana_pool,
                          Mana_cost_mob_banish(
                              game->map.mobs.mob_list.arr[i].mob->max_hp,
