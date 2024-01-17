@@ -26,7 +26,7 @@ int main(int argc, char const* argv[]) {
         Error_print(err);
         return EXIT_FAILURE;
     }
-    err.type = Game_run(&game).type;
+    err.type = Game_run(&game, option.flag_difficult_mode).type;
     if (err.type) {
         Game_free(&game);
         Error_print(err);

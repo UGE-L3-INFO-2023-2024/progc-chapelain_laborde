@@ -219,14 +219,15 @@ static void _final_screen(Game* game, struct timespec start) {
 }
 
 /* Keyboard event gestion */
-void Game_action(Game* game, Event event) {
+void Game_action(Game* game, Event event, bool hard_mode) {
     if (event.type == KEYBOARD && event.keyboard.key == MLV_KEYBOARD_SPACE &&
         event.keyboard.state == MLV_PRESSED) {
         if (game->has_started) {
-            Mana_gain(&(game->mana_pool),
-                      Mana_gain_skip_wave(
-                          game->mana_pool.mana_max,
-                          (int)Wave_skip_to_next(&(game->map.mobs))));
+            long sec_gain = Wave_skip_to_next(&(game->map.mobs));
+            if (!hard_mode) {
+                Mana_gain(&(game->mana_pool),
+                          Mana_gain_skip_wave(game->mana_pool.mana_max, sec_gain));
+            }
         }
         game->has_started = true;
     }
@@ -244,12 +245,12 @@ bool Game_update_all(Game* game) {
 }
 
 /* Main loop of execution (event, actualise move, draw) */
-Error Game_run(Game* game) {
+Error Game_run(Game* game, bool hard_mode) {
     struct timespec start = Time_get();
     Error err = NO_ERROR;
     Event event = {NO_EVENT};
     while (!Event_quit(event)) {
-        Game_action(game, event);
+        Game_action(game, event, hard_mode);
         Game_draw(game);
         event = Event_get();
         doing_button_actions(game->buttons, game->window.map, game, event);

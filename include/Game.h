@@ -10,6 +10,8 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
+#include <stdbool.h>
+
 #include "Button.h"
 #include "Error.h"
 #include "Event.h"
@@ -71,8 +73,9 @@ void Game_draw(const Game* game);
  *
  * @param game Game to manage.
  * @param event Event to manage.
+ * @param hard_mode If true, the skip wave no longer give mana.
  */
-void Game_action(Game* game, Event event);
+void Game_action(Game* game, Event event, bool hard_mode);
 
 /**
  * @brief Update Towers, Projectiles, Wave.
@@ -86,9 +89,10 @@ bool Game_update_all(Game* game);
  * @brief Run the game. It's the main loop of the game.
  *
  * @param game Game to run.
+ * @param hard_mode If true, the skip wave no longer give mana.
  * @return Error due to the game.
  */
-Error Game_run(Game* game);
+Error Game_run(Game* game, bool hard_mode);
 
 /**
  * @brief Free the game.

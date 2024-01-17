@@ -166,7 +166,7 @@ int Mana_tower_cost(int nb_towers);
  * @param sec Seconds of the wave gain.
  * @return gain of mana.
  */
-int Mana_gain_skip_wave(int max_mana, int sec);
+int Mana_gain_skip_wave(int max_mana, long sec);
 
 /**
  * @brief Calculate the cost of a gem.

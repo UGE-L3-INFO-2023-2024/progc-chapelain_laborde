@@ -87,7 +87,7 @@ int Mana_cost_mob_banish(int mob_max_hp, int level_mana) {
 }
 
 /* Mana gain when skip wave */
-int Mana_gain_skip_wave(int max_mana, int sec) {
+int Mana_gain_skip_wave(int max_mana, long sec) {
     return (int)(max_mana * (sec / 100.0));
 }
 

@@ -9,13 +9,18 @@
 #ifndef PARSER_H
 #define PARSER_H
 
+#include <stdbool.h>
+
 #define DEFAULT_WIDTH 1400
 #define DEFAULT_HEIGHT 880
+#define MIN_WIDTH 720
+#define MIN_HEIGHT 480
 
 typedef struct {
-    int flag_help;
-    int flag_width;
-    int flag_full_screen;
+    bool flag_help;
+    bool flag_width;
+    bool flag_full_screen;
+    bool flag_difficult_mode;
     int width;
     int height;
 } Option;
