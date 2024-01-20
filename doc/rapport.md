@@ -23,7 +23,6 @@ ____
     - [Amelioration](#amelioration)
       - [Drag and Drop](#drag-and-drop)
     - [Menu graphique](#menu-graphique)
-      - [TODO](#todo)
   - [Conclusion](#conclusion)
     - [Améliorations possibles](#améliorations-possibles)
       - [Trap](#trap)
@@ -155,7 +154,7 @@ Voici une description de ces sous-dossiers :
 
 Contient les fichiers de ressources utilisés par le programme. Dans notre cas il s'agit uniquement de la police d'écriture utilisée pour le menu. Elle est stockée dans le dossier `resources/fonts`.\
 Nous avons aussi adapté nos fonctions pour pouvoir utiliser des images à la place par exemple des dessins pour les tours ou les monstres. Nous avons cependant préféré ne pas les utiliser pour une question de facilité de développement.\
-Vous avez aussi peut être remarqué le fichier `metadata.tex` et le dossier `images`. Ils sont utilisés dans le Makefile pour générer ce rapport au format PDF via pandoc.\
+Vous avez aussi peut être remarqué le fichier `metadata.tex` et le dossier `images`. Ils sont tous deux utilisés dans le Makefile pour générer ce rapport au format PDF via pandoc.
 
 ### Autres fichiers
 
@@ -168,32 +167,77 @@ Vous avez un descriptif plus haut dans le rapport sur l'utilisation de ce fichie
 
 ## Déroulement du projet
 
-<!-- TODO : Expliquer réélement les étapes de dév du projet -->
+<!-- Explication réel des étapes de développement du projet -->
+Ce projet a été réalisé en plusieurs étapes.\
+Nous avons commencé par faire une grande liste résumant les fonctionnalités à implémenter. Vous verrez donc dans les premiers commit un fichier `TODO.md` qui résumait une très grande partie de ce qu'il fallait faire.\
+Nous avons ensuite commencé par modulariser le projet, c'est à dire séparer le code en plusieurs fichiers et dossiers.\
+Vous verrez ainsi, dans un commit, la création de l'arborescence du projet.\
+Tout cela a été réalisé ensemble en pair-programming. Cela nous a permis d'avoir une base solide pour commencer le projet et nous a permis de nous mettre d'accord sur la manière de faire.\
+Nous avons ensuite pu nous séparer pour travailler sur des parties différentes du projet.\
 
-Nous avons réalisé l'ensemble des obligation demandé par le sujet mais nous allons les aborder cas par cas dans le suite.
+Nous avons commencé par la base du projet, c'est à dire la carte et le mana qui sont les deux éléments essentiels du jeu.\
+Nous avons ensuite créé une première version de la génération du terrain.\
+Ensuite, nous avons entamé la partie graphique du projet afin de pouvoir afficher la carte et le chemin.\
+Puis, de fil en aiguille, nous avons implémenté les différentes fonctionnalités du jeu.\
+Nous avons fait la partie déplacement des monstres, la gestion des vagues, la gestion des tours, la gestion des projectiles, etc...\
+Nous avons aussi implémenté des fonctionnalités supplémentaires comme le drag and drop des gemmes ou encore l'inventaire graphique sur la droite de l'écran.\
+
+Vous pouvez retrouver l'historique du projet sur le dépôt Git du projet ou dans le fichier `logdev`.
 
 ### Implémentation par rapport au sujet
 
 #### Vagues
 
-Les déplacements des vagues ont été implémenté dans leurs intégralités.
-Les timers sont réglés comme souhaité dans l'énnoncé.
-La touche espace permet bien de déclancher la première vague et le passé à la suivante.
+Les déplacements des vagues ont été implémenté dans leurs intégralités.\
+Les timers sont réglés comme souhaité dans l'énnoncé.\
+La touche espace permet bien de déclancher la première vague et le passé à la suivante.\
 Cependant nous avons interpréter le sujet de la manière suivante : il ne peux pas avoir plus d'une vague en même temps. Cela est aussi pratique pour équilibré le jeu car le fait de gagner du mana en sautant les vague est vite abusé avec la qualibaration du sujet.
+Suite a ça, nous avons, comme vous l'avez peut être remarqué, implémenté un mode difficile.\
+Ce mode est activable via la ligne de commande avec le flag `-d` ou `--difficult-mode`.\
 
 #### Projectile
 
+Vous verrez, en jouant au jeu, que les projectiles ont été implémentés comme demandé dans le sujet.\
+Ils suivent leurs cibles autant qu'ils le peuvent et disparaissent quand ils touchent leur cible.\
+Ils sont aussi détruits quand les monstres atteignent la fin du chemin et sont banis de la carte.\
+
 #### Element
 
+<!-- Parler de ça. Est-ce qu'on parlerais pas des gems, tours, mana aussi ? -->
+
 #### Makefile
+
+<!-- Peut être faudrait-il le mettre au début, c'est bizarre de l'avoir si loin non ? -->
+
+Comme vous l'avez peut être remarqué, nous avons utilisé un Makefile pour compiler le projet.\
+Un Makefile est un fichier très utilisé en C pour automatiser la compilation d'un projet et toute commande répétitive.\
+Vous pouvez retrouver une description de ce fichier plus haut dans le rapport.
+
+Le Makefile a été réalisé très rapidement dans le projet.\
+Il nous a permis d'avoir une compilation plus rapide et plus simple.\
+Nous avons aussi comme demandé dans le sujet, créer des dépendances pour les fichiers objets.\
+Cela permet de recompiler correctement les fichiers qui ont été modifiés, même si ce n'est pas le fichier source qui a été modifié.\
+Cependant, nous avons préféré ne pas les écrire à la main et nous avons trouvé le flag `-MMD` du compilateur qui permet de générer ces dépendances automatiquement.\
+Il suffit aussi de dire à notre Makefile d'inclure ces fichiers de dépendances pour que tout fonctionne correctement.
+
+Nous avons aussi rajouter une règle pour générer la documentation Doxygen et une autre pour générer ce rapport au format PDF via pandoc. (Vous devez avoir Doxygen et pandoc d'installé sur votre machine)\
+Vous pourrez donc utiliser les commandes `make doxygen` et `make rapport` pour générer ces documents.\
 
 ### Amelioration
 
 #### Drag and Drop
 
+Comme préciédemment dit, nous avons implémenté le drag and drop des gemmes.\
+Celui-ci permet de faire glisser des gemmes dans tous les sens.\
+Cependant, un bug résident dans le fait que notre code utilise la fonction `MLV_delay_according_to_frame_rate`. Celle-ci permet d'avoir un framerate constant mais elle a pour effet de ralentir la détection des événements.\
+Ainsi, si vous faites glisser une gemme trop vite, le clic de relachement ne sera pas détecté et la gemme restera bloquée.\
+Pour faire fasse à ce problème, qui au final n'est pas très gênant, il vous suffit de cliquer à nouveau sur le bouton gauche de la souris pour débloquer la gemme.\
+
 ### Menu graphique
 
-#### TODO
+Concernant le menu graphique, nous avons implémenté un menu plutôt sympa, avec un système de boutons et de textes.\
+Vous pouvez naviguer dans le menu à l'aide des différents boutons.\
+Cela permet aussi d'avoir un inventaire graphique infini sur la droite de l'écran.\
 
 ## Conclusion
 
@@ -201,10 +245,23 @@ Cependant nous avons interpréter le sujet de la manière suivante : il ne peux 
 
 #### Trap
 
+Nous aurions voulu implémenter des pièges sur la carte comme l'amélioration nous le permettait.\
+Vous verrez d'ailleurs dans nos précédents commits que notre code est prévu pour pouvoir implémenter cette fonctionnalité.\
+Cependant, nous avons préféré nous concentrer sur d'autres fonctionnalités plus importantes pour le jeu.\
+Nous avons donc laissé cette fonctionnalité de côté mais elle pourrait être implémentée facilement.
+
 #### wave v2
+
+<!-- TODO -->
 
 #### element v2
 
+<!-- TODO -->
+
 ### Points positifs
 
+<!-- TODO -->
+
 ### Points négatifs
+
+<!-- TODO -->
