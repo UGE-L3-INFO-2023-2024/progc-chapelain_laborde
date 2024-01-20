@@ -129,7 +129,7 @@ static void gem_minus_button_action(int* gem_level) {
  * @param gem_level Pointer to gem level.
  */
 static void gem_plus_button_action(int* gem_level) {
-    if (*gem_level < 10)
+    if (*gem_level < 24)
         (*gem_level)++;
 }
 

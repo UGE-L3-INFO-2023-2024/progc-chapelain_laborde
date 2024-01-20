@@ -60,4 +60,11 @@ Window Window_init(Coord_f coord, unsigned int width, unsigned int height,
 SubWindow SubWindow_init(Window* window, Coord_f coord, unsigned int width,
                          unsigned int height);
 
+/**
+ * @brief This function clear the given window with the CLEAR_COLOR.
+ *
+ * @param window Window to clear.
+ */
+void clear_window(Window window);
+
 #endif  // __WINDOW_H__

@@ -31,6 +31,24 @@ typedef struct {
 /*************/
 
 /**
+ * @brief Initialize the graphic window.
+ * This function initialize the graphic window with the given parameters.
+ * If the flag_full_screen is true, the window will be in full screen and
+ * the width and height parameters will be change to the desktop width and
+ * height.
+ * If the flag_full_screen is false, the window will be in windowed mode and
+ * the width and height parameters will be used to set the window size.
+ *
+ *
+ * @param title Title of the window.
+ * @param width Width of the window. (Can be changed if full screen)
+ * @param height Height of the window. (Can be changed if full screen)
+ * @param flag_full_screen Flag to know if the window is in full screen.
+ */
+void init_graphic(const char* title, int* width, int* height,
+                  bool flag_full_screen);
+
+/**
  * @brief Convert a RGB color to a MLV_Color.
  *
  * @param rgb RGB color to convert.
@@ -146,17 +164,34 @@ void draw_polygon(Polygon polygon, MLV_Color color);
 void draw_filled_polygon(Polygon polygon, MLV_Color color);
 
 /**
- * @brief This function clear the given window with the CLEAR_COLOR.
- *
- * @param window Window to clear.
- */
-void clear_window(Window window);
-
-/**
  * @brief This function refresh the window of a change.
  * For more information, see the MLV_actualise_window function.
  *
  */
-void refresh_window();
+void refresh_graphic();
+
+/**
+ * @brief Change the current framerate to the given one.
+ * The framerate is the number of frame per second.
+ *
+ * @param framerate New framerate to use.
+ */
+void change_game_framerate(int framerate);
+
+/**
+ * @brief Wait according to the current framerate.
+ * This function is used to limit the framerate of the game.
+ * You may use this function after a refresh_graphic call in a loop.
+ *
+ */
+void wait_according_to_framerate();
+
+/**
+ * @brief Free the graphic window.
+ *
+ * @pre The window must be initialized.
+ *
+ */
+void free_graphic();
 
 #endif  // __GRAPHIC_H__

@@ -9,6 +9,7 @@
 
 #include "Map.h"
 
+#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -217,8 +218,10 @@ void Map_actualise_proj(Map* map, Stats* stats) {
             int dmg = Proj_damage(&(map->projs.arr[i].proj));
             dmg_stats += dmg;
             if (map->projs.arr[i].proj.target->elem.main == PYRO) {
+                long pyro_dmg = (long)(dmg * PYRO_DMG_PERCENT);
                 _pyro_spread(&(map->mobs), map->projs.arr[i].proj.target,
-                             (int)(dmg * PYRO_DMG_PERCENT), &dmg_stats);
+                             pyro_dmg > INT_MAX ? INT_MAX : (int)pyro_dmg,
+                             &dmg_stats);
                 map->projs.arr[i].proj.target->elem.main = NONE;
             } else if (map->projs.arr[i].proj.target->elem.main == SPRAYING) {
                 _spraying_spread(&(map->mobs), map->projs.arr[i].proj.target,

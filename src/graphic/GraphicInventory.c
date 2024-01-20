@@ -387,8 +387,8 @@ void draw_inventory_menu(SubWindow window, Inventory inventory,
     draw_tower_button(window, buttons);
     draw_mana_button(window, buttons);
     draw_gem_button(window, buttons, gem_level);
-    draw_centered_text_with_font((int)(x + w / 2), (int)(y + h * 0.24),
-                                 "cost: %d", window.font, MLV_COLOR_BLACK,
+    draw_centered_text_with_font((int)(x + w / 2), (int)(y + h * 0.24), "%d",
+                                 window.font, MLV_COLOR_BLACK,
                                  Mana_gem_cost(gem_level));
     line_y = (int)(y + h * 0.275);
     draw_line((int)x, line_y, (int)(x + w), line_y, 2, MLV_COLOR_BLACK);

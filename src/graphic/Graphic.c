@@ -8,13 +8,29 @@
 
 #include "Graphic.h"
 
+#include <MLV/MLV_all.h>
 #include <stdarg.h>
+#include <stdbool.h>
 
 #include "Map.h"
 #include "Utils.h"
+#include "Window.h"
+
+/* Initialize a window to show content in */
+void init_graphic(const char* title, int* width, int* height,
+                  bool flag_full_screen) {
+    if (flag_full_screen) {
+        MLV_create_full_screen_window(title, title, MLV_get_desktop_width(),
+                                      MLV_get_desktop_height());
+        *width = MLV_get_desktop_width();
+        *height = MLV_get_desktop_height();
+    } else {
+        MLV_create_window(title, title, *width, *height);
+    }
+}
 
 /* Update lMLV window */
-void refresh_window() {
+void refresh_graphic() {
     MLV_update_window();
 }
 
@@ -123,8 +139,17 @@ void draw_filled_polygon(Polygon polygon, MLV_Color color) {
     free(vy);
 }
 
-/* Clear lMLV window */
-void clear_window(Window window) {
-    MLV_draw_filled_rectangle((int)window.coord.x, (int)window.coord.y,
-                              window.width, window.height, CLEAR_COLOR);
+/* Change the current framerate */
+void change_game_framerate(int framerate) {
+    MLV_change_frame_rate(framerate);
+}
+
+/* Wait according to the framerate */
+void wait_according_to_framerate() {
+    MLV_delay_according_to_frame_rate();
+}
+
+/* Free the window */
+void free_graphic() {
+    MLV_free_window();
 }

@@ -107,6 +107,13 @@ bool Event_quit(Event event) {
             event.keyboard.key == MLV_KEYBOARD_ESCAPE);
 }
 
+/* Get lMLV space event */
+bool Event_is_space(Event event) {
+    return event.type == KEYBOARD &&
+           event.keyboard.key == MLV_KEYBOARD_SPACE &&
+           event.keyboard.state == MLV_PRESSED;
+}
+
 /* Check if the coord are in the rectangle */
 bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
                      int cible_y) {

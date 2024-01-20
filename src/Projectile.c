@@ -8,6 +8,7 @@
 
 #include "Projectile.h"
 
+#include <limits.h>
 #include <math.h>
 #include <stdbool.h>
 
@@ -50,7 +51,7 @@ bool Proj_next_step(Projectile* proj) {
  * @param dmg damage original (useful to compute for SPRAYING and PYRO)
  * @return damage done
  */
-static int _damage_element(Projectile* proj, int dmg) {
+static long _damage_element(Projectile* proj, long dmg) {
     Mob_apply_element(proj->target, Gemstone_get_element(proj->gem));
     switch (proj->target->elem.main) {
         case BURNING:
@@ -58,10 +59,10 @@ static int _damage_element(Projectile* proj, int dmg) {
             proj->target->elem.main = NONE;
             break;
         case SPRAYING:
-            dmg += (int)(dmg * SPRAYING_DMG_PERCENT);
+            dmg += (long)((double)dmg * SPRAYING_DMG_PERCENT);
             break;
         case PYRO:
-            dmg += (int)(dmg * PYRO_DMG_PERCENT);
+            dmg += (long)((double)dmg * PYRO_DMG_PERCENT);
             break;
         default:
             break;
@@ -71,11 +72,11 @@ static int _damage_element(Projectile* proj, int dmg) {
 
 /* Deals damage(raw + elem) to mobs when the distance is to short*/
 int Proj_damage(Projectile* proj) {
-    int dmg =
-        (int)(PROJ_CONST_DMG * pow(2, proj->level) *
-              (1 -
-               cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) /
-                   2));
+    long dmg =
+        (long)(PROJ_CONST_DMG * pow(2, proj->level) *
+               (1 -
+                cos(Utils_deg_to_rad(proj->gem.color - proj->target->color)) /
+                    2));
     if (proj->gem.type == MIXED) {
         dmg *= 2;
         if (!(rand() % 10)) {  // 10% chance
@@ -84,8 +85,10 @@ int Proj_damage(Projectile* proj) {
     } else {
         dmg = _damage_element(proj, dmg);
     }
+    dmg = dmg > INT_MAX ? INT_MAX : dmg;
 
     proj->target->current_hp < dmg ? proj->target->current_hp = 0
                                    : (proj->target->current_hp -= dmg);
-    return dmg;
+    // No risk of overflow because dmg is <= INT_MAX
+    return (int)dmg;
 }

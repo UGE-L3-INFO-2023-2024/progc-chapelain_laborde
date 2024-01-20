@@ -46,8 +46,8 @@ void draw_mana_bar(ManaPool pool, int x, int y, int w, int h,
  * @param font Font to use
  * @param color Color of the text
  */
-void draw_mana_error(int x, int y, int w, int h, int mana_needed, Font* font,
-                     MLV_Color color);
+void draw_mana_error(int x, int y, int w, int h, int mana_needed,
+                     const Font* font, MLV_Color color);
 
 /**
  * @brief Show the game over screen with the stats of the player
