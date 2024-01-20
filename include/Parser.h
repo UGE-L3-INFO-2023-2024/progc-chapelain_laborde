@@ -25,10 +25,27 @@ typedef struct {
     int height;
 } Option;
 
+/**
+ * @brief Print the help menu.
+ *
+ * @param path The path of the executable.
+ */
 void print_help(char* path);
 
+/**
+ * @brief Initialize the option structure.
+ *
+ * @return Option The initialized option structure.
+ */
 Option init_option();
 
+/**
+ * @brief Parse the command line arguments. With getopt_long.
+ *
+ * @param argc Argument count.
+ * @param argv Argument array.
+ * @return Option
+ */
 Option parser(int argc, char** argv);
 
 #endif  // PARSER_H

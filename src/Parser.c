@@ -15,15 +15,15 @@
 void print_help(char* path) {
     printf(
         "\ngemcraft helper :\n\n"
-        "%s [-w int] [-f] [-h] [-d]\n\n"
-        "-w / --window (INTxINT) :\n"
-        "\t Change the width of the grahpic window. (minimum size 720x480)\n\n"
+        "%s [-w WIDTHxHEIGHT] [-f] [-d] [-h]\n\n"
+        "-w / --window (WIDTHxHEIGHT) :\n"
+        "\t Change the width of the graphic window. (minimum size 720x480)\n\n"
         "-f / --full-screen :\n"
-        "\t Change the grahpic window to full-screen mode (ignore -w).\n\n"
+        "\t Change the graphic window to full-screen mode (ignore -w).\n\n"
         "-d / --difficult-mode :\n"
         "\t Make the game harder : when the user skip wave it will no longer gain mana.\n\n"
         "-h / --help :\n"
-        "\t Prints this menu.\n\n",
+        "\t Print this menu.\n\n",
         path);
 }
 
