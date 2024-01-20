@@ -16,7 +16,7 @@
 #include "Element.h"
 #include "Utils.h"
 
-#define MOB_CONST_HP 12
+#define MOB_CONST_HP 70
 
 /**************/
 /* Structures */

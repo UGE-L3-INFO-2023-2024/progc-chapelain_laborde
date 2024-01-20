@@ -14,7 +14,7 @@
 #include "Mob.h"
 
 #define PROJ_SPEED 3
-#define PROJ_CONST_DMG 5
+#define PROJ_CONST_DMG 30
 
 /**************/
 /* Structures */
