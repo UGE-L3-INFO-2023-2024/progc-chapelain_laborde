@@ -73,7 +73,7 @@ Les contrôles sont plutôt simples.\
 Les seuls touches du clavier que vous devez utiliser sont la touche `Q` ou `Echap` pour quitter le jeu, et la touche `Espace` pour passer à la vague suivante.\
 Attention, pour passer à la vague suivante, les monstres de la vague actuelle doivent avoir fini d'apparaître.\
 
-Pour ce qui est du reste des actions, tout ce passe à la souris.\
+Pour ce qui est du reste des actions, tout se passe à la souris.\
 Vous avez un menu sur la droite de l'écran qui vous permet de placer des tours, d'acheter des gemmes, de les combiner, etc.\
 
 ### Le menu
@@ -95,7 +95,7 @@ Ceci vous permet de combiner des gemmes entre elles pour en créer des plus puis
 
 Ce jeu à été fait dans le cadre d'un projet universitaire.\
 Il y donc possiblement des bugs, des problèmes de gameplay, etc.\
-Certains problèmes sont du au sujet du projet, comme le faite que gagner du mana en passant à la vague suivante est trop facile.\
+Certains problèmes sont dû au sujet du projet, comme le faite que gagner du mana en passant à la vague suivante est trop facile.\
 D'autres sont du à des problèmes de conception, comme le faite que le drag and drop des gemmes ne fonctionne pas toujours correctement.\
 
 Si vous avez des retours à nous faire, n'hésitez pas à ouvrir une issue sur le dépôt GitHub du projet.\
