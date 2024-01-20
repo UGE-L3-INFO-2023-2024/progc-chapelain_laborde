@@ -192,7 +192,7 @@ Les timers sont réglés comme souhaité dans l'énoncé.\
 La touche espace permet bien de déclencher la première vague et le passé à la suivante.\
 Cependant nous avons interprété le sujet de la manière suivante : il ne peut pas y avoir plus d'une vague en même temps. Cela est aussi pratique pour équilibrer le jeu car le fait de gagner du mana en sautant les vagues est vite trop fort avec la calibaration du sujet.
 Suite à ça, nous avons, comme vous l'avez peut être remarqué, implémenté un mode difficile.\
-Ce mode est activable via la ligne de commande avec le flag `-d` ou `--difficult-mode`, et permet de ne pas avoir de gain de mana quand nous coupons le temps pour faire apparaître la prochaine vague.\
+Ce mode est activable via la ligne de commande avec le flag `-d` ou `--difficult-mode`, et permet de ne pas avoir de gain de mana quand nous coupons le temps pour faire apparaître la prochaine vague.
 
 #### Projectile
 
@@ -203,10 +203,9 @@ Cependant dans le code le monstre avance en fonction du framerate, le  projectil
 
 #### Element
 
-La partie sur les éléments quant à elle été implémenter totalement la gestion des timer est peut être différente de celle souhaité. 
+La partie sur les éléments quant à elle été implémenter totalement la gestion des timer est peut être différente de celle souhaité.\
 Les éléments appliquent les effets avec les constantes voulues de l'enoncé. Cependant la gestion des timer à été réalisé de la manière suivante : quand un élément hydro frappe le monstre on déclenche le timer de ralentissement et ensuite si un projectile pyro le touche le monstre le timer disparaît pour appliquer l'effet de vaporisation.
 Et pendant que le monstre est en état d'enracinement le monstre je peux pas subir d'autre effet ormi la propagation de la vaporisation de la part de montres voisins.
-
 
 #### Mana / Gem
 
@@ -226,7 +225,7 @@ Cependant, nous avons préféré ne pas les écrire à la main et nous avons tro
 Il suffit aussi de dire à notre Makefile d'inclure ces fichiers de dépendances pour que tout fonctionne correctement.
 
 Nous avons aussi rajouté une règle pour générer la documentation Doxygen et une autre pour générer ce rapport au format PDF via pandoc. (Vous devez avoir Doxygen et pandoc d'installé sur votre machine)\
-Vous pourrez donc utiliser les commandes `make doxygen` et `make rapport` pour générer ces documents.\
+Vous pourrez donc utiliser les commandes `make doxygen` et `make rapport` pour générer ces documents.
 
 ### Amélioration
 
@@ -236,7 +235,7 @@ Comme précédemment dit, nous avons implémenté le drag and drop des gemmes.\
 Celui-ci permet de faire glisser des gemmes dans tous les sens.\
 Cependant, un bug réside dans le fait que notre code utilise la fonction `MLV_delay_according_to_frame_rate`. Celle-ci permet d'avoir un framerate constant mais elle a pour effet de ralentir la détection des événements.\
 Ainsi, si vous faites glisser une gemme trop vite, le clic de relâchement ne sera pas détecté et la gemme restera bloquée.\
-Pour faire fasse à ce problème, qui au final n'est pas très gênant, il vous suffit de cliquer à nouveau sur le bouton gauche de la souris pour débloquer la gemme.\
+Pour faire fasse à ce problème, qui au final n'est pas très gênant, il vous suffit de cliquer à nouveau sur le bouton gauche de la souris pour débloquer la gemme.
 
 ## Conclusion
 
@@ -251,11 +250,11 @@ Nous avons donc laissé cette fonctionnalité de côté mais elle pourrait être
 
 #### Vague amélioré
 
-Si nous repensons la structure du module `Wave` nous pouvons faire un sorte d'avoir plusieurs structures de spawn et un seul tableau de monstre afin de pouvoir gérer plusieurs timer en simultané avec différent type de monstre en simultané, ce que notre structuration actuelle ne permet pas. 
+Si nous repensons la structure du module `Wave` nous pouvons faire un sorte d'avoir plusieurs structures de spawn et un seul tableau de monstre afin de pouvoir gérer plusieurs timer en simultané avec différent type de monstre en simultané, ce que notre structuration actuelle ne permet pas.
 
-#### Element amélioré 
+#### Element amélioré
 
-Pour les éléments améliorer nous pourrons faire en sorte de pouvoir cumlumer les timers des effets c'est-à-dire que le monstre pourrait avoir des résidus élémentaires. 
+Pour les éléments améliorer nous pourrons faire en sorte de pouvoir cumlumer les timers des effets c'est-à-dire que le monstre pourrait avoir des résidus élémentaires.
 
 ### Avis sur le projet
 
