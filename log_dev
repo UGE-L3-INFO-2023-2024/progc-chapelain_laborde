@@ -1,0 +1,632 @@
+commit c9fff267e754fe1a5d068d0e3cfe5f26b247352c
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Jan 20 17:53:33 2024 +0100
+
+    chore(report): Correct french error in readme.md
+
+commit bc22a0e3cc251acc2b4d51315a9a898d0f4e52a9
+Merge: 3392662 1f82fa9
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Jan 20 17:47:14 2024 +0100
+
+    Merge remote-tracking branch 'refs/remotes/origin/main'
+
+commit 33926629b236b34a8adc760348805f7b3f16ed8b
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Jan 20 17:47:01 2024 +0100
+
+    feat(game): Change constant to make the game more playable
+
+commit 1f82fa9547184c64a495a1943046e689d0c9021f
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sat Jan 20 17:26:18 2024 +0100
+
+    chore(report): add user guide
+
+commit 9f8486bcb872ae2343dba79fe5df2f9b19977782
+Merge: 5d0a4a2 c145d9e
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Jan 20 17:09:38 2024 +0100
+
+    Merge remote-tracking branch 'refs/remotes/origin/main'
+
+commit 5d0a4a27b0053cde51e84ae13f1704370efd5197
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Jan 20 17:09:23 2024 +0100
+
+    chore(report): Finnish `rapport.md`
+
+commit 77cb87534aaf360fc75df895dc1e22ee135a36a1
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Jan 20 17:08:53 2024 +0100
+
+    docs(parser): Make docuemention in .h and change printHelp func
+
+commit c145d9efbff35a98ca41785ed488c4cbbd147915
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sat Jan 20 16:15:51 2024 +0100
+
+    fix: overflow on mana and damage
+
+commit 22d393413c225de350bedee783fb5d230d3dd172
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sat Jan 20 16:15:12 2024 +0100
+
+    docs: comment makefile
+
+commit 990a8def9b4548ae2c115b8c07615edc37412d03
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sat Jan 20 12:32:15 2024 +0100
+
+    chore(report): :construction: Upgrade and unfolding of the project
+
+commit 463583c5b00903fc7e69b10510ffb6efb38ed958
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Jan 17 22:19:34 2024 +0100
+
+    chore: doxygen doc now in doc/html folder
+
+commit eedacc3bbe812f41d0a3ef4c46e08754bafe2c3a
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Jan 17 21:48:14 2024 +0100
+
+    fix: change font path
+
+commit 066964534d57341ed4f1dd3d90d29e958f641ff6
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Jan 17 21:36:29 2024 +0100
+
+    docs: change a bit rapport.md and the structure of the project
+
+commit fe5562c2fed6dc0d4632f946a101175c37223ae2
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Jan 17 12:39:10 2024 +0100
+
+    chore: add doxygen rule
+
+commit 3dcfefd2716beb5caab445150803aca2079ad093
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Wed Jan 17 12:22:02 2024 +0100
+
+    feat(parser): Add hard_mode
+
+commit 3cff9486e80b188ee44544ee7046d18d178b705a
+Merge: 163795a 5ca36e6
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Wed Jan 17 11:49:49 2024 +0100
+
+    Merge branch 'dev'
+
+commit 5ca36e648f726620c663fcdc546658b63b073bc1
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Wed Jan 17 11:39:22 2024 +0100
+
+    chore: v1 of project report + edit makefile to correspond to the subject
+
+commit 38ce45874d89fad7139782f55b982808b424dfeb
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Wed Jan 17 11:37:44 2024 +0100
+
+    feat(parser): Command line
+
+commit 163795adc6f329bacb2c6a271c413cc5323819e2
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Jan 16 23:02:26 2024 +0100
+
+    style: sonarlint all codes
+
+commit def1b677292eeeafb6dea0ca1e198601399bcd0f
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Jan 16 20:00:07 2024 +0100
+
+    style: Sonarlint
+
+commit f7daf741fd6faeb4634ca552e8bb275d2941a7c2
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Jan 16 12:42:28 2024 +0100
+
+    feat(Stats): now draw at end of the game
+
+commit b0f20dbc922fac5d98bdc6ea81d3a7e7b9c6c585
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Jan 16 01:21:58 2024 +0100
+
+    feat(graphic): Show mana error to user
+
+commit 581f0d743b8f9380228240663b251011ff4fa75c
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Mon Jan 15 00:07:23 2024 +0100
+
+    docs(all): :construction: Add details to generate doc
+
+commit 6f82809c5499cdceed8ed0fc61ec9039c3fe22f7
+Merge: cae5fa0 b4eba1c
+Author: Nathan CHAPELAIN <50594054+Nathan9567@users.noreply.github.com>
+Date:   Sun Jan 14 22:43:52 2024 +0100
+
+    Merge dev into main : game inner working finalized
+
+commit b4eba1c0369b7e607d17e4b5d4a85dbd3dc872db
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Jan 14 22:16:55 2024 +0100
+
+    docs(all): Add document on all files in .c and doc in event and graphic group of files
+
+commit 5f5b29f5a4c4d1c617c1a8308c81add547a38495
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Jan 14 17:18:03 2024 +0100
+
+    fix(event): fusion drag n drop
+    
+    Co-authored-by: Nathan CHAPELAIN <Nathan9567@users.noreply.github.com>
+
+commit 8d23ed15b3108c22abf98d688cefcbcbcb305835
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Jan 13 18:42:50 2024 +0100
+
+    feat(stats): Add total damage deals to mobs
+
+commit c3da7ae16f8be18484a2527fc54100afaf771c88
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sat Jan 13 14:38:08 2024 +0100
+
+    feat(stats): :construction: stats WIP
+
+commit 9a707fbb07ca4260ac9cbb5c6f4daa6e1cacba3e
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Fri Jan 12 23:23:12 2024 +0100
+
+    feat(game): Mana gain when we skipping to the next wave
+    
+    we have to wait the end ofthe current wave to spawn the next wave
+
+commit d9f57281d250bbd3afcab11bdfb0119ac0319add
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Thu Jan 11 23:21:42 2024 +0100
+
+    feat(game): Mana csot when mob tp back to spwan & mana gain when we kill a mob
+
+commit 5c2765a87a51f7c60c9da806e40750f7d2712504
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Thu Jan 11 19:53:18 2024 +0100
+
+    feat(event): Fusion work
+
+commit 434a294f1032609ee3f6ca5451cc0016e11b9173
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Thu Jan 11 13:18:58 2024 +0100
+
+    fix(map): Intialization functions
+
+commit 09f3a7350fc38e075b4f33891e446187bc68d413
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Jan 10 21:18:48 2024 +0100
+
+    docs(map): Clean code module
+
+commit 35276420fc35f9449103eaf3138675fbd562121c
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Jan 10 20:16:07 2024 +0100
+
+    perf(global): Free what needed to be free
+
+commit 43132c01d535741aea0401d745f4560e27c423aa
+Merge: cfcabb8 fc7c060
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Jan 10 18:31:08 2024 +0100
+
+    Merge branch 'dev' of https://github.com/UGE-L3-INFO-2023-2024/progc-chapelain_laborde into dev
+
+commit cfcabb8859981c0dcac742c40eb2da34491fbd28
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Jan 10 18:26:04 2024 +0100
+
+    feat(event): :sparkles: Drag and Drop gemstone
+
+commit fc7c060e5eb81e26149b80fa6f535de621e83615
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Wed Jan 10 17:26:07 2024 +0100
+
+    feat(element): Element apply on mob
+
+commit 67009b33d3beecc31aa7cc17f66f9b8c53f0358d
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Jan 9 21:17:48 2024 +0100
+
+    feat(game): Game structure and its functions
+
+commit 0c84719e13a2dce748017908a65a156ade8955a1
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Jan 9 17:53:15 2024 +0100
+
+    fix(error): Previous commit don't compile
+
+commit 2d429e6fdd41328c0483b2dfd991b3a3348a7b18
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Jan 9 17:40:27 2024 +0100
+
+    feat(error): Function error name
+
+commit 92a2a6cd8c59318795cd1d2fb0be577419657739
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Jan 9 16:35:41 2024 +0100
+
+    feat(fusion): :construction: Merge two gems and improve graphic gem
+
+commit 98b38bc0a8143d8b56a5dab9dee14186e2aa21ff
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Mon Jan 8 20:59:26 2024 +0100
+
+    feat(map): :sparkles: raw damage on mob + clear of projectile + mobs on death
+    
+    raw damage == no element
+
+commit 0f9ea87bc8410c6a79e85685dbae1f1753298561
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Mon Jan 8 18:15:17 2024 +0100
+
+    chore: add tower print in DA_print_all
+
+commit 63c982f1d23a310a564caea6d07a437e9c1b55b0
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Mon Jan 8 18:13:28 2024 +0100
+
+    refactor(tower): :recycle: change gem* to gem and create has_gem boolean
+
+commit b8e39c54aae02cc7f737bc05e985b64dc314f250
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Jan 7 22:58:36 2024 +0100
+
+    perf: :zap: Event now work fine
+
+commit 0a032cf0ae48f0b3ee7b459732da819b41913618
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Jan 7 22:57:47 2024 +0100
+
+    feat(tower-gem): :sparkles: Add gem on tower by clicking
+
+commit d68b55fd18a25dad2bfabddb113bb05856880d28
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Jan 7 21:06:51 2024 +0100
+
+    chore(graphic): :wastebasket: Delete debugging code
+
+commit 3289ec6d893e0c0df6014bad5ccc94fdc1565ff6
+Merge: 3f466f6 024cad5
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Jan 7 20:24:02 2024 +0100
+
+    Merge branch 'dev' of https://github.com/UGE-L3-INFO-2023-2024/progc-chapelain_laborde into dev
+
+commit 3f466f6596053fb6550f0def13fc894c167f42ea
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Jan 7 20:21:11 2024 +0100
+
+    refactor(buttons): Now get is module + fix bug in mana cost
+
+commit 03778023a3a05d81efd27905affdd87b07bdb999
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Jan 7 20:13:14 2024 +0100
+
+    docs: Add headers & functions doc
+
+commit 29af814fa18ca211176abba117cfad018d9b726b
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Jan 7 20:10:21 2024 +0100
+
+    feat(tower-gem): :construction: Event for add gem to tower
+
+commit 97d7551dcf79cbc973cfaf6aa04fe2f1fc8888fd
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Jan 7 19:58:01 2024 +0100
+
+    feat(graphic): :art: Change Tower apparence
+
+commit 024cad5755c9d3dc83075ecde0b0d1d0809ce607
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Jan 7 17:23:21 2024 +0100
+
+    element creation
+
+commit d48c66349a7e789802e29f662aa1bf425428385c
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Jan 6 18:14:50 2024 +0100
+
+    Update Proj to take a gem
+
+commit c33fb97c18d982b5805ca20a6b899aba0c740a07
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Fri Jan 5 19:06:55 2024 +0100
+
+    add documentation + better complexity for manapool (no longer pow for upgrade manapool 1/4 of max reserve + gem merge patch)
+
+commit f6ad51f738b824d8d261eb92d14504bf45d885f4
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Thu Jan 4 16:25:33 2024 +0100
+
+    working projectile (cross product to match proj speed)
+
+commit 90a8fd2fbcba7c404e420fcdc9fdbd333e78f29f
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Tue Jan 2 16:27:09 2024 +0100
+
+    fist projectile -> bbug sometimes keep rotating around the mob
+
+commit 62a23615a8783ff2e972618530142484b03cdd52
+Merge: dd1da63 dbfa15f
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Dec 31 18:32:05 2023 +0100
+
+    Merge remote-tracking branch 'refs/remotes/origin/dev' into dev
+
+commit dd1da6306be322e43cb107e8f8229273876c6324
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Dec 31 18:31:40 2023 +0100
+
+    modify DA to take mob* instead of mob (because when realloc DA_mobs we loose pointer to mob in projectile + comment use function ine map)
+
+commit dbfa15f13cb0472e6389905d9b75992cb5549443
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sun Dec 31 13:05:50 2023 +0100
+
+    Create empty module to put action in
+
+commit 28f53e723e66991eebf82006e5a671af7597df13
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Dec 31 12:07:17 2023 +0100
+
+    projectile damage calculation
+
+commit 7988d4213da72efc790cd21df8de3cef91a2ffe8
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Dec 30 16:59:35 2023 +0100
+
+    Patch error in path generation sometime goes one to long (add error cell when it should not) -> -1 in path_max_dir
+
+commit e37c04e2c242feaed8b523aef2176ac5c70dc4cd
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sat Dec 30 14:07:27 2023 +0100
+
+    Cleaning main a little bit
+
+commit a0c395dce7ac1edac22c154c2deb9efd4a990c27
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Sat Dec 30 13:53:33 2023 +0100
+
+    Hotfix: There was a bug on the new DA_Tower due to redondance, we patch this.
+    Add: interactive button for inventory. Now you can click on it to do an action.
+    Fix: Bug on pagination, when you have the max of gem per page, that created a page without any gems.
+    Hotfix: Makefile generate dependencies but not use it... now it work fine.
+
+commit 37802e46e8e54debcab70bcb53c3f98117ff587a
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Fri Dec 29 14:03:40 2023 +0100
+
+    Add button to be able to place tower on map and start to improve inventory
+
+commit 2590ac2f316b86fdcaec70ed0d4b2210131aee5d
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Thu Dec 28 19:04:08 2023 +0100
+
+    Add button module and use it for Inventory
+
+commit 695b63a6c353871362a461e1213a8869a0905c5d
+Merge: 1b3aae3 b5f6b3a
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Thu Dec 28 14:43:26 2023 +0100
+
+    Merge branch 'dev' of https://github.com/UGE-L3-INFO-2023-2024/progc-chapelain_laborde into dev
+
+commit 1b3aae334d1618bddde62e6898ab6892f6d5f30a
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Thu Dec 28 14:40:35 2023 +0100
+
+    Hardfix color + try to do DragAndDrop
+
+commit 072c5bb96e5153273349278a7164cc72f00c1c01
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Thu Dec 28 14:39:00 2023 +0100
+
+    Add event modules
+
+commit b5f6b3a683814bd51dffe8ff3931dcf64b2d0b60
+Author: Nathan C <nathan.chapelain@gmail.com>
+Date:   Thu Dec 28 14:32:50 2023 +0100
+
+    Small fix on function rename
+
+commit d7eff554123d8fdf7bc557475b8572974080fd89
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Tue Dec 26 17:24:38 2023 +0100
+
+    random monster moving speed + init and moving projectile (proj not tester yet)
+
+commit 01317cd36cfc1dce340872b05a77e933110481a3
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Thu Dec 21 21:52:49 2023 +0100
+
+    Mob go back to spawn when finish the path (w/o mana cost)
+
+commit b550c83031d3d284f13624203ae9c2d047e8311f
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Tue Dec 19 17:54:03 2023 +0100
+
+    wave + good time beteween wave + good time between mob
+
+commit cae5fa067f10739a5021b8c303dec9ad758da525
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Dec 17 14:57:45 2023 +0100
+
+    clean warning -> merge main
+
+commit 88f1aea11b892106fc41c1b20c3af4f326ff8658
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Dec 17 14:53:43 2023 +0100
+
+    new functions for time management
+
+commit 1b2ec583215c6d1aef51e5b955dcc564b821721b
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Dec 16 17:36:58 2023 +0100
+
+    patch realloc dynamic array
+
+commit 68890e6c44676cf87ba60aa4a78ccfb2a6d37276
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Dec 16 17:16:48 2023 +0100
+
+    health point bar
+
+commit f912349a071c22a917b98979a4154543a5b23b31
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Dec 12 19:49:59 2023 +0100
+
+    Improve Inventory with lines and possibility to clear and refresh gems
+
+commit 7e6348260ea1db1c5169f018aceb19416ed84083
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Dec 12 18:19:20 2023 +0100
+
+    Inventory graphic is now finish, all of that are now in GraphicInventory module
+
+commit 0d6762d1e9d39ad1daeeb9a7200696f95800f965
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Tue Dec 12 17:50:30 2023 +0100
+
+    move centered of mob
+
+commit 51ba78356b1adfb564bfd7d308a17cc637fc8eca
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Mon Dec 11 22:40:23 2023 +0100
+
+    Functionality Add : Show inventory gems + use va_list for centered text
+
+commit d28d613789ef3cbca61d326a202b04a8482bdb26
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Mon Dec 11 16:14:28 2023 +0100
+
+    Start to show inventory and add font in window type
+
+commit 78f4b6d9209d972b976c48891b17471384127d70
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Mon Dec 11 16:12:35 2023 +0100
+
+    Add assets to change fonts
+
+commit 9e376e590b8b0bbef53d597742d17b35358b0d4a
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Nov 21 18:22:44 2023 +0100
+
+    Add some graphics functions for a better rendering + start to implement overlays elements
+
+commit 3f46838689d52eb632306aca976b0e2b98ffe74b
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Nov 21 18:20:20 2023 +0100
+
+    Implement functions for mana gestion + small changes in Tower and Error
+
+commit bcc415d756bca365969389c358578d6dce1c5375
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Mon Nov 20 11:13:15 2023 +0100
+
+    Small correction on the DinamicArray and Error module + remove of useless things in gemstone
+
+commit e9ac853a8a7b59607977c1fe0eb6f21d0d38490c
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sun Nov 19 16:54:43 2023 +0100
+
+    V1 of Dynamic Array multitype with documentation, NOT TESTED YET
+
+commit f11db74fe6d6aba0ca577beb64df8d37e016dc9f
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Sat Nov 18 18:49:18 2023 +0100
+
+    try of mouvement of mob (bug : mob not pass 1st turn)
+
+commit bc384d4921c0608fa1d63ab372a7ae19c0c2cae7
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Fri Nov 17 16:46:43 2023 +0100
+
+    Continue the Tower module and rename Stopwatch to TimeManager
+
+commit 8c8c6a052bce36ffd1ccf9d93878a758a29016e2
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Fri Nov 17 00:05:10 2023 +0100
+
+    Makefile update (everything is automatic now)
+
+commit f10d6ae9fb4c4466668c06433d5e5fda4ba046b7
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Thu Nov 16 17:24:47 2023 +0100
+
+    Implement Gemstone module and start Tower + change name of Time.h
+
+commit f95e39723df4770c08ca5dd4352b0e3e8f5ab134
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Wed Nov 15 18:12:32 2023 +0100
+
+    Unify functions name + graphic nest + graphic castle + verify MLV refresh rate + 1st implement of mob
+
+commit 7bc87de6ec64b578584c938c226bc37ac0fb5e3f
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Wed Nov 15 15:44:05 2023 +0100
+
+    Change the makefile to match .h & .c + test graphic + modify dates
+
+commit ecae51038b02c934b7a6cf8420e2ba9601ef4cf4
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Nov 14 23:00:02 2023 +0100
+
+    First implementation of HSV Color.h + UI for the field (Map)
+
+commit 0fd063b5ca01473ddf53bb2faa354d8bc3f6f957
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Nov 14 14:01:20 2023 +0100
+
+    Starting the Gemstone module and Towers
+
+commit 14d9896d5c01cb9d11481508a01d924155a311fe
+Author: Nathan <nathan.chapelain@gmail.com>
+Date:   Tue Nov 14 12:32:02 2023 +0100
+
+    Starting reflexion in graphic interface
+
+commit 339615552402d918d9b797871f75a4939c6de513
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Tue Nov 14 12:00:00 2023 +0100
+
+    modification map struct (+ coord nest / + coord castle)
+
+commit ac16f55fb3c90282b237de5a22c30fc394308174
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Mon Nov 13 19:14:00 2023 +0100
+
+    1st version of path generation w/o comms
+
+commit f3c4edf37978ff23ff5018558064a87e337d51c7
+Author: quentinl03 <q.laborde1220@gmail.com>
+Date:   Thu Nov 2 22:12:09 2023 +0100
+
+    Manapool + Map initialization
+
+commit f785df52b083a1095eb98bc582f92d636fcc7f61
+Author: Nathan C <nathan.chapelain@gmail.com>
+Date:   Mon Oct 30 16:24:59 2023 +0100
+
+    First modularization of the project
+    
+    Co-authored-by: Quentin L <quentinl03@users.noreply.github.com>
+
+commit cb2655657559001cd98659286fee38fec0b7fee5
+Author: Nathan C <nathan.chapelain@gmail.com>
+Date:   Sun Oct 29 17:56:26 2023 +0100
+
+    First reading of the projet + summary of this one
+    
+    Co-authored-by: Quentin L <quentinl03@users.noreply.github.com>
+
+commit 45e75a3a0dc9fb473f4ab5ed30ee0a6c928e6d3c
+Author: github-classroom[bot] <66690702+github-classroom[bot]@users.noreply.github.com>
+Date:   Sun Oct 29 14:44:51 2023 +0000
+
+    add deadline

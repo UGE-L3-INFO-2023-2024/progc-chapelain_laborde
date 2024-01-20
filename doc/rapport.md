@@ -1,9 +1,13 @@
-# Projet de Programmation C : Tower Defense
+# Projet : Tower Defense
 
 ____
 
-- [Projet de Programmation C : Tower Defense](#projet-de-programmation-c--tower-defense)
-  - [Manuel Utilisateur](#manuel-utilisateur)
+\
+\
+\
+
+- [Projet : Tower Defense](#projet--tower-defense)
+  - [Lancement du jeu](#lancement-du-jeu)
     - [Compilation](#compilation)
     - [Nettoyage](#nettoyage)
     - [Lancement du programme](#lancement-du-programme)
@@ -30,7 +34,9 @@ ____
       - [Element amélioré](#element-amélioré)
     - [Avis sur le projet](#avis-sur-le-projet)
 
-## Manuel Utilisateur
+\pagebreak
+
+## Lancement du jeu
 
 ### Compilation
 
@@ -48,6 +54,7 @@ Si vous dézipez l'archive à la main, pensez à aller dans le dossier crée ava
 cd prog-chapelain_laborde
 make
 ```
+\
 
 ### Nettoyage
 
@@ -56,6 +63,7 @@ Pour nettoyer le projet une fois l'utilisation terminée vous pouvez utiliser le
 - `make distclean`: pour supprimer les fichiers objets.
 
 - `make clean`: pour supprimer les fichiers objets et l'exécutable.
+\
 
 ### Lancement du programme
 
@@ -64,6 +72,7 @@ Pour lancer le programme compilé vous devez utiliser la commande suivante :
 ```bash
 ./gemcraft
 ```
+\
 
 ### Les paramètres
 
@@ -78,6 +87,8 @@ Prototype des paramètres de la commande.
 - `-d`, `--difficult-mode` (facultatif) : Active le mode difficile. (passer une vague ne donne pas de mana)
 
 - `-h`, `--help` (facultatif) : Affiche le menu d'aide.
+
+\pagebreak
 
 ## Modularisation du code
 
@@ -122,24 +133,28 @@ Nous avons séparé notre code en plusieurs dossiers et fichiers afin de rendre 
   - events
   - graphic
   - tools
+\
 
 ### Bin
 
 Contient les fichiers objets générés par la compilation du programme. Ils sont stockés dans ce dossier afin de ne pas polluer le dossier principal.\
 Vous trouverez aussi dans ce dossier les fichiers de dépendances générés par le flag `-MMD` du compilateur. Ils permettent de recompiler automatiquement les fichiers qui ont été modifiés. Ce flag permet de ne pas avoir à écrire à la main les dépendances de chaque fichier.\
 Vous verrez aussi que dans ce dossier, l'arborescence des dossiers `include` et `src` est reproduite. Cela permet de garder une arborescence propre et de ne pas avoir à modifier les chemins d'accès aux fichiers objets dans le Makefile.
+\
 
 ### Doc
 
 Dans ce dossier, vous trouverez la documentation technique du projet ainsi que ce rapport.\
 Vous pourrez aussi trouver dans le sous-dossier `html` la documentation générée par Doxygen.\
 Pour que tel soit le cas, je vous invite à utiliser la commande `make doxygen`. (Vous devez avoir Doxygen d'installé sur votre machine)
+\
 
 ### Include & Source
 
 Dans ces deux dossiers, vous trouverez respectivement les fichiers d'en-tête et les fichiers sources du programme.\
 Dans ces dossiers, vous trouverez aussi des sous-dossiers qui permettent de séparer les fichiers en fonction de leur utilité.\
 Voici une description de ces sous-dossiers :
+\pagebreak
 
 - **events** : Contient toute la gestion des événements avec un module permettant de stocker les events de la libMLV de manière plus simple. Cela permet aussi d'éviter d'avoir des fonctions de récupération d'événement en vrac dans la boucle principale. D'autres modules permettant la gestion d'interactions entre les événement joueur et le code. Enfin, nous avons un module entier dédié à la partie `DragAndDrop` permettant de faire glisser visuellement les objets à l'aide de la souris.
 
@@ -148,12 +163,14 @@ Voici une description de ces sous-dossiers :
 - **tools** : Ce dernier est utilisé pour stocker des modules utilitaires comme le `DynamicArray` qui est un tableau de stockage multi-type utilisé pour le stockage des données de la carte. Ou encore, le module `Utils` contentant des fonctions pratiques tel qu'une structure de coordonnées ou bien de directions. Le module `TimeManager` permet de gérer les usages de la structure `timespec` de `<time.h>`. Cette fonction est utilisée, entre autres choses, pour gérer les timers des vagues et des projectiles.
 
 - Enfin, il nous reste les documents "en vrac" le dossier src. Il représente le squelette du projet comme les vagues, la carte, l'inventaire, la gestion du mana par exemple. Tous ces modules sont utilisés par la module game stockant la boucle principale du jeu. Il y a aussi le module `main` qui est le point d'entrée du programme. Il permet de lancer le jeu et de gérer les paramètres de la ligne de commande.
+\
 
 ### Resources
 
 Contient les fichiers de ressources utilisés par le programme. Dans notre cas, il s'agit uniquement de la police d'écriture utilisée pour le menu. Elle est stockée dans le dossier `resources/fonts`.\
 Nous avons aussi adapté nos fonctions pour pouvoir utiliser des images à la place par exemple des dessins pour les tours ou les monstres. Nous avons cependant préféré ne pas les utiliser pour une question de facilité de développement.\
 Vous avez aussi peut-être remarqué le fichier `metadata.tex` et le dossier `images`. Ils sont tous deux utilisés dans le Makefile pour générer ce rapport au format PDF via pandoc.
+\
 
 ### Autres fichiers
 
@@ -163,6 +180,7 @@ Vous avez aussi peut-être remarqué le fichier `metadata.tex` et le dossier `im
 
 - **Makefile** : Fichier de compilation du projet. Il permet de compiler le projet, de nettoyer les fichiers objets et l'exécutable. Il permet aussi de générer la documentation Doxygen et de générer ce rapport au format PDF via pandoc.\
 Vous avez un descriptif plus haut dans le rapport sur l'utilisation de ce fichier.
+\pagebreak
 
 ## Déroulement du projet
 
@@ -255,6 +273,7 @@ Si nous repensons la structure du module `Wave` nous pouvons faire un sorte d'av
 #### Element amélioré
 
 Pour les éléments améliorer nous pourrons faire en sorte de pouvoir cumlumer les timers des effets c'est-à-dire que le monstre pourrait avoir des résidus élémentaires.
+\pagebreak
 
 ### Avis sur le projet
 
