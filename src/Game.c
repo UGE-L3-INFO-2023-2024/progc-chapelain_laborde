@@ -9,7 +9,7 @@
 
 #include "Game.h"
 
-#include <MLV/MLV_all.h>
+#include <MLV/MLV_color.h>
 #include <time.h>
 
 #include "Button.h"
@@ -43,22 +43,14 @@
  * @details Create all used windows (Map, Inventory) and set the font of the
  * inventory.
  *
- * @param game Game
+ * @param game Game to get and set the windows.
  * @param option Option of the game
  */
 static void create_windows(Game* game, Option option) {
+    init_graphic("Gemcraft", &option.width, &option.height,
+                 option.flag_full_screen);
     game->window.main =
         Window_init((Coord_f){0, 0}, option.width, option.height, NULL);
-    if (option.flag_full_screen) {
-        MLV_create_full_screen_window("Gemcraft", "Gemcraft",
-                                      MLV_get_desktop_width(),
-                                      MLV_get_desktop_height());
-        option.width = MLV_get_desktop_width();
-        option.height = MLV_get_desktop_height();
-    } else {
-        MLV_create_window("Gemcraft", "Gemcraft", game->window.main.width,
-                          game->window.main.height);
-    }
     double inventory_width = option.width * INVENTORY_PROPORTION;
     double map_width = option.width - inventory_width;
     game->window.map = SubWindow_init(&game->window.main, (Coord_f){0, 0},
@@ -91,7 +83,7 @@ Error Game_Init(Game* game, Option option) {
     game->stats = Stats_init();
     create_windows(game, option);
 
-    MLV_change_frame_rate(FRAMERATE);
+    change_game_framerate(FRAMERATE);
 
     Button_tab_init(&game->buttons);
     create_inventory_buttons(game->window.inventory, &game->buttons);
@@ -125,8 +117,8 @@ void Game_draw(const Game* game) {
 /**
  * @brief Draw the gem that is being move.
  *
- * @param game Game
- * @param event Event lMLV
+ * @param game Game to get the gem.
+ * @param event Event to get the position of the mouse.
  */
 static void _drag_ang_drop_action(Game* game, Event event) {
     static Gem* clicked_gem = NULL;
@@ -157,7 +149,7 @@ static void _clear_projs_on_target(DynamicArray* projs, const Mob* mob) {
 /**
  * @brief Clear all dead mobs and projectiles who target them.
  *
- * @param game Game
+ * @param game Game to get the mobs.
  */
 static void _clear_dead_mob_proj(Game* game) {
     for (int i = 0; i < game->map.mobs.mob_list.real_len; i++) {
@@ -216,14 +208,13 @@ static void _final_screen(Game* game, struct timespec start) {
     game->stats.last_wave = game->map.mobs.nb_wave;
     game->stats.score = game->stats.last_wave * 1000 + game->stats.mobs_killed;
     draw_game_over_screen(game->window.map, game->stats);
-    refresh_window();
+    refresh_graphic();
     Event_wait();
 }
 
 /* Keyboard event gestion */
 void Game_action(Game* game, Event event, bool hard_mode) {
-    if (event.type == KEYBOARD && event.keyboard.key == MLV_KEYBOARD_SPACE &&
-        event.keyboard.state == MLV_PRESSED) {
+    if (Event_is_space(event)) {
         if (game->has_started) {
             long sec_gain = Wave_skip_to_next(&(game->map.mobs));
             if (!hard_mode) {
@@ -259,7 +250,7 @@ Error Game_run(Game* game, bool hard_mode) {
         doing_button_actions(game->buttons, game->window.map, game, event);
         _drag_ang_drop_action(game, event);
 
-        refresh_window();
+        refresh_graphic();
 
         if (Game_update_all(game)) {  // death
             return NO_ERROR;
@@ -274,7 +265,7 @@ Error Game_run(Game* game, bool hard_mode) {
             return err;
         }
 
-        MLV_delay_according_to_frame_rate();
+        wait_according_to_framerate();
     }
     _final_screen(game, start);
     return NO_ERROR;
@@ -287,5 +278,5 @@ void Game_free(Game* game) {
     Button_tab_free(game->buttons);
     Font_free(game->window.inventory.font);
     Font_free(game->window.map.font);
-    MLV_free_window();
+    free_graphic();
 }

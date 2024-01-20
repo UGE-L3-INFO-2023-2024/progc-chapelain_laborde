@@ -7,7 +7,12 @@
  */
 #include "Window.h"
 
+#include <MLV/MLV_shape.h>
 #include <stdlib.h>
+
+#include "Font.h"
+#include "Graphic.h"
+#include "Utils.h"
 
 /* Initalize the window */
 Window Window_init(Coord_f coord, unsigned int width, unsigned int height,
@@ -31,4 +36,10 @@ SubWindow SubWindow_init(Window* window, Coord_f coord, unsigned int width,
     sub_window.font = window->font;
     sub_window.coord = coord;
     return sub_window;
+}
+
+/* Clear lMLV window */
+void clear_window(Window window) {
+    MLV_draw_filled_rectangle((int)window.coord.x, (int)window.coord.y,
+                              window.width, window.height, CLEAR_COLOR);
 }

@@ -28,19 +28,19 @@ void draw_mana_bar(ManaPool pool, int x, int y, int w, int h,
 }
 
 /* Draw the errors of mana */
-void draw_mana_error(int x, int y, int w, int h, int mana_needed, Font* font,
-                     MLV_Color color) {
+void draw_mana_error(int x, int y, int w, int h, int mana_needed,
+                     const Font* font, MLV_Color color) {
     int text_width;
     int text_height;
-    MLV_get_size_of_text_with_font("Not enough mana !", &text_width,
-                                   &text_height, font);
-    draw_centered_text_with_font(x + w / 2, y + h / 2 - text_height / 2,
-                                 "Not enough mana !", font, color);
+    const char* text = "Not enough mana !";
+    MLV_get_size_of_text_with_font(text, &text_width, &text_height, font);
+    draw_centered_text_with_font(x + w / 2, y + h / 2 - text_height / 2, text,
+                                 font, color);
     draw_centered_text_with_font(x + w / 2, y + h / 2 + text_height / 2,
                                  "Need %d mana", font, color, mana_needed);
 }
 
-static void _draw_played_time(int x, int y, Font* font, MLV_Color color,
+static void _draw_played_time(int x, int y, const Font* font, MLV_Color color,
                               long timeplayed) {
     long hours = timeplayed / 3600;
     int minutes = (timeplayed % 3600) / 60;

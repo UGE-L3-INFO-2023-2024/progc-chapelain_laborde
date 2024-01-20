@@ -82,9 +82,17 @@ Event Event_wait(void);
  *
  * @param event Event to check
  * @return true if user wants to quit
- * @return false otherwise
  */
 bool Event_quit(Event event);
+
+/**
+ * @brief Check if the event is a space event.
+ * @note This function is used to check if the user pressed the space bar.
+ *
+ * @param event Event to check
+ * @return true if the user pressed the space bar.
+ */
+bool Event_is_space(Event event);
 
 /**
  * @brief Check if the coordinates are in the rectangle area.
@@ -95,8 +103,7 @@ bool Event_quit(Event event);
  * @param height Height of the rectangle
  * @param cible_x X coordinate of the point to check
  * @param cible_y Y coordinate of the point to check
- * @return true if the point is in the rectangle,
- * @return false otherwise
+ * @return true if the point is in the rectangle
  */
 bool is_in_rect_area(int x, int y, int width, int height, int cible_x,
                      int cible_y);
